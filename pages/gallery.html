@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery – Zusammen Tours and Travel Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.gallery-item { border-radius: var(--radius); overflow: hidden; position: relative; cursor: pointer; }
+.gallery-item:nth-child(3n+1) { grid-column: span 2; }
+.gallery-item img { width:100%;height:240px;object-fit:cover;transition:transform .4s; }
+.gallery-item:nth-child(3n+1) img { height:300px; }
+.gallery-item:hover img { transform:scale(1.07); }
+.gallery-overlay { position:absolute;inset:0;background:rgba(11,26,44,0);transition:.3s;display:flex;align-items:center;justify-content:center; }
+.gallery-item:hover .gallery-overlay { background:rgba(11,26,44,0.5); }
+.gallery-overlay i { color:#fff;font-size:28px;opacity:0;transition:.3s; }
+.gallery-item:hover .gallery-overlay i { opacity:1; }
+.lightbox { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px; }
+.lightbox.open { display:flex; }
+.lightbox img { max-width:90vw;max-height:85vh;border-radius:12px;object-fit:contain; }
+.lightbox-close { position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer; }
+.lightbox-nav { position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:.2s; }
+.lightbox-nav:hover { background:var(--accent); }
+.lightbox-prev { left:16px; }
+.lightbox-next { right:16px; }
+@media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}.gallery-item:nth-child(3n+1){grid-column:span 1}}
+@media(max-width:500px){.gallery-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="container topbar-inner"><div class="topbar-left"><span><i class="fas fa-phone"></i> +264 81 245 5852</span><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span></div><div class="topbar-right"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div></div>
+<header class="site-header" id="siteHeader"><div class="container"><div class="header-inner">
+  <a href="../index.html" class="logo"><svg class="logo-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div class="logo-text"><span class="logo-name">ZUSAMMEN</span><span class="logo-sub">Tours and Travel Agency</span></div></a>
+  <nav class="site-nav"><div class="nav-item"><a href="../index.html">Home</a></div><div class="nav-item"><a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="tours.html">Tour Grid</a><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a></div></div><div class="nav-item"><a href="about.html">Pages <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="testimonials.html">Testimonials</a><a href="gallery.html">Gallery</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a></div></div><div class="nav-item"><a href="blog-grid.html">Blogs</a></div><div class="nav-item"><a href="contact.html">Contact Us</a></div></nav>
+  <div class="header-btns"><a href="contact.html" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Contact Us</a></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</div></div></header>
+<nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-header"><span class="logo-name" style="font-size:18px;color:var(--primary)">ZUSAMMEN <span style="color:var(--accent)">TOURS</span></span><button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button></div><a href="../index.html">Home</a><a href="tours.html">Tours</a><a href="about.html">About Us</a><a href="contact.html">Contact Us</a></nav>
+
+<div class="page-hero"><h1>Gallery</h1><div class="breadcrumb"><a href="../index.html"><i class="fas fa-home"></i></a><i class="fas fa-chevron-right"></i><span>Gallery</span></div></div>
+
+<section style="padding:72px 0;background:var(--bg)">
+  <div class="container">
+    <div class="section-head"><div class="section-tag"><i class="fas fa-circle"></i> Our Gallery</div><h2 class="section-title">Explore Africa Through <span class="highlight">Our Lens</span></h2><p>Stunning moments from our safari experiences across Namibia and beyond.</p></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)"><i class="fas fa-chevron-left"></i></button>
+  <img id="lightboxImg" src="" alt="Gallery image">
+  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<footer><div class="footer-top"><div class="container"><div class="footer-grid">
+  <div class="footer-brand"><div class="footer-logo"><svg width="36" height="36" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div><div class="footer-logo-name">ZUSAMMEN</div><div class="footer-logo-sub">Tours and Travel Agency</div></div></div><p>Luxury safari experiences across Namibia and Africa.</p><div class="footer-social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div>
+  <div class="footer-col"><h4>Pages</h4><ul><li><a href="about.html">About Us</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+  <div class="footer-col"><h4>Tours</h4><ul><li><a href="tours.html">All Tours</a></li><li><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a></li></ul></div>
+  <div class="footer-col"><h4>Support</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+  <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+264812455852">+264 81 245 5852</a></li><li><a href="mailto:info@zusammentravels.com">info@zusammentravels.com</a></li></ul></div>
+</div></div></div>
+<div class="footer-bottom"><div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%"><span>Copyright &copy; 2026. All Rights Reserved, <a href="../index.html">Zusammen Tours and Travel Agency</a></span></div></div>
+</footer>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script src="../js/main.js"></script>
+<script>
+const GALLERY_IMGS = [
+  'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80',
+  'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&q=80',
+  'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800&q=80',
+  'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80',
+  'https://images.unsplash.com/photo-1589825743636-3c93cc81c22c?w=800&q=80',
+  'https://images.unsplash.com/photo-1612459284270-d08f22cd0f23?w=800&q=80',
+  'https://images.unsplash.com/photo-1553290322-de87a4bd8f9e?w=800&q=80',
+  'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800&q=80',
+  'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
+  'https://images.unsplash.com/photo-1489493512598-d08130f49bea?w=800&q=80',
+  'https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?w=800&q=80',
+  'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=800&q=80'
+];
+const GALLERY_CAPTIONS = ['Sossusvlei Dunes, Namibia','Okavango Delta, Botswana','Volcanoes NP, Rwanda','Victoria Falls, Zimbabwe','Maasai Mara, Kenya','Serengeti, Tanzania','Luxury Lodge, Africa','Bush Camp, Botswana','Solo Explorer, Africa','Safari Vehicle, Namibia','Happy Travellers','Wildlife Encounter'];
+let currentLightbox = 0;
+
+document.getElementById('galleryGrid').innerHTML = GALLERY_IMGS.map((img, i) => `
+  <div class="gallery-item" onclick="openLightbox(${i})">
+    <img src="${img}" alt="${GALLERY_CAPTIONS[i]}" loading="lazy">
+    <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+  </div>
+`).join('');
+
+function openLightbox(i) { currentLightbox=i; document.getElementById('lightboxImg').src=GALLERY_IMGS[i]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+function navLightbox(d) { currentLightbox=(currentLightbox+d+GALLERY_IMGS.length)%GALLERY_IMGS.length; document.getElementById('lightboxImg').src=GALLERY_IMGS[currentLightbox]; }
+document.getElementById('lightbox').addEventListener('click', function(e){if(e.target===this)closeLightbox();});
+document.addEventListener('keydown', e=>{if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')navLightbox(1);if(e.key==='ArrowLeft')navLightbox(-1);});
+</script>
+</body>
+</html>

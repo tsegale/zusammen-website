@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us – Zusammen Tours and Travel Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+      .about-page-section {
+        padding: 72px 0;
+      }
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+      }
+      .why-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px 22px;
+        text-align: center;
+        transition: var(--transition);
+      }
+      .why-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 8px 28px rgba(247, 148, 29, 0.12);
+        transform: translateY(-4px);
+      }
+      .why-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #fff3e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 24px;
+        color: var(--accent);
+        transition: var(--transition);
+      }
+      .why-card:hover .why-icon {
+        background: var(--accent);
+        color: var(--white);
+      }
+      .why-card h5 {
+        font-family: var(--font-head);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 8px;
+      }
+      .why-card p {
+        font-size: 13.5px;
+        color: var(--text-light);
+        line-height: 1.7;
+      }
+      .stats-banner {
+        background: var(--primary);
+        padding: 48px 0;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+      }
+      .stat-b {
+        text-align: center;
+        padding: 20px;
+      }
+      .stat-b + .stat-b {
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .stat-b h3 {
+        font-family: var(--font-head);
+        font-size: 40px;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 6px;
+      }
+      .stat-b p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 600;
+      }
+      .stat-b i {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 10px;
+      }
+      .ceo-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 60px;
+        align-items: center;
+      }
+      .ceo-img {
+        border-radius: 20px;
+        overflow: hidden;
+        height: 500px;
+        background: linear-gradient(135deg, #1f3a6d, #8dc63f);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: rgba(255, 255, 255, 0.6);
+        gap: 12px;
+      }
+      .ceo-img i {
+        font-size: 72px;
+      }
+      .ceo-img span {
+        font-family: var(--font-head);
+        font-size: 14px;
+      }
+      .mission-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      .mission-card {
+        padding: 28px;
+        border-radius: var(--radius);
+        background: var(--bg);
+        border-left: 4px solid var(--accent);
+      }
+      .mission-card.green {
+        border-left-color: var(--secondary);
+      }
+      .mission-card h5 {
+        font-family: var(--font-head);
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 10px;
+      }
+      .mission-card p {
+        font-size: 14px;
+        color: var(--text-light);
+        line-height: 1.7;
+      }
+      @media (max-width: 900px) {
+        .why-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .ceo-wrap {
+          grid-template-columns: 1fr;
+        }
+        .mission-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 500px) {
+        .why-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-left">
+          <span><i class="fas fa-phone"></i> +264 81 245 5852</span
+          ><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
+        </div>
+        <div class="topbar-right">
+          <a href="#"><i class="fab fa-facebook-f"></i></a
+          ><a href="#"><i class="fab fa-instagram"></i></a
+          ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+        </div>
+      </div>
+    </div>
+    <header class="site-header" id="siteHeader">
+      <div class="container">
+        <div class="header-inner">
+          <a href="../index.html" class="logo"
+            ><svg class="logo-icon" viewBox="0 0 44 44" fill="none">
+              <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
+              <path
+                d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
+                fill="#1F3A6D"
+              />
+              <circle cx="10" cy="16" r="4" fill="#F7941D" />
+              <path
+                d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
+                fill="#F7941D"
+              />
+              <circle cx="34" cy="16" r="4" fill="#8DC63F" />
+              <path
+                d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
+                fill="#8DC63F"
+              />
+            </svg>
+            <div class="logo-text">
+              <span class="logo-name">ZUSAMMEN</span
+              ><span class="logo-sub">Tours and Travel Agency</span>
+            </div></a
+          >
+          <nav class="site-nav">
+            <div class="nav-item"><a href="../index.html">Home</a></div>
+            <div class="nav-item">
+              <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="tours.html">Tour Grid</a
+                ><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a
+                ><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a
+                ><a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="about.html">About Us</a><a href="faq.html">FAQ</a
+                ><a href="testimonials.html">Testimonials</a
+                ><a href="gallery.html">Gallery</a
+                ><a href="privacy.html">Privacy Policy</a
+                ><a href="terms.html">Terms &amp; Conditions</a>
+              </div>
+            </div>
+            <div class="nav-item"><a href="blog-grid.html">Blogs</a></div>
+            <div class="nav-item"><a href="contact.html">Contact Us</a></div>
+          </nav>
+          <div class="header-btns">
+            <a href="contact.html" class="btn btn-primary"
+              ><i class="fas fa-paper-plane"></i> Contact Us</a
+            >
+          </div>
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-header">
+        <span class="logo-name" style="font-size: 18px; color: var(--primary)"
+          >ZUSAMMEN <span style="color: var(--accent)">TOURS</span></span
+        ><button class="mobile-close" id="mobileClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="../index.html">Home</a><a href="tours.html">Tours</a
+      ><a href="about.html">About Us</a><a href="faq.html">FAQ</a
+      ><a href="contact.html">Contact Us</a>
+    </nav>
+
+    <div class="page-hero">
+      <h1>About Us</h1>
+      <div class="breadcrumb">
+        <a href="../index.html"><i class="fas fa-home"></i></a
+        ><i class="fas fa-chevron-right"></i
+        ><span>About Zusammen Tours and Travel Agency</span>
+      </div>
+    </div>
+
+    <!-- About intro -->
+    <section class="about-page-section" style="background: var(--white)">
+      <div class="container">
+        <div
+          class="about-grid"
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: center;
+          "
+        >
+          <div
+            class="img-placeholder"
+            style="
+              height: 480px;
+              border-radius: 16px;
+              background: linear-gradient(135deg, #1f3a6d, #2d5499);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              color: rgba(255, 255, 255, 0.6);
+              gap: 12px;
+            "
+          >
+            <i class="fas fa-image" style="font-size: 48px"></i
+            ><span style="font-family: var(--font-head); font-size: 14px"
+              >Professional safari image placeholder</span
+            >
+          </div>
+          <div>
+            <div
+              class="about-tag"
+              style="
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: #fff3e0;
+                color: var(--accent);
+                padding: 5px 14px;
+                border-radius: 50px;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 10px;
+                font-family: var(--font-head);
+              "
+            >
+              <i class="fas fa-circle"></i> About Zusammen Tours and Travel
+              Agency
+            </div>
+            <h2 class="section-title">
+              A Single Platform for the
+              <span class="highlight">Entire Journey</span>
+            </h2>
+            <p class="about-desc">
+              Zusammen Tours and Travel Agency. Making Every Journey Simple,
+              Enjoyable, and Perfectly Tailored to You.
+            </p>
+            <p class="about-desc">
+              We focus on travel within Namibia, while also offering
+              destinations across Africa. Our clients — mainly from Canada, the
+              United States, the United Kingdom, and Germany — rely on us to
+              guide their travel and educational journeys.
+            </p>
+            <p class="about-desc">
+              Provides a range of services from immigration advice to
+              study-abroad support and vacation planning.
+            </p>
+            <div
+              style="
+                background: var(--bg);
+                border-left: 4px solid var(--accent);
+                border-radius: var(--radius-sm);
+                padding: 20px 24px;
+                margin-top: 20px;
+              "
+            >
+              <h5
+                style="
+                  font-family: var(--font-head);
+                  font-size: 14px;
+                  font-weight: 800;
+                  color: var(--accent);
+                  margin-bottom: 8px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                "
+              >
+                <i class="fas fa-bullseye" style="margin-right: 7px"></i>Our
+                Mission
+              </h5>
+              <p
+                style="font-size: 14.5px; color: var(--text); line-height: 1.75"
+              >
+                We transform travel into moments of wonder and comfort, where
+                every journey feels exceptional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-banner">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-b">
+            <i class="fas fa-globe-africa"></i>
+            <h3>9</h3>
+            <p>Destinations in Africa</p>
+          </div>
+          <div class="stat-b">
+            <i class="fas fa-calendar-check"></i>
+            <h3>300+</h3>
+            <p>Bookings Completed</p>
+          </div>
+          <div class="stat-b">
+            <i class="fas fa-users"></i>
+            <h3>50+</h3>
+            <p>Clients Globally</p>
+          </div>
+          <div class="stat-b">
+            <i class="fas fa-handshake"></i>
+            <h3>70+</h3>
+            <p>Providers Registered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <section class="about-page-section" style="background: var(--bg)">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-tag">
+            <i class="fas fa-circle"></i> Why Choose Us
+          </div>
+          <h2 class="section-title">
+            Why Choose <span class="highlight">Us?</span>
+          </h2>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon"><i class="fas fa-route"></i></div>
+            <h5>Convenience</h5>
+            <p>
+              Plan your trip effortlessly from start to finish; all in one
+              place.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fas fa-tag"></i></div>
+            <h5>Best Price Guarantee</h5>
+            <p>
+              Get the most value for your journey with our unbeatable prices.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fas fa-headset"></i></div>
+            <h5>Customer Support</h5>
+            <p>Travel with confidence knowing help is just a click away.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fas fa-sliders-h"></i></div>
+            <h5>Tailored Travel Experiences</h5>
+            <p>Create memories with journeys crafted just for you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission & Values -->
+    <section class="about-page-section" style="background: var(--white)">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-tag">
+            <i class="fas fa-circle"></i> Our Values
+          </div>
+          <h2 class="section-title">
+            What Drives <span class="highlight">Us Forward</span>
+          </h2>
+        </div>
+        <div class="mission-grid">
+          <div class="mission-card">
+            <h5>
+              <i
+                class="fas fa-heart"
+                style="color: var(--accent); margin-right: 8px"
+              ></i
+              >Passion for Africa
+            </h5>
+            <p>
+              We are genuinely passionate about the continent we call home. From
+              Namibia's deserts to Rwanda's misty forests, we share that love
+              with every client.
+            </p>
+          </div>
+          <div class="mission-card green">
+            <h5>
+              <i
+                class="fas fa-leaf"
+                style="color: var(--secondary); margin-right: 8px"
+              ></i
+              >Sustainability
+            </h5>
+            <p>
+              We partner with eco-conscious lodges and community-run
+              experiences, ensuring that your travel benefits local communities
+              and conserves natural environments.
+            </p>
+          </div>
+          <div class="mission-card">
+            <h5>
+              <i
+                class="fas fa-award"
+                style="color: var(--accent); margin-right: 8px"
+              ></i
+              >Excellence
+            </h5>
+            <p>
+              From the first enquiry to the final transfer home, we maintain the
+              highest standards of service, attention to detail and care for our
+              clients.
+            </p>
+          </div>
+          <div class="mission-card green">
+            <h5>
+              <i
+                class="fas fa-handshake"
+                style="color: var(--secondary); margin-right: 8px"
+              ></i
+              >Trust &amp; Integrity
+            </h5>
+            <p>
+              We believe in complete transparency — no hidden fees, no
+              surprises. Our clients know exactly what they're getting and can
+              travel with complete confidence.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our CEO -->
+    <section class="about-page-section" style="background: var(--bg)">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-tag"><i class="fas fa-circle"></i> Our CEO</div>
+          <h2 class="section-title">
+            Meet Our <span class="highlight">CEO</span>
+          </h2>
+          <p>
+            At Zusammen Tours, we aim to provide experiences that are smooth,
+            enriching, and carefully tailored to each traveller's dreams.
+          </p>
+        </div>
+        <div class="ceo-wrap" style="max-width: 900px; margin: 0 auto">
+          <div class="ceo-img">
+            <i class="fas fa-user-tie"></i>
+            <span style="font-family: var(--font-head); font-size: 13px"
+              >CEO Photo Placeholder</span
+            >
+            <span style="font-size: 12px; opacity: 0.6"
+              >Replace with professional photo</span
+            >
+          </div>
+          <div>
+            <h3
+              style="
+                font-family: var(--font-head);
+                font-size: 28px;
+                font-weight: 800;
+                color: var(--dark);
+                margin-bottom: 6px;
+              "
+            >
+              John Mike
+            </h3>
+            <p
+              style="
+                color: var(--accent);
+                font-family: var(--font-head);
+                font-weight: 700;
+                font-size: 14px;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              "
+            >
+              Chief Executive Officer
+            </p>
+            <p
+              style="
+                font-size: 15px;
+                color: var(--text-light);
+                line-height: 1.8;
+                margin-bottom: 16px;
+              "
+            >
+              Our mission is to transform your travel aspirations into reality,
+              with safety, comfort, and unforgettable memories at the heart of
+              every journey.
+            </p>
+            <p
+              style="
+                font-size: 15px;
+                color: var(--text-light);
+                line-height: 1.8;
+                margin-bottom: 24px;
+              "
+            >
+              With years of deep expertise in African travel and a genuine
+              passion for the continent's extraordinary landscapes and cultures,
+              John leads Zusammen Tours with a commitment to excellence that is
+              reflected in every safari we plan.
+            </p>
+            <div style="display: flex; gap: 12px">
+              <a
+                href="#"
+                style="
+                  width: 38px;
+                  height: 38px;
+                  border-radius: 50%;
+                  background: var(--primary);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--white);
+                  font-size: 14px;
+                  transition: var(--transition);
+                "
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="contact.html" class="btn btn-primary"
+                ><i class="fas fa-envelope"></i> Get In Touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Plan Your African Adventure?</h2>
+        <p>
+          Let us craft a perfect safari experience tailored entirely to your
+          dreams.
+        </p>
+        <div class="cta-actions">
+          <a href="tours.html" class="btn btn-white btn-lg"
+            ><i class="fas fa-compass"></i> Explore Tours</a
+          >
+          <a href="contact.html" class="btn btn-dark btn-lg"
+            ><i class="fas fa-paper-plane"></i> GET STARTED</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="footer-logo">
+                <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
+                  <path
+                    d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
+                    fill="#1F3A6D"
+                  />
+                  <circle cx="10" cy="16" r="4" fill="#F7941D" />
+                  <path
+                    d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
+                    fill="#F7941D"
+                  />
+                  <circle cx="34" cy="16" r="4" fill="#8DC63F" />
+                  <path
+                    d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
+                    fill="#8DC63F"
+                  />
+                </svg>
+                <div>
+                  <div class="footer-logo-name">ZUSAMMEN</div>
+                  <div class="footer-logo-sub">Tours and Travel Agency</div>
+                </div>
+              </div>
+              <p>Luxury safari experiences across Namibia and Africa.</p>
+              <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Pages</h4>
+              <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Tours</h4>
+              <ul>
+                <li><a href="tours.html">All Tours</a></li>
+                <li>
+                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
+                </li>
+                <li>
+                  <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+                </li>
+                <li>
+                  <a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms &amp; Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <ul>
+                <li><a href="tel:+264812455852">+264 81 245 5852</a></li>
+                <li>
+                  <a href="mailto:info@zusammentravels.com"
+                    >info@zusammentravels.com</a
+                  >
+                </li>
+                <li><a href="#">Windhoek, Namibia</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div
+          class="container"
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+          "
+        >
+          <span
+            >Copyright &copy; 2026. All Rights Reserved,
+            <a href="../index.html">Zusammen Tours and Travel Agency</a></span
+          >
+        </div>
+      </div>
+    </footer>
+    <button id="btt" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="../js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tour Details – Zusammen Tours and Travel Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+      .detail-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 36px;
+        align-items: start;
+        padding: 56px 0 80px;
+      }
+      .detail-gallery {
+        position: relative;
+        margin-bottom: 28px;
+      }
+      .detail-main-img {
+        border-radius: var(--radius);
+        overflow: hidden;
+        height: 420px;
+      }
+      .detail-main-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .detail-thumbs {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .detail-thumb {
+        width: 80px;
+        height: 60px;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: var(--transition);
+        flex-shrink: 0;
+      }
+      .detail-thumb.active {
+        border-color: var(--accent);
+      }
+      .detail-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .detail-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 10px;
+      }
+      .detail-title-row h1 {
+        font-family: var(--font-head);
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--dark);
+      }
+      .detail-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .detail-meta-row span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13.5px;
+        color: var(--text-light);
+      }
+      .detail-meta-row span i {
+        color: var(--accent);
+      }
+      .detail-stars {
+        color: var(--accent);
+        font-size: 14px;
+      }
+
+      .detail-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .detail-tab {
+        padding: 12px 20px;
+        font-family: var(--font-head);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-light);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: var(--transition);
+      }
+      .detail-tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .detail-panel {
+        display: none;
+      }
+      .detail-panel.active {
+        display: block;
+      }
+
+      .detail-desc {
+        font-size: 15px;
+        color: var(--text);
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+      .highlights-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .highlight-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .highlight-item i {
+        color: var(--accent);
+        margin-top: 3px;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      .inc-exc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 20px;
+      }
+      .inc-list,
+      .exc-list {
+      }
+      .inc-list h5,
+      .exc-list h5 {
+        font-family: var(--font-head);
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 12px;
+      }
+      .inc-item,
+      .exc-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 13.5px;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .inc-item i {
+        color: var(--secondary);
+        font-size: 12px;
+        margin-top: 3px;
+      }
+      .exc-item i {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      .location-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .loc-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 14px;
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+      }
+      .loc-field span:first-child {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 700;
+        color: var(--text-light);
+        font-family: var(--font-head);
+      }
+      .loc-field span:last-child {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      /* Sidebar booking card */
+      .booking-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        position: sticky;
+        top: 90px;
+        box-shadow: var(--shadow-lg);
+      }
+      .booking-card-header {
+        background: var(--primary);
+        padding: 18px 22px;
+      }
+      .booking-card-header .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .booking-card-header .from {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        font-family: var(--font-head);
+        font-weight: 600;
+      }
+      .booking-card-header .price {
+        font-family: var(--font-head);
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--white);
+      }
+      .booking-card-header .per {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .booking-card-header .old {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: line-through;
+      }
+      .booking-body {
+        padding: 22px;
+      }
+      .booking-field {
+        margin-bottom: 16px;
+      }
+      .booking-field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        color: var(--dark);
+        font-family: var(--font-head);
+        margin-bottom: 7px;
+      }
+      .booking-field input,
+      .booking-field select {
+        width: 100%;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 11px 14px;
+        font-size: 14px;
+        color: var(--dark);
+        outline: none;
+        transition: var(--transition);
+        font-family: var(--font-body);
+      }
+      .booking-field input:focus,
+      .booking-field select:focus {
+        border-color: var(--accent);
+      }
+      .guests-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .guests-row .guest-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--dark);
+      }
+      .guests-row .guest-sublabel {
+        font-size: 12px;
+        color: var(--text-light);
+      }
+      .price-breakdown {
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .price-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13.5px;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .price-line.total {
+        font-weight: 800;
+        color: var(--dark);
+        font-family: var(--font-head);
+        font-size: 15px;
+        border-top: 1px solid var(--border);
+        padding-top: 8px;
+        margin-top: 4px;
+      }
+      .price-line .child-note {
+        font-size: 11.5px;
+        color: var(--secondary);
+        font-weight: 600;
+      }
+      .book-details-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .book-detail-item {
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+      }
+      .book-detail-item span:first-child {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 700;
+        color: var(--text-light);
+        font-family: var(--font-head);
+        margin-bottom: 3px;
+      }
+      .book-detail-item span:last-child {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--dark);
+      }
+
+      .provider-card-sm {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .provider-avatar-sm {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--bg);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light);
+        font-size: 20px;
+      }
+      .provider-info h6 {
+        font-family: var(--font-head);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--dark);
+      }
+      .provider-info .prov-contact {
+        font-size: 12.5px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 3px;
+      }
+      .provider-info .prov-contact i {
+        color: var(--accent);
+        font-size: 11px;
+      }
+
+      @media (max-width: 900px) {
+        .detail-layout {
+          grid-template-columns: 1fr;
+        }
+        .booking-card {
+          position: static;
+        }
+        .inc-exc-grid {
+          grid-template-columns: 1fr;
+        }
+        .location-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 500px) {
+        .location-grid {
+          grid-template-columns: 1fr;
+        }
+        .book-details-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-left">
+          <span><i class="fas fa-phone"></i> +264 81 245 5852</span>
+          <span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
+        </div>
+        <div class="topbar-right">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-tripadvisor"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="site-header" id="siteHeader">
+      <div class="container">
+        <div class="header-inner">
+          <a href="../index.html" class="logo">
+            <svg class="logo-icon" viewBox="0 0 44 44" fill="none">
+              <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
+              <path
+                d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
+                fill="#1F3A6D"
+              />
+              <circle cx="10" cy="16" r="4" fill="#F7941D" />
+              <path
+                d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
+                fill="#F7941D"
+              />
+              <circle cx="34" cy="16" r="4" fill="#8DC63F" />
+              <path
+                d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
+                fill="#8DC63F"
+              />
+            </svg>
+            <div class="logo-text">
+              <span class="logo-name">ZUSAMMEN</span
+              ><span class="logo-sub">Tours and Travel Agency</span>
+            </div>
+          </a>
+          <nav class="site-nav">
+            <div class="nav-item"><a href="../index.html">Home</a></div>
+            <div class="nav-item">
+              <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="tours.html">Tour Grid</a
+                ><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a
+                ><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="about.html">About Us</a><a href="faq.html">FAQ</a
+                ><a href="testimonials.html">Testimonials</a
+                ><a href="gallery.html">Gallery</a
+                ><a href="privacy.html">Privacy Policy</a
+                ><a href="terms.html">Terms &amp; Conditions</a>
+              </div>
+            </div>
+            <div class="nav-item"><a href="blog-grid.html">Blogs</a></div>
+            <div class="nav-item"><a href="contact.html">Contact Us</a></div>
+          </nav>
+          <div class="header-btns">
+            <a href="contact.html" class="btn btn-primary"
+              ><i class="fas fa-paper-plane"></i> Contact Us</a
+            >
+          </div>
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-header">
+        <span class="logo-name" style="font-size: 18px; color: var(--primary)"
+          >ZUSAMMEN <span style="color: var(--accent)">TOURS</span></span
+        >
+        <button class="mobile-close" id="mobileClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="../index.html">Home</a>
+      <a href="tours.html">Tours</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero" id="detailHero">
+      <h1 id="detailHeroTitle">Tour Details</h1>
+      <div class="breadcrumb">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="tours.html">Tours</a>
+        <i class="fas fa-chevron-right"></i>
+        <span id="detailBreadcrumb">Tour Details</span>
+      </div>
+    </div>
+
+    <div style="background: var(--bg)">
+      <div class="container">
+        <div class="detail-layout">
+          <!-- LEFT: Content -->
+          <div>
+            <!-- Gallery -->
+            <div class="detail-gallery">
+              <div class="detail-main-img" id="mainImgWrap">
+                <img id="mainImg" src="" alt="Tour" />
+              </div>
+              <div class="detail-thumbs" id="thumbsRow"></div>
+            </div>
+
+            <!-- Title & Meta -->
+            <div class="detail-title-row">
+              <h1 id="detailTitle">Tour Name</h1>
+              <button
+                onclick="window.history.back()"
+                style="
+                  background: none;
+                  border: 1.5px solid var(--border);
+                  border-radius: 8px;
+                  padding: 8px 14px;
+                  font-family: var(--font-head);
+                  font-size: 13px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  color: var(--text);
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  white-space: nowrap;
+                "
+              >
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+            <div class="detail-meta-row">
+              <span class="detail-stars" id="detailStars"></span>
+              <span
+                ><i class="fas fa-comment"></i>
+                <span id="detailReviews">0</span> Reviews</span
+              >
+              <span
+                ><i class="fas fa-map-marker-alt"></i>
+                <span id="detailLocation">Location</span></span
+              >
+              <span
+                ><i class="fas fa-tag"></i>
+                <span id="detailCategory">Category</span></span
+              >
+            </div>
+
+            <!-- Tabs -->
+            <div class="detail-tabs">
+              <div
+                class="detail-tab active"
+                onclick="switchTab('overview', this)"
+              >
+                Overview
+              </div>
+              <div class="detail-tab" onclick="switchTab('includes', this)">
+                Includes &amp; Excludes
+              </div>
+              <div class="detail-tab" onclick="switchTab('location', this)">
+                Location
+              </div>
+            </div>
+
+            <div class="detail-panel active" id="panel-overview">
+              <p class="detail-desc" id="detailDesc"></p>
+              <h5
+                style="
+                  font-family: var(--font-head);
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: var(--dark);
+                  margin-bottom: 14px;
+                "
+              >
+                <i
+                  class="fas fa-binoculars"
+                  style="color: var(--accent); margin-right: 8px"
+                ></i
+                >Highlights
+              </h5>
+              <div class="highlights-list" id="detailHighlights"></div>
+            </div>
+
+            <div class="detail-panel" id="panel-includes">
+              <div class="inc-exc-grid">
+                <div class="inc-list">
+                  <h5>
+                    <i
+                      class="fas fa-check-circle"
+                      style="color: var(--secondary); margin-right: 6px"
+                    ></i
+                    >What's Included
+                  </h5>
+                  <div id="detailIncludes"></div>
+                </div>
+                <div class="exc-list">
+                  <h5>
+                    <i
+                      class="fas fa-times-circle"
+                      style="color: #ef4444; margin-right: 6px"
+                    ></i
+                    >What's Excluded
+                  </h5>
+                  <div id="detailExcludes"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-panel" id="panel-location">
+              <div class="location-grid">
+                <div class="loc-field">
+                  <span>Pickup Address</span
+                  ><span id="locPickup">Windhoek, Namibia</span>
+                </div>
+                <div class="loc-field">
+                  <span>Drop-Off Address</span
+                  ><span id="locDropoff">Windhoek, Namibia</span>
+                </div>
+                <div class="loc-field">
+                  <span>City</span><span id="locCity">Windhoek</span>
+                </div>
+                <div class="loc-field">
+                  <span>Region</span><span id="locRegion">Khomas Region</span>
+                </div>
+                <div class="loc-field">
+                  <span>ZIP</span><span id="locZip">10005</span>
+                </div>
+                <div class="loc-field">
+                  <span>Country</span><span id="locCountry">Namibia</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Why Book With Us -->
+            <div
+              style="
+                margin-top: 36px;
+                padding: 28px;
+                background: var(--bg2);
+                border-radius: var(--radius);
+              "
+            >
+              <h5
+                style="
+                  font-family: var(--font-head);
+                  font-size: 16px;
+                  font-weight: 800;
+                  color: var(--dark);
+                  margin-bottom: 18px;
+                "
+              >
+                <i
+                  class="fas fa-shield-alt"
+                  style="color: var(--accent); margin-right: 8px"
+                ></i
+                >Why Book With Us
+              </h5>
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"
+              >
+                <div class="about-feat">
+                  <div class="feat-icon"><i class="fas fa-award"></i></div>
+                  <div class="feat-text">
+                    <h6>Trusted &amp; Experienced</h6>
+                    <p>Years of expertise crafting perfect African safaris.</p>
+                  </div>
+                </div>
+                <div class="about-feat">
+                  <div class="feat-icon"><i class="fas fa-headset"></i></div>
+                  <div class="feat-text">
+                    <h6>24/7 Support</h6>
+                    <p>We're with you every step of the journey.</p>
+                  </div>
+                </div>
+                <div class="about-feat">
+                  <div class="feat-icon"><i class="fas fa-tag"></i></div>
+                  <div class="feat-text">
+                    <h6>Best Price Guarantee</h6>
+                    <p>Luxury experiences at guaranteed rates.</p>
+                  </div>
+                </div>
+                <div class="about-feat">
+                  <div class="feat-icon"><i class="fas fa-sliders-h"></i></div>
+                  <div class="feat-text">
+                    <h6>Fully Customisable</h6>
+                    <p>Every itinerary is tailored to your preferences.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Booking Card -->
+          <div>
+            <div class="booking-card">
+              <div class="booking-card-header">
+                <div class="price-row">
+                  <span class="from">Starts From</span>
+                  <span class="price" id="bookPrice">N$0</span>
+                  <span class="per">/ Person</span>
+                </div>
+                <div id="bookOldPrice" style="margin-top: 4px"></div>
+              </div>
+              <div class="booking-body">
+                <div class="book-details-row">
+                  <div class="book-detail-item">
+                    <span>Destination</span><span id="bookDest">—</span>
+                  </div>
+                  <div class="book-detail-item">
+                    <span>Available Dates</span
+                    ><span id="bookDates">Year-round</span>
+                  </div>
+                  <div class="book-detail-item">
+                    <span>Duration</span><span id="bookDuration">—</span>
+                  </div>
+                  <div class="book-detail-item">
+                    <span>Number of People</span><span id="bookPeople">—</span>
+                  </div>
+                  <div class="book-detail-item" style="grid-column: 1/-1">
+                    <span>Minimum Age</span><span id="bookMinAge">—</span>
+                  </div>
+                </div>
+
+                <!-- Enquire Form -->
+                <form
+                  id="detailEnquiryForm"
+                  novalidate
+                  style="margin-top: 16px"
+                >
+                  <input type="hidden" id="enquiryTourInput" name="tour" />
+                  <div class="booking-field">
+                    <label>Travel From</label
+                    ><input type="date" name="travelFrom" id="bookFrom" />
+                  </div>
+                  <div class="booking-field">
+                    <label>Travel To</label
+                    ><input type="date" name="travelTo" id="bookTo" />
+                  </div>
+
+                  <div class="booking-field">
+                    <label>Adults</label>
+                    <div class="guests-row">
+                      <div><span class="guest-label">Adults</span></div>
+                      <div class="counter" style="gap: 14px">
+                        <button type="button" onclick="adjBook('adult', -1)">
+                          −
+                        </button>
+                        <span id="bookAdults">1</span>
+                        <button type="button" onclick="adjBook('adult', 1)">
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <div class="guests-row">
+                      <div>
+                        <span class="guest-label">Children</span>
+                        <div class="guest-sublabel">
+                          (3–12 Yrs · 60% off adult rate)
+                        </div>
+                      </div>
+                      <div class="counter" style="gap: 14px">
+                        <button type="button" onclick="adjBook('child', -1)">
+                          −
+                        </button>
+                        <span id="bookChildren">0</span>
+                        <button type="button" onclick="adjBook('child', 1)">
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="price-breakdown" id="priceBreakdown"></div>
+
+                  <div class="booking-field">
+                    <label>Your Name *</label
+                    ><input
+                      type="text"
+                      name="name"
+                      placeholder="Full name"
+                      required
+                    />
+                  </div>
+                  <div class="booking-field">
+                    <label>Email *</label
+                    ><input
+                      type="email"
+                      name="email"
+                      placeholder="your@email.com"
+                      required
+                    />
+                  </div>
+                  <div class="booking-field">
+                    <label>Phone</label
+                    ><input type="tel" name="phone" placeholder="+264 ..." />
+                  </div>
+                  <div class="booking-field">
+                    <label>Message</label
+                    ><textarea
+                      name="message"
+                      style="
+                        width: 100%;
+                        border: 1.5px solid var(--border);
+                        border-radius: var(--radius-sm);
+                        padding: 11px 14px;
+                        font-size: 14px;
+                        color: var(--dark);
+                        outline: none;
+                        resize: vertical;
+                        min-height: 80px;
+                        font-family: var(--font-body);
+                      "
+                      placeholder="Any special requirements or questions..."
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block btn-lg"
+                    style="letter-spacing: 0.5px"
+                  >
+                    SEND REQUEST NOW <i class="fas fa-paper-plane"></i>
+                  </button>
+                </form>
+
+                <!-- Provider Details -->
+                <div
+                  style="
+                    margin-top: 20px;
+                    border-top: 1px solid var(--border);
+                    padding-top: 20px;
+                  "
+                >
+                  <h6
+                    style="
+                      font-family: var(--font-head);
+                      font-size: 13px;
+                      font-weight: 800;
+                      color: var(--dark);
+                      margin-bottom: 12px;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px;
+                    "
+                  >
+                    Provider Details
+                  </h6>
+                  <div class="provider-card-sm">
+                    <div class="provider-avatar-sm">
+                      <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="provider-info">
+                      <h6>Zusammen Tours</h6>
+                      <div class="prov-contact">
+                        <i class="fas fa-phone"></i> +264 81 245 5852
+                      </div>
+                      <div class="prov-contact">
+                        <i class="fas fa-envelope"></i> info@zusammentravels.com
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="footer-logo">
+                <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
+                  <path
+                    d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
+                    fill="#1F3A6D"
+                  />
+                  <circle cx="10" cy="16" r="4" fill="#F7941D" />
+                  <path
+                    d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
+                    fill="#F7941D"
+                  />
+                  <circle cx="34" cy="16" r="4" fill="#8DC63F" />
+                  <path
+                    d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
+                    fill="#8DC63F"
+                  />
+                </svg>
+                <div>
+                  <div class="footer-logo-name">ZUSAMMEN</div>
+                  <div class="footer-logo-sub">Tours and Travel Agency</div>
+                </div>
+              </div>
+              <p>Luxury safari experiences across Namibia and Africa.</p>
+              <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Tours</h4>
+              <ul>
+                <li><a href="tours.html">All Tours</a></li>
+                <li>
+                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
+                </li>
+                <li>
+                  <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+                </li>
+                <li>
+                  <a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Company</h4>
+              <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="blog-grid.html">Blog</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms &amp; Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <ul>
+                <li><a href="tel:+264812455852">+264 81 245 5852</a></li>
+                <li>
+                  <a href="mailto:info@zusammentravels.com"
+                    >info@zusammentravels.com</a
+                  >
+                </li>
+                <li><a href="#">Windhoek, Namibia</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div
+          class="container"
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+          "
+        >
+          <span
+            >Copyright &copy; 2026. All Rights Reserved,
+            <a href="../index.html">Zusammen Tours and Travel Agency</a></span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <button id="btt" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="../js/main.js"></script>
+    <script>
+      const THUMB_IMGS = [
+        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80",
+        "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80",
+        "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=80",
+        "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=600&q=80",
+        "https://images.unsplash.com/photo-1612459284270-d08f22cd0f23?w=600&q=80",
+      ];
+
+      let bookAdults = 1,
+        bookChildren = 0,
+        currentTour = null;
+
+      function switchTab(name, el) {
+        document
+          .querySelectorAll(".detail-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll(".detail-panel")
+          .forEach((p) => p.classList.remove("active"));
+        el.classList.add("active");
+        document.getElementById("panel-" + name).classList.add("active");
+      }
+
+      function setThumb(idx) {
+        document.getElementById("mainImg").src =
+          THUMB_IMGS[idx] || THUMB_IMGS[0];
+        document
+          .querySelectorAll(".detail-thumb")
+          .forEach((t, i) => t.classList.toggle("active", i === idx));
+      }
+
+      function adjBook(type, d) {
+        if (type === "adult") {
+          bookAdults = Math.max(1, bookAdults + d);
+          document.getElementById("bookAdults").textContent = bookAdults;
+        } else {
+          bookChildren = Math.max(0, bookChildren + d);
+          document.getElementById("bookChildren").textContent = bookChildren;
+        }
+        updatePriceBreakdown();
+      }
+
+      function updatePriceBreakdown() {
+        if (!currentTour) return;
+        const adultTotal = currentTour.price * bookAdults;
+        const childRate = Math.round(currentTour.price * 0.4);
+        const childTotal = childRate * bookChildren;
+        const grand = adultTotal + childTotal;
+        const pb = document.getElementById("priceBreakdown");
+        if (!pb) return;
+        pb.innerHTML = `
+    <div class="price-line"><span>Adults (${bookAdults} × ${ZT.fmt(currentTour.price)})</span><span>${ZT.fmt(adultTotal)}</span></div>
+    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${ZT.fmt(childRate)}) <span class="child-note">60% off</span></span><span>${ZT.fmt(childTotal)}</span></div>` : ""}
+    <div class="price-line total"><span>Total Estimate</span><span>${ZT.fmt(grand)}</span></div>
+  `;
+      }
+
+      function loadTour() {
+        const id = parseInt(
+          new URLSearchParams(window.location.search).get("id") || "1",
+        );
+        const tour = ZT.TOURS.find((t) => t.id === id) || ZT.TOURS[0];
+        currentTour = tour;
+
+        document.title = `${tour.title} – Zusammen Tours`;
+        document.getElementById("detailHeroTitle").textContent = tour.title;
+        document.getElementById("detailBreadcrumb").textContent = tour.title;
+        document.getElementById("detailTitle").textContent = tour.title;
+        document.getElementById("detailLocation").textContent = tour.location;
+        document.getElementById("detailCategory").textContent = tour.category;
+        document.getElementById("detailStars").innerHTML =
+          "★".repeat(tour.rating) + "☆".repeat(5 - tour.rating);
+        document.getElementById("detailReviews").textContent = tour.reviews;
+        document.getElementById("detailDesc").textContent = tour.description;
+        document.getElementById("bookPrice").textContent = ZT.fmt(tour.price);
+        document.getElementById("enquiryTourInput").value = tour.title;
+        if (tour.oldPrice)
+          document.getElementById("bookOldPrice").innerHTML =
+            `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${ZT.fmt(tour.oldPrice)}</span>`;
+        document.getElementById("bookDest").textContent =
+          tour.destinations?.split("→")[0] || tour.location;
+        document.getElementById("bookDates").textContent =
+          tour.availableDates || "Year-round";
+        document.getElementById("bookDuration").textContent =
+          `${tour.days} Days, ${tour.nights} Nights`;
+        document.getElementById("bookPeople").textContent =
+          `Min ${tour.minPeople || 2}, Max ${tour.maxPeople || tour.guests}`;
+        document.getElementById("bookMinAge").textContent =
+          `${tour.minAge || 6} years`;
+        document.getElementById("locPickup").textContent =
+          tour.destinations?.split("→")[0]?.trim() || tour.location;
+        document.getElementById("locDropoff").textContent =
+          tour.destinations?.split("→").slice(-1)[0]?.trim() || tour.location;
+
+        // Highlights
+        const hl = document.getElementById("detailHighlights");
+        if (hl && tour.highlights)
+          hl.innerHTML = tour.highlights
+            .map(
+              (h) =>
+                `<div class="highlight-item"><i class="fas fa-check-circle"></i><span>${h}</span></div>`,
+            )
+            .join("");
+
+        // Includes/Excludes
+        const inc = document.getElementById("detailIncludes");
+        const exc = document.getElementById("detailExcludes");
+        if (inc && tour.includes)
+          inc.innerHTML = tour.includes
+            .map(
+              (i) =>
+                `<div class="inc-item"><i class="fas fa-check"></i><span>${i}</span></div>`,
+            )
+            .join("");
+        if (exc && tour.excludes)
+          exc.innerHTML = tour.excludes
+            .map(
+              (e) =>
+                `<div class="exc-item"><i class="fas fa-times"></i><span>${e}</span></div>`,
+            )
+            .join("");
+
+        // Gallery
+        const imgs = [tour.img, ...THUMB_IMGS.slice(0, 4)];
+        document.getElementById("mainImg").src = tour.img;
+        document.getElementById("thumbsRow").innerHTML = imgs
+          .map(
+            (img, i) =>
+              `<div class="detail-thumb ${i === 0 ? "active" : ""}" onclick="setThumb(${i})"><img src="${img}" alt="Tour photo ${i + 1}"></div>`,
+          )
+          .join("");
+
+        updatePriceBreakdown();
+      }
+
+      // Form submit
+      document
+        .getElementById("detailEnquiryForm")
+        ?.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const btn = this.querySelector('[type="submit"]');
+          btn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+          btn.disabled = true;
+          setTimeout(() => {
+            this.innerHTML = `<div style="text-align:center;padding:20px"><i class="fas fa-check-circle" style="font-size:48px;color:var(--secondary);display:block;margin-bottom:12px"></i><h4 style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--dark)">Request Sent!</h4><p style="color:var(--text-light);margin-top:8px">Our team will contact you within 24 hours regarding your interest in <strong>${currentTour?.title}</strong>.</p></div>`;
+          }, 1200);
+        });
+
+      document.addEventListener("DOMContentLoaded", loadTour);
+    </script>
+  </body>
+</html>
