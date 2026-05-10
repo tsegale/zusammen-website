@@ -1,152 +1,632 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog Grid – Zusammen Tours and Travel Agency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-<div class="topbar"><div class="container topbar-inner"><div class="topbar-left"><span><i class="fas fa-phone"></i> +264 81 245 5852</span><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span></div><div class="topbar-right"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div></div>
-<header class="site-header" id="siteHeader"><div class="container"><div class="header-inner">
-  <a href="../index.html" class="logo"><svg class="logo-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div class="logo-text"><span class="logo-name">ZUSAMMEN</span><span class="logo-sub">Tours and Travel Agency</span></div></a>
-  <nav class="site-nav"><div class="nav-item"><a href="../index.html">Home</a></div><div class="nav-item"><a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="tours.html">Tour Grid</a><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a><a href="tours.html?cat=Family+Safaris">Family Safaris</a></div></div><div class="nav-item"><a href="about.html">Pages <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="testimonials.html">Testimonials</a><a href="gallery.html">Gallery</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a></div></div><div class="nav-item"><a href="blog-grid.html">Blogs <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="blog-grid.html">Blog Grid</a></div></div><div class="nav-item"><a href="contact.html">Contact Us</a></div></nav>
-  <div class="header-btns"><a href="contact.html" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Contact Us</a></div>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-</div></div></header>
-<nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-header"><span class="logo-name" style="font-size:18px;color:var(--primary)">ZUSAMMEN <span style="color:var(--accent)">TOURS</span></span><button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button></div><a href="../index.html">Home</a><a href="tours.html">Tours</a><a href="about.html">About Us</a><a href="blog-grid.html">Blog</a><a href="contact.html">Contact Us</a></nav>
-
-<div class="page-hero"><h1>Blog Grid</h1><div class="breadcrumb"><a href="../index.html"><i class="fas fa-home"></i></a><i class="fas fa-chevron-right"></i><span>Blog Grid</span></div></div>
-
-<section style="padding:72px 0;background:var(--bg)">
-  <div class="container">
-    <div class="section-header">
-      <div>
-        <div class="section-tag"><i class="fas fa-circle"></i> Recent Blog</div>
-        <h2 class="section-title">Checkout our <span class="highlight">Recent Articles.</span></h2>
-      </div>
-      <!-- Tag filters -->
-      <div style="display:flex;gap:8px;flex-wrap:wrap" id="blogTagFilters"></div>
-    </div>
-    <div class="blogs-grid" id="allBlogsGrid" style="grid-template-columns:repeat(3,1fr)"></div>
-    <div style="text-align:center;margin-top:40px" id="viewMoreWrap">
-      <button class="btn btn-outline btn-lg" id="viewMoreBtn"><i class="fas fa-plus"></i> View More Posts</button>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section">
-  <div class="container">
-    <h2>Inspired to Start Your Journey?</h2>
-    <p>Browse our safari tours and let us craft the perfect African adventure for you.</p>
-    <div class="cta-actions">
-      <a href="tours.html" class="btn btn-white btn-lg"><i class="fas fa-compass"></i> Explore Tours</a>
-      <a href="contact.html" class="btn btn-dark btn-lg"><i class="fas fa-paper-plane"></i> GET STARTED</a>
-    </div>
-  </div>
-</section>
-
-<footer><div class="footer-top"><div class="container"><div class="footer-grid">
-  <div class="footer-brand"><div class="footer-logo"><svg width="36" height="36" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div><div class="footer-logo-name">ZUSAMMEN</div><div class="footer-logo-sub">Tours and Travel Agency</div></div></div><p>Luxury safari experiences across Namibia and Africa.</p><div class="footer-social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div>
-  <div class="footer-col"><h4>Tours</h4><ul><li><a href="tours.html">All Tours</a></li><li><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a></li></ul></div>
-  <div class="footer-col"><h4>Pages</h4><ul><li><a href="about.html">About Us</a></li><li><a href="faq.html">FAQ</a></li><li><a href="testimonials.html">Testimonials</a></li></ul></div>
-  <div class="footer-col"><h4>Support</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-  <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+264812455852">+264 81 245 5852</a></li><li><a href="mailto:info@zusammentravels.com">info@zusammentravels.com</a></li></ul></div>
-</div></div></div>
-<div class="footer-bottom"><div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%"><span>Copyright &copy; 2026. All Rights Reserved, <a href="../index.html">Zusammen Tours and Travel Agency</a></span></div></div>
-</footer>
-<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
-<script src="../js/main.js"></script>
-<script>
-// Extended blog list (27 blogs as required)
-const ALL_BLOGS = [
-  { id:1,  title:'Why Booking Through a Travel Agency Still Matters in 2026', tag:'Travel Tips', excerpt:'Even in 2026, with the rise of travel apps and online booking platforms, using a trusted travel agency remains one of the smartest ways to plan a trip across Africa.', img:'https://images.unsplash.com/photo-1553290322-de87a4bd8f9e?w=600&q=80', date:'15 Jan 2026', author:'Zusammen Tours', readTime:'5 min read' },
-  { id:2,  title:'Unusual Accommodation Experiences in Africa: Beyond the Ordinary', tag:'Accommodation', excerpt:'From treetop lodges in the Okavango to desert geodesic domes under Namibia\'s stars — Africa offers accommodation experiences that become part of your travel story.', img:'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80', date:'08 Feb 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:3,  title:'Travelling Solo in Africa: Empowerment, Adventure and Connection', tag:'Solo Travel', excerpt:'There\'s something uniquely liberating about travelling alone across Africa\'s diverse nations — from Namibia\'s vast deserts to Zimbabwe\'s spectacular waterfalls.', img:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', date:'22 Feb 2026', author:'Zusammen Tours', readTime:'8 min read' },
-  { id:4,  title:'Travel Mistakes to Avoid in Africa (Especially for First-Time Visitors)', tag:'Travel Tips', excerpt:'Africa is a dream destination, but first-time visitors can sometimes make costly mistakes. Here\'s what to watch out for and how to avoid them.', img:'https://images.unsplash.com/photo-1489493512598-d08130f49bea?w=600&q=80', date:'01 Mar 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:5,  title:'Top Romantic Destinations in Africa for Couples', tag:'Romance', excerpt:'From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar — Africa is extraordinarily romantic for couples.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80', date:'12 Mar 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:6,  title:'Africa Beyond the Famous: Underrated Spots Every Traveller Should Explore', tag:'Destinations', excerpt:'Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover — from Damaraland\'s rock engravings to Zambia\'s intimate Lower Zambezi.', img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80', date:'25 Mar 2026', author:'Zusammen Tours', readTime:'9 min read' },
-  { id:7,  title:'The Ultimate Guide to Namibia\'s Sossusvlei Dunes', tag:'Destinations', excerpt:'Sossusvlei is one of Africa\'s most photogenic landscapes. Here is everything you need to know to make the most of your visit to these magnificent red sand dunes.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80', date:'02 Apr 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:8,  title:'Family Safari Planning: What You Need to Know', tag:'Family Travel', excerpt:'Planning a safari with children requires extra thought and preparation. Here\'s our comprehensive guide to making a family safari safe, fun and unforgettable.', img:'https://images.unsplash.com/photo-1589825743636-3c93cc81c22c?w=600&q=80', date:'10 Apr 2026', author:'Zusammen Tours', readTime:'8 min read' },
-  { id:9,  title:'Mountain Gorilla Trekking in Rwanda: A Complete Guide', tag:'Wildlife', excerpt:'Trekking to see mountain gorillas in their natural habitat is one of the world\'s most extraordinary wildlife experiences. Here\'s everything you need to prepare.', img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=600&q=80', date:'18 Apr 2026', author:'Zusammen Tours', readTime:'10 min read' },
-  { id:10, title:'Victoria Falls: The Smoke That Thunders', tag:'Destinations', excerpt:'Victoria Falls is not just a waterfall — it\'s a force of nature that commands awe. Discover the best ways to experience this natural wonder from both Zimbabwe and Zambia.', img:'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=80', date:'25 Apr 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:11, title:'The Great Migration: Africa\'s Most Spectacular Wildlife Event', tag:'Wildlife', excerpt:'Every year, over 1.5 million wildebeest cross the Serengeti and Maasai Mara in search of fresh grasslands. Here is how to witness this breathtaking event.', img:'https://images.unsplash.com/photo-1612459284270-d08f22cd0f23?w=600&q=80', date:'01 May 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:12, title:'Etosha National Park: Namibia\'s Wildlife Crown Jewel', tag:'Wildlife', excerpt:'Etosha National Park is one of Africa\'s finest wildlife destinations, home to lions, elephants, rhinos and hundreds of bird species around a vast salt pan.', img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80', date:'08 May 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:13, title:'How to Choose the Right Safari Lodge in Africa', tag:'Accommodation', excerpt:'With thousands of lodges across the continent, choosing the right one for your safari can feel overwhelming. Here\'s our practical guide to making the perfect choice.', img:'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80', date:'14 May 2026', author:'Zusammen Tours', readTime:'8 min read' },
-  { id:14, title:'What to Pack for an African Safari: The Definitive List', tag:'Travel Tips', excerpt:'Packing smart is essential for a comfortable and enjoyable safari experience. Here is our tried-and-tested packing guide for every African safari type.', img:'https://images.unsplash.com/photo-1489493512598-d08130f49bea?w=600&q=80', date:'20 May 2026', author:'Zusammen Tours', readTime:'9 min read' },
-  { id:15, title:'Okavango Delta: Africa\'s Jewel in Botswana', tag:'Destinations', excerpt:'The Okavango Delta is one of Africa\'s most unique ecosystems — a vast inland delta where Kalahari Desert sands meet crystal-clear floodwaters teeming with wildlife.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80', date:'28 May 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:16, title:'Self-Drive Safari in Namibia: The Complete Itinerary', tag:'Self-Drive', excerpt:'Namibia is one of Africa\'s best self-drive destinations. Discover our recommended routes, must-see stops and practical tips for an independent Namibia road trip.', img:'https://images.unsplash.com/photo-1553290322-de87a4bd8f9e?w=600&q=80', date:'04 Jun 2026', author:'Zusammen Tours', readTime:'12 min read' },
-  { id:17, title:'Sustainable Safari: How to Travel Africa Responsibly', tag:'Sustainability', excerpt:'Responsible travel is not just a trend — it\'s a necessity for preserving Africa\'s extraordinary wildlife and communities for generations to come.', img:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', date:'11 Jun 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:18, title:'Uganda\'s Bwindi Forest: Where Gorillas and Culture Meet', tag:'Wildlife', excerpt:'Uganda\'s Bwindi Impenetrable Forest is one of the continent\'s most biodiverse areas, home to half the world\'s remaining mountain gorilla population.', img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=600&q=80', date:'18 Jun 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:19, title:'Zambia\'s South Luangwa: Africa\'s Best-Kept Safari Secret', tag:'Destinations', excerpt:'While other parks attract the crowds, South Luangwa in Zambia offers an intimate, exclusive safari experience with extraordinary wildlife density and expert guiding.', img:'https://images.unsplash.com/photo-1612459284270-d08f22cd0f23?w=600&q=80', date:'25 Jun 2026', author:'Zusammen Tours', readTime:'8 min read' },
-  { id:20, title:'South Africa Beyond Cape Town: Hidden Gems to Discover', tag:'Destinations', excerpt:'South Africa\'s diversity extends far beyond its famous wine lands and Cape Peninsula. Discover the Drakensberg, Wild Coast and Addo Elephant Park.', img:'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=80', date:'02 Jul 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:21, title:'Photography Tips for Your African Safari', tag:'Photography', excerpt:'Africa offers extraordinary photographic opportunities. Here are our professional tips for capturing stunning wildlife, landscapes and cultural moments on your safari.', img:'https://images.unsplash.com/photo-1489493512598-d08130f49bea?w=600&q=80', date:'09 Jul 2026', author:'Zusammen Tours', readTime:'10 min read' },
-  { id:22, title:'The Best Time to Visit Each African Safari Destination', tag:'Travel Tips', excerpt:'Timing is everything on a safari. Our month-by-month guide helps you choose the perfect time to visit each of our nine African destinations.', img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80', date:'16 Jul 2026', author:'Zusammen Tours', readTime:'9 min read' },
-  { id:23, title:'Fly-In Safari vs Road Safari: Which is Right for You?', tag:'Travel Tips', excerpt:'Both fly-in and road safaris offer incredible African experiences, but they\'re suited to different travellers and budgets. Here\'s how to choose the right option.', img:'https://images.unsplash.com/photo-1553290322-de87a4bd8f9e?w=600&q=80', date:'23 Jul 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:24, title:'Kenya\'s Samburu: A Different Kind of Safari', tag:'Destinations', excerpt:'Samburu National Reserve in northern Kenya offers a distinctly different safari experience to the Maasai Mara, with unique landscapes and exclusive species found nowhere else.', img:'https://images.unsplash.com/photo-1589825743636-3c93cc81c22c?w=600&q=80', date:'30 Jul 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:25, title:'Africa\'s Culinary Journey: Food and Culture on Safari', tag:'Culture', excerpt:'Your African safari is not just about wildlife — it\'s also a journey through extraordinary cuisines, from Namibian braai to Rwandan isombe and Swahili coastal flavours.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80', date:'06 Aug 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:26, title:'Planning Your First African Safari: A Step-by-Step Guide', tag:'Guide', excerpt:'Planning your first safari can feel overwhelming, but it doesn\'t have to be. Follow our step-by-step guide to planning a smooth, memorable first African safari.', img:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', date:'13 Aug 2026', author:'Zusammen Tours', readTime:'11 min read' },
-  { id:27, title:'Tanzania\'s Selous Game Reserve: The Untamed Wilderness', tag:'Destinations', excerpt:'The Selous Game Reserve is one of the largest protected areas in Africa and one of the last truly wild places on earth — vast, remote and utterly breathtaking.', img:'https://images.unsplash.com/photo-1612459284270-d08f22cd0f23?w=600&q=80', date:'20 Aug 2026', author:'Zusammen Tours', readTime:'8 min read' }
-];
-
-let displayedCount = 9;
-let activeTag = 'All';
-
-const allTags = ['All', ...new Set(ALL_BLOGS.map(b => b.tag))];
-
-function buildTagFilters() {
-  const wrap = document.getElementById('blogTagFilters');
-  if (!wrap) return;
-  wrap.innerHTML = allTags.map(t => `
-    <button onclick="filterByTag('${t}', this)" style="padding:7px 16px;border-radius:50px;border:1.5px solid ${t===activeTag?'var(--accent)':'var(--border)'};background:${t===activeTag?'var(--accent)':'transparent'};color:${t===activeTag?'#fff':'var(--dark)'};font-family:var(--font-head);font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--transition)">${t}</button>
-  `).join('');
-}
-
-function filterByTag(tag, el) {
-  activeTag = tag;
-  displayedCount = 9;
-  buildTagFilters();
-  renderBlogs();
-}
-
-function renderBlogs() {
-  const grid = document.getElementById('allBlogsGrid');
-  const viewMore = document.getElementById('viewMoreWrap');
-  if (!grid) return;
-  const filtered = activeTag === 'All' ? ALL_BLOGS : ALL_BLOGS.filter(b => b.tag === activeTag);
-  const visible = filtered.slice(0, displayedCount);
-  grid.innerHTML = visible.map(b => `
-    <div class="blog-card">
-      <div class="blog-img">
-        <img src="${b.img}" alt="${b.title}" loading="lazy">
-        <span class="blog-tag-badge">${b.tag}</span>
-      </div>
-      <div class="blog-body">
-        <div class="blog-meta">
-          <span><i class="fas fa-user"></i> ${b.author}</span>
-          <span><i class="fas fa-calendar"></i> ${b.date}</span>
-          <span><i class="fas fa-clock"></i> ${b.readTime}</span>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="../assets/logo/zusammen-logo.png" />
+    <link rel="apple-touch-icon" href="../assets/logo/zusammen-logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Grid – Zusammen Tours and Travel Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-left">
+          <span><i class="fas fa-phone"></i> +264 81 245 5852</span
+          ><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
-        <h5>${b.title}</h5>
-        <p>${b.excerpt}</p>
-        <a href="blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        <div class="topbar-right">
+          <a href="#"><i class="fab fa-facebook-f"></i></a
+          ><a href="#"><i class="fab fa-instagram"></i></a
+          ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+        </div>
       </div>
     </div>
-  `).join('');
-  if (viewMore) viewMore.style.display = displayedCount >= filtered.length ? 'none' : 'block';
-}
+    <header class="site-header" id="siteHeader">
+      <div class="container">
+        <div class="header-inner">
+          <a href="../index.html" class="logo">
+            <img
+              src="../assets/logo/zusammen-logo.png"
+              alt="Zusammen Tours Logo"
+              style="height: 48px; width: auto; object-fit: contain"
+            />
+            <div class="logo-text">
+              <span class="logo-name">ZUSAMMEN</span
+              ><span class="logo-sub">Tours and Travel Agency</span>
+            </div></a
+          >
+          <nav class="site-nav">
+            <div class="nav-item"><a href="../index.html">Home</a></div>
+            <div class="nav-item">
+              <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="tours.html">Tour Grid</a
+                ><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a
+                ><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a
+                ><a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="about.html">About Us</a><a href="faq.html">FAQ</a
+                ><a href="testimonials.html">Testimonials</a
+                ><a href="gallery.html">Gallery</a
+                ><a href="privacy.html">Privacy Policy</a
+                ><a href="terms.html">Terms &amp; Conditions</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="blog-grid.html"
+                >Blogs <i class="fas fa-chevron-down"></i
+              ></a>
+              <div class="nav-dropdown">
+                <a href="blog-grid.html">Blog Grid</a>
+              </div>
+            </div>
+            <div class="nav-item"><a href="contact.html">Contact Us</a></div>
+          </nav>
+          <div class="header-btns">
+            <a href="contact.html" class="btn btn-primary"
+              ><i class="fas fa-paper-plane"></i> Contact Us</a
+            >
+          </div>
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-header">
+        <img
+          src="../assets/logo/zusammen-logo.png"
+          alt="Zusammen Tours"
+          style="height: 36px; width: auto; object-fit: contain"
+        /><button class="mobile-close" id="mobileClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="../index.html">Home</a><a href="tours.html">Tours</a
+      ><a href="about.html">About Us</a><a href="blog-grid.html">Blog</a
+      ><a href="contact.html">Contact Us</a>
+    </nav>
 
-document.getElementById('viewMoreBtn')?.addEventListener('click', () => {
-  displayedCount += 6;
-  renderBlogs();
-});
+    <div
+      class="page-hero"
+      style="
+        background-image:
+          linear-gradient(rgba(11, 26, 44, 0.72), rgba(11, 26, 44, 0.72)),
+          url(&quot;../assets/page-images/Blogs Image.jpg&quot;);
+        background-size: cover;
+        background-position: center;
+      "
+    >
+      <h1>Blog Grid</h1>
+      <div class="breadcrumb">
+        <a href="../index.html"><i class="fas fa-home"></i></a
+        ><i class="fas fa-chevron-right"></i><span>Blog Grid</span>
+      </div>
+    </div>
 
-document.addEventListener('DOMContentLoaded', () => {
-  buildTagFilters();
-  renderBlogs();
-});
-</script>
-</body>
+    <section style="padding: 72px 0; background: var(--bg)">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-tag">
+              <i class="fas fa-circle"></i> Recent Blog
+            </div>
+            <h2 class="section-title">
+              Checkout our <span class="highlight">Recent Articles.</span>
+            </h2>
+          </div>
+          <!-- Tag filters -->
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap"
+            id="blogTagFilters"
+          ></div>
+        </div>
+        <div
+          class="blogs-grid"
+          id="allBlogsGrid"
+          style="grid-template-columns: repeat(3, 1fr)"
+        ></div>
+        <div style="text-align: center; margin-top: 40px" id="viewMoreWrap">
+          <button class="btn btn-outline btn-lg" id="viewMoreBtn">
+            <i class="fas fa-plus"></i> View More Posts
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>Inspired to Start Your Journey?</h2>
+        <p>
+          Browse our safari tours and let us craft the perfect African adventure
+          for you.
+        </p>
+        <div class="cta-actions">
+          <a href="tours.html" class="btn btn-white btn-lg"
+            ><i class="fas fa-compass"></i> Explore Tours</a
+          >
+          <a href="contact.html" class="btn btn-dark btn-lg"
+            ><i class="fas fa-paper-plane"></i> GET STARTED</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="footer-logo">
+                <img
+                  src="../assets/logo/zusammen-logo.png"
+                  alt="Zusammen Tours"
+                  style="height: 40px; width: auto; object-fit: contain"
+                />
+                <div>
+                  <div class="footer-logo-name">ZUSAMMEN</div>
+                  <div class="footer-logo-sub">Tours and Travel Agency</div>
+                </div>
+              </div>
+              <p>Luxury safari experiences across Namibia and Africa.</p>
+              <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Tours</h4>
+              <ul>
+                <li><a href="tours.html">All Tours</a></li>
+                <li>
+                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Pages</h4>
+              <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms &amp; Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <ul>
+                <li><a href="tel:+264812455852">+264 81 245 5852</a></li>
+                <li>
+                  <a href="mailto:info@zusammentravels.com"
+                    >info@zusammentravels.com</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div
+          class="container"
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+          "
+        >
+          <span
+            >Copyright &copy; 2026. All Rights Reserved,
+            <a href="../index.html">Zusammen Tours and Travel Agency</a></span
+          >
+        </div>
+      </div>
+    </footer>
+    <button id="btt" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="../js/main.js"></script>
+    <script>
+      // Extended blog list (27 blogs as required)
+      const ALL_BLOGS = [
+        {
+          id: 1,
+          title: "Why Booking Through a Travel Agency Still Matters in 2026",
+          tag: "Travel Tips",
+          excerpt:
+            "Even in 2026, with the rise of travel apps and online booking platforms, using a trusted travel agency remains one of the smartest ways to plan a trip across Africa.",
+          img: "../assets/blogs/Why Booking Through a Travel Agency Still Matters in 2026.jpg",
+          date: "15 Jan 2026",
+          author: "Zusammen Tours",
+          readTime: "5 min read",
+        },
+        {
+          id: 2,
+          title:
+            "Unusual Accommodation Experiences in Africa: Beyond the Ordinary",
+          tag: "Accommodation",
+          excerpt:
+            "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars — Africa offers accommodation experiences that become part of your travel story.",
+          img: "../assets/blogs/Unusual Accommodation Experiences in Africa.jpg",
+          date: "08 Feb 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 3,
+          title:
+            "Travelling Solo in Africa: Empowerment, Adventure and Connection",
+          tag: "Solo Travel",
+          excerpt:
+            "There's something uniquely liberating about travelling alone across Africa's diverse nations — from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
+          img: "../assets/blogs/Travelling Solo in Africa.jpg",
+          date: "22 Feb 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+        {
+          id: 4,
+          title:
+            "Travel Mistakes to Avoid in Africa (Especially for First-Time Visitors)",
+          tag: "Travel Tips",
+          excerpt:
+            "Africa is a dream destination, but first-time visitors can sometimes make costly mistakes. Here's what to watch out for and how to avoid them.",
+          img: "../assets/blogs/Travel Mistakes to Avoid in Africa.jpg",
+          date: "01 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 5,
+          title: "Top Romantic Destinations in Africa for Couples",
+          tag: "Romance",
+          excerpt:
+            "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar — Africa is extraordinarily romantic for couples.",
+          img: "../assets/blogs/Top Romantic Destinations in Africa for Couples.jpg",
+          date: "12 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 6,
+          title:
+            "Africa Beyond the Famous: Underrated Spots Every Traveller Should Explore",
+          tag: "Destinations",
+          excerpt:
+            "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover — from Damaraland's rock engravings to Zambia's intimate Lower Zambezi.",
+          img: "../assets/blogs/Africa Beyond the Famous Underrated Spots Every Traveller S....jpg",
+          date: "25 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "9 min read",
+        },
+        {
+          id: 7,
+          title: "The Ultimate Guide to Namibia's Sossusvlei Dunes",
+          tag: "Destinations",
+          excerpt:
+            "Sossusvlei is one of Africa's most photogenic landscapes. Here is everything you need to know to make the most of your visit to these magnificent red sand dunes.",
+          img: "../assets/blogs/Discover Namibia.jpg",
+          date: "02 Apr 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 8,
+          title: "Family Safari Planning: What You Need to Know",
+          tag: "Family Travel",
+          excerpt:
+            "Planning a safari with children requires extra thought and preparation. Here's our comprehensive guide to making a family safari safe, fun and unforgettable.",
+          img: "../assets/blogs/Family-Friendly Destinations in Southern and Eastern Africa ....jpg",
+          date: "10 Apr 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+        {
+          id: 9,
+          title: "Mountain Gorilla Trekking in Rwanda: A Complete Guide",
+          tag: "Wildlife",
+          excerpt:
+            "Trekking to see mountain gorillas in their natural habitat is one of the world's most extraordinary wildlife experiences. Here's everything you need to prepare.",
+          img: "../assets/blogs/Discover Rwanda.jpg",
+          date: "18 Apr 2026",
+          author: "Zusammen Tours",
+          readTime: "10 min read",
+        },
+        {
+          id: 10,
+          title: "Victoria Falls: The Smoke That Thunders",
+          tag: "Destinations",
+          excerpt:
+            "Victoria Falls is not just a waterfall — it's a force of nature that commands awe. Discover the best ways to experience this natural wonder from both Zimbabwe and Zambia.",
+          img: "../assets/blogs/Discover Zimbabwe.jpg",
+          date: "25 Apr 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 11,
+          title:
+            "The Great Migration: Africa's Most Spectacular Wildlife Event",
+          tag: "Wildlife",
+          excerpt:
+            "Every year, over 1.5 million wildebeest cross the Serengeti and Maasai Mara in search of fresh grasslands. Here is how to witness this breathtaking event.",
+          img: "../assets/blogs/Discover Kenya.jpg",
+          date: "01 May 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 12,
+          title: "Etosha National Park: Namibia's Wildlife Crown Jewel",
+          tag: "Wildlife",
+          excerpt:
+            "Etosha National Park is one of Africa's finest wildlife destinations, home to lions, elephants, rhinos and hundreds of bird species around a vast salt pan.",
+          img: "../assets/blogs/Discover Namibia.jpg",
+          date: "08 May 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 13,
+          title: "How to Choose the Right Safari Lodge in Africa",
+          tag: "Accommodation",
+          excerpt:
+            "With thousands of lodges across the continent, choosing the right one for your safari can feel overwhelming. Here's our practical guide to making the perfect choice.",
+          img: "../assets/blogs/Our Handpicked Lodges.jpg",
+          date: "14 May 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+        {
+          id: 14,
+          title: "What to Pack for an African Safari: The Definitive List",
+          tag: "Travel Tips",
+          excerpt:
+            "Packing smart is essential for a comfortable and enjoyable safari experience. Here is our tried-and-tested packing guide for every African safari type.",
+          img: "../assets/blogs/Packing Like a Pro.jpg",
+          date: "20 May 2026",
+          author: "Zusammen Tours",
+          readTime: "9 min read",
+        },
+        {
+          id: 15,
+          title: "Okavango Delta: Africa's Jewel in Botswana",
+          tag: "Destinations",
+          excerpt:
+            "The Okavango Delta is one of Africa's most unique ecosystems — a vast inland delta where Kalahari Desert sands meet crystal-clear floodwaters teeming with wildlife.",
+          img: "../assets/blogs/Discover Botswana.jpg",
+          date: "28 May 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 16,
+          title: "Self-Drive Safari in Namibia: The Complete Itinerary",
+          tag: "Self-Drive",
+          excerpt:
+            "Namibia is one of Africa's best self-drive destinations. Discover our recommended routes, must-see stops and practical tips for an independent Namibia road trip.",
+          img: "../assets/blogs/Digital Nomad Hotspots in Africa for 2026.jpg",
+          date: "04 Jun 2026",
+          author: "Zusammen Tours",
+          readTime: "12 min read",
+        },
+        {
+          id: 17,
+          title: "Sustainable Safari: How to Travel Africa Responsibly",
+          tag: "Sustainability",
+          excerpt:
+            "Responsible travel is not just a trend — it's a necessity for preserving Africa's extraordinary wildlife and communities for generations to come.",
+          img: "../assets/blogs/The Rise of Sustainable Travel in Africa.jpg",
+          date: "11 Jun 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 18,
+          title: "Uganda's Bwindi Forest: Where Gorillas and Culture Meet",
+          tag: "Wildlife",
+          excerpt:
+            "Uganda's Bwindi Impenetrable Forest is one of the continent's most biodiverse areas, home to half the world's remaining mountain gorilla population.",
+          img: "../assets/blogs/Discover Uganda.jpg",
+          date: "18 Jun 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 19,
+          title: "Zambia's South Luangwa: Africa's Best-Kept Safari Secret",
+          tag: "Destinations",
+          excerpt:
+            "While other parks attract the crowds, South Luangwa in Zambia offers an intimate, exclusive safari experience with extraordinary wildlife density and expert guiding.",
+          img: "../assets/blogs/Discover Zambia.jpg",
+          date: "25 Jun 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+        {
+          id: 20,
+          title: "South Africa Beyond Cape Town: Hidden Gems to Discover",
+          tag: "Destinations",
+          excerpt:
+            "South Africa's diversity extends far beyond its famous wine lands and Cape Peninsula. Discover the Drakensberg, Wild Coast and Addo Elephant Park.",
+          img: "../assets/blogs/Discover South Africa.jpg",
+          date: "02 Jul 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 21,
+          title: "Photography Tips for Your African Safari",
+          tag: "Photography",
+          excerpt:
+            "Africa offers extraordinary photographic opportunities. Here are our professional tips for capturing stunning wildlife, landscapes and cultural moments on your safari.",
+          img: "../assets/blogs/Adventure Travel Best Destinations for Thrill Seekers in Africa.jpg",
+          date: "09 Jul 2026",
+          author: "Zusammen Tours",
+          readTime: "10 min read",
+        },
+        {
+          id: 22,
+          title: "The Best Time to Visit Each African Safari Destination",
+          tag: "Travel Tips",
+          excerpt:
+            "Timing is everything on a safari. Our month-by-month guide helps you choose the perfect time to visit each of our nine African destinations.",
+          img: "../assets/blogs/Best Travel Destinations in Africa Month by Month.jpg",
+          date: "16 Jul 2026",
+          author: "Zusammen Tours",
+          readTime: "9 min read",
+        },
+        {
+          id: 23,
+          title: "Fly-In Safari vs Road Safari: Which is Right for You?",
+          tag: "Travel Tips",
+          excerpt:
+            "Both fly-in and road safaris offer incredible African experiences, but they're suited to different travellers and budgets. Here's how to choose the right option.",
+          img: "../assets/blogs/How to Travel Africa on a Budget Without Missing the Bes....jpg",
+          date: "23 Jul 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 24,
+          title: "Kenya's Samburu: A Different Kind of Safari",
+          tag: "Destinations",
+          excerpt:
+            "Samburu National Reserve in northern Kenya offers a distinctly different safari experience to the Maasai Mara, with unique landscapes and exclusive species found nowhere else.",
+          img: "../assets/blogs/Discover Kenya.jpg",
+          date: "30 Jul 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 25,
+          title: "Africa's Culinary Journey: Food and Culture on Safari",
+          tag: "Culture",
+          excerpt:
+            "Your African safari is not just about wildlife — it's also a journey through extraordinary cuisines, from Namibian braai to Rwandan isombe and Swahili coastal flavours.",
+          img: "../assets/blogs/Cultural Travel in Africa.jpg",
+          date: "06 Aug 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 26,
+          title: "Planning Your First African Safari: A Step-by-Step Guide",
+          tag: "Guide",
+          excerpt:
+            "Planning your first safari can feel overwhelming, but it doesn't have to be. Follow our step-by-step guide to planning a smooth, memorable first African safari.",
+          img: "../assets/blogs/Festivals and Events You Can't Miss in Southern and Eastern Afr....jpg",
+          date: "13 Aug 2026",
+          author: "Zusammen Tours",
+          readTime: "11 min read",
+        },
+        {
+          id: 27,
+          title: "Tanzania's Selous Game Reserve: The Untamed Wilderness",
+          tag: "Destinations",
+          excerpt:
+            "The Selous Game Reserve is one of the largest protected areas in Africa and one of the last truly wild places on earth — vast, remote and utterly breathtaking.",
+          img: "../assets/blogs/Discover Tanzania.jpg",
+          date: "20 Aug 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+      ];
+
+      let displayedCount = 9;
+      let activeTag = "All";
+
+      const allTags = ["All", ...new Set(ALL_BLOGS.map((b) => b.tag))];
+
+      function buildTagFilters() {
+        const wrap = document.getElementById("blogTagFilters");
+        if (!wrap) return;
+        wrap.innerHTML = allTags
+          .map(
+            (t) => `
+          <button onclick="filterByTag('${t}', this)" style="padding:7px 16px;border-radius:50px;border:1.5px solid ${t === activeTag ? "var(--accent)" : "var(--border)"};background:${t === activeTag ? "var(--accent)" : "transparent"};color:${t === activeTag ? "#fff" : "var(--dark)"};font-family:var(--font-head);font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--transition)">${t}</button>
+        `,
+          )
+          .join("");
+      }
+
+      function filterByTag(tag, el) {
+        activeTag = tag;
+        displayedCount = 9;
+        buildTagFilters();
+        renderBlogs();
+      }
+
+      function renderBlogs() {
+        const grid = document.getElementById("allBlogsGrid");
+        const viewMore = document.getElementById("viewMoreWrap");
+        if (!grid) return;
+        const filtered =
+          activeTag === "All"
+            ? ALL_BLOGS
+            : ALL_BLOGS.filter((b) => b.tag === activeTag);
+        const visible = filtered.slice(0, displayedCount);
+        grid.innerHTML = visible
+          .map(
+            (b) => `
+          <div class="blog-card">
+            <div class="blog-img">
+              <img src="${b.img}" alt="${b.title}" loading="lazy">
+              <span class="blog-tag-badge">${b.tag}</span>
+            </div>
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-user"></i> ${b.author}</span>
+                <span><i class="fas fa-calendar"></i> ${b.date}</span>
+                <span><i class="fas fa-clock"></i> ${b.readTime}</span>
+              </div>
+              <h5>${b.title}</h5>
+              <p>${b.excerpt}</p>
+              <a href="blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+        if (viewMore)
+          viewMore.style.display =
+            displayedCount >= filtered.length ? "none" : "block";
+      }
+
+      document.getElementById("viewMoreBtn")?.addEventListener("click", () => {
+        displayedCount += 6;
+        renderBlogs();
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        buildTagFilters();
+        renderBlogs();
+      });
+    </script>
+  </body>
 </html>

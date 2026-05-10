@@ -57,6 +57,7 @@ img {
   max-width: 100%;
   display: block;
 }
+
 ul,
 ol {
   list-style: none;
@@ -152,9 +153,8 @@ textarea {
   gap: 10px;
 }
 .logo-icon {
-  width: auto;
-  height: 58px;
-  margin-right: -13px;
+  width: 44px;
+  height: 44px;
 }
 .logo-text {
   display: flex;
@@ -395,8 +395,7 @@ textarea {
 /* ===== PAGE HERO (inner pages) ===== */
 .page-hero {
   background:
-    linear-gradient(rgba(11, 26, 44, 0.75), rgba(11, 26, 44, 0.75)),
-    url("../assets/page-images/home.jpg") center/cover no-repeat;
+    linear-gradient(rgba(11, 26, 44, 0.75), rgba(11, 26, 44, 0.75)), #1f3a6d;
   padding: 80px 0 60px;
   text-align: center;
   color: var(--white);
@@ -588,9 +587,9 @@ section {
 .sf select option:first-child {
   color: #a0aab8;
 }
-.sf select {
+/* .sf select {
   -webkit-appearance: none;
-}
+} */
 
 /* Duration & travellers dropdowns */
 .field-display {
@@ -1798,8 +1797,7 @@ section {
   gap: 64px;
   align-items: start;
 }
-.faq-intro {
-}
+
 .faq-support {
   margin-top: 28px;
   padding: 24px;
@@ -2037,8 +2035,7 @@ footer {
   grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
   gap: 36px;
 }
-.footer-brand {
-}
+
 .footer-logo {
   display: flex;
   align-items: center;
@@ -2085,8 +2082,7 @@ footer {
   background: var(--accent);
   color: var(--white);
 }
-.newsletter-wrap {
-}
+
 .newsletter-wrap h4 {
   font-family: var(--font-head);
   font-size: 13.5px;
@@ -2222,7 +2218,8 @@ footer {
     grid-template-columns: repeat(3, 1fr);
   }
   .tours-slider .tour-card {
-    min-width: calc(50% - 11px);
+    min-width: 50%;
+    padding: 0 11px;
   }
   .lodges-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2278,6 +2275,7 @@ footer {
   }
   .tours-slider .tour-card {
     min-width: 100%;
+    padding: 0 11px;
   }
   .lodges-grid {
     grid-template-columns: 1fr;
@@ -2297,4 +2295,33 @@ footer {
   .search-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ===== LOGO IMAGE ===== */
+.logo img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.footer-logo img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+/* Partner logos */
+.partner-logo img {
+  height: 44px;
+  max-width: 140px;
+  object-fit: contain;
+}
+/* Partners section - white background for dark logos */
+.partners-section .partner-logo img {
+  filter: brightness(0) invert(1);
+  opacity: 0.55;
+  transition: all 0.25s;
+}
+.partners-section .partner-logo:hover img {
+  filter: none;
+  opacity: 1;
 }

@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="../assets/logo/zusammen-logo.png" />
+    <link rel="apple-touch-icon" href="../assets/logo/zusammen-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Us – Zusammen Tours and Travel Agency</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -192,24 +194,12 @@
     <header class="site-header" id="siteHeader">
       <div class="container">
         <div class="header-inner">
-          <a href="../index.html" class="logo"
-            ><svg class="logo-icon" viewBox="0 0 44 44" fill="none">
-              <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
-              <path
-                d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
-                fill="#1F3A6D"
-              />
-              <circle cx="10" cy="16" r="4" fill="#F7941D" />
-              <path
-                d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
-                fill="#F7941D"
-              />
-              <circle cx="34" cy="16" r="4" fill="#8DC63F" />
-              <path
-                d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
-                fill="#8DC63F"
-              />
-            </svg>
+          <a href="../index.html" class="logo">
+            <img
+              src="../assets/logo/zusammen-logo.png"
+              alt="Zusammen Tours Logo"
+              style="height: 48px; width: auto; object-fit: contain"
+            />
             <div class="logo-text">
               <span class="logo-name">ZUSAMMEN</span
               ><span class="logo-sub">Tours and Travel Agency</span>
@@ -252,9 +242,11 @@
     </header>
     <nav class="mobile-nav" id="mobileNav">
       <div class="mobile-nav-header">
-        <span class="logo-name" style="font-size: 18px; color: var(--primary)"
-          >ZUSAMMEN <span style="color: var(--accent)">TOURS</span></span
-        ><button class="mobile-close" id="mobileClose">
+        <img
+          src="../assets/logo/zusammen-logo.png"
+          alt="Zusammen Tours"
+          style="height: 36px; width: auto; object-fit: contain"
+        /><button class="mobile-close" id="mobileClose">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -263,7 +255,16 @@
       ><a href="contact.html">Contact Us</a>
     </nav>
 
-    <div class="page-hero">
+    <div
+      class="page-hero"
+      style="
+        background-image:
+          linear-gradient(rgba(11, 26, 44, 0.72), rgba(11, 26, 44, 0.72)),
+          url(&quot;../assets/page-images/about-us.jpg&quot;);
+        background-size: cover;
+        background-position: center;
+      "
+    >
       <h1>About Us</h1>
       <div class="breadcrumb">
         <a href="../index.html"><i class="fas fa-home"></i></a
@@ -284,25 +285,16 @@
             align-items: center;
           "
         >
-          <div
-            class="img-placeholder"
+          <img
+            src="../assets/gallery/sossusvlei-namibia-red-sand-dunes-and-deadvlei-clay-pan-at-sunrise.jpg"
+            alt="Namibia Safari"
             style="
               height: 480px;
+              width: 100%;
+              object-fit: cover;
               border-radius: 16px;
-              background: linear-gradient(135deg, #1f3a6d, #2d5499);
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              color: rgba(255, 255, 255, 0.6);
-              gap: 12px;
             "
-          >
-            <i class="fas fa-image" style="font-size: 48px"></i
-            ><span style="font-family: var(--font-head); font-size: 14px"
-              >Professional safari image placeholder</span
-            >
-          </div>
+          />
           <div>
             <div
               class="about-tag"
@@ -533,14 +525,15 @@
           </p>
         </div>
         <div class="ceo-wrap" style="max-width: 900px; margin: 0 auto">
-          <div class="ceo-img">
-            <i class="fas fa-user-tie"></i>
-            <span style="font-family: var(--font-head); font-size: 13px"
-              >CEO Photo Placeholder</span
-            >
-            <span style="font-size: 12px; opacity: 0.6"
-              >Replace with professional photo</span
-            >
+          <div
+            class="ceo-img"
+            style="border-radius: 20px; overflow: hidden; height: 500px"
+          >
+            <img
+              src="../assets/gallery/maasai-mara-kenya-safari-wildlife.jpg"
+              alt="CEO - John Mike"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
           </div>
           <div>
             <h3
@@ -643,23 +636,11 @@
           <div class="footer-grid">
             <div class="footer-brand">
               <div class="footer-logo">
-                <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
-                  <circle cx="22" cy="10" r="5" fill="#1F3A6D" />
-                  <path
-                    d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z"
-                    fill="#1F3A6D"
-                  />
-                  <circle cx="10" cy="16" r="4" fill="#F7941D" />
-                  <path
-                    d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z"
-                    fill="#F7941D"
-                  />
-                  <circle cx="34" cy="16" r="4" fill="#8DC63F" />
-                  <path
-                    d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z"
-                    fill="#8DC63F"
-                  />
-                </svg>
+                <img
+                  src="../assets/logo/zusammen-logo.png"
+                  alt="Zusammen Tours"
+                  style="height: 40px; width: auto; object-fit: contain"
+                />
                 <div>
                   <div class="footer-logo-name">ZUSAMMEN</div>
                   <div class="footer-logo-sub">Tours and Travel Agency</div>

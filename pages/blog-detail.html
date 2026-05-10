@@ -1,277 +1,863 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog – Zusammen Tours and Travel Agency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="../css/style.css">
-<style>
-.blog-detail-layout { display: grid; grid-template-columns: 1fr 340px; gap: 40px; padding: 64px 0 80px; }
-.blog-detail-main {}
-.blog-hero-img { width: 100%; height: 420px; object-fit: cover; border-radius: var(--radius); margin-bottom: 28px; }
-.blog-title { font-family: var(--font-head); font-size: clamp(22px,3vw,34px); font-weight: 800; color: var(--dark); line-height: 1.2; margin-bottom: 16px; }
-.blog-detail-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
-.blog-detail-meta span { display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--text-light); }
-.blog-detail-meta span i { color: var(--accent); }
-.blog-tag-pill { background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; font-family: var(--font-head); }
-.blog-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 20px; }
-.blog-content h4 { font-family: var(--font-head); font-size: 20px; font-weight: 800; color: var(--dark); margin: 28px 0 12px; }
-.blog-content ul { list-style: none; margin: 0 0 20px; display: flex; flex-direction: column; gap: 10px; }
-.blog-content ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--text); line-height: 1.7; }
-.blog-content ul li::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary); font-size: 13px; margin-top: 3px; flex-shrink: 0; }
-.blog-content blockquote { background: #fff3e0; border-left: 4px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 18px 22px; margin: 24px 0; font-size: 16px; font-style: italic; color: var(--dark); font-weight: 600; line-height: 1.7; }
-.blog-content blockquote::before { content: '\201C'; font-size: 40px; color: var(--accent); line-height: 0.5; display: block; margin-bottom: 8px; }
-.blog-share { display: flex; align-items: center; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); flex-wrap: wrap; }
-.blog-share span { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.5px; }
-.share-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; transition: var(--transition); cursor: pointer; border: none; }
-.share-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.share-fb { background: #1877f2; }
-.share-tw { background: #1da1f2; }
-.share-wa { background: #25d366; }
-.share-li { background: #0a66c2; }
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="../assets/logo/zusammen-logo.png" />
+    <link rel="apple-touch-icon" href="../assets/logo/zusammen-logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog – Zusammen Tours and Travel Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+      .blog-detail-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 40px;
+        padding: 64px 0 80px;
+      }
 
-/* Related posts */
-.related-posts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
-.related-card { background: var(--bg); border-radius: var(--radius-sm); overflow: hidden; border: 1.5px solid var(--border); transition: var(--transition); }
-.related-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-.related-card img { width: 100%; height: 120px; object-fit: cover; }
-.related-card-body { padding: 12px 14px; }
-.related-card-body .tag { font-size: 11px; font-weight: 700; color: var(--accent); font-family: var(--font-head); text-transform: uppercase; margin-bottom: 5px; }
-.related-card-body h6 { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.4; transition: color 0.2s; }
-.related-card:hover .related-card-body h6 { color: var(--accent); }
+      .blog-hero-img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        border-radius: var(--radius);
+        margin-bottom: 28px;
+      }
+      .blog-title {
+        font-family: var(--font-head);
+        font-size: clamp(22px, 3vw, 34px);
+        font-weight: 800;
+        color: var(--dark);
+        line-height: 1.2;
+        margin-bottom: 16px;
+      }
+      .blog-detail-meta {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border);
+      }
+      .blog-detail-meta span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13.5px;
+        color: var(--text-light);
+      }
+      .blog-detail-meta span i {
+        color: var(--accent);
+      }
+      .blog-tag-pill {
+        background: var(--accent);
+        color: #fff;
+        padding: 4px 14px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: var(--font-head);
+      }
+      .blog-content p {
+        font-size: 15px;
+        color: var(--text);
+        line-height: 1.85;
+        margin-bottom: 20px;
+      }
+      .blog-content h4 {
+        font-family: var(--font-head);
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--dark);
+        margin: 28px 0 12px;
+      }
+      .blog-content ul {
+        list-style: none;
+        margin: 0 0 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .blog-content ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 15px;
+        color: var(--text);
+        line-height: 1.7;
+      }
+      .blog-content ul li::before {
+        content: "\f058";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        color: var(--secondary);
+        font-size: 13px;
+        margin-top: 3px;
+        flex-shrink: 0;
+      }
+      .blog-content blockquote {
+        background: #fff3e0;
+        border-left: 4px solid var(--accent);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        padding: 18px 22px;
+        margin: 24px 0;
+        font-size: 16px;
+        font-style: italic;
+        color: var(--dark);
+        font-weight: 600;
+        line-height: 1.7;
+      }
+      .blog-content blockquote::before {
+        content: "\201C";
+        font-size: 40px;
+        color: var(--accent);
+        line-height: 0.5;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .blog-share {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 36px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .blog-share span {
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .share-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 14px;
+        transition: var(--transition);
+        cursor: pointer;
+        border: none;
+      }
+      .share-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .share-fb {
+        background: #1877f2;
+      }
+      .share-tw {
+        background: #1da1f2;
+      }
+      .share-wa {
+        background: #25d366;
+      }
+      .share-li {
+        background: #0a66c2;
+      }
 
-/* Sidebar */
-.blog-sidebar {}
-.sidebar-widget { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; }
-.sidebar-widget h5 { font-family: var(--font-head); font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--accent); display: inline-block; }
-.recent-post-item { display: flex; gap: 12px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
-.recent-post-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.recent-post-img { width: 70px; min-width: 70px; height: 56px; border-radius: 6px; overflow: hidden; }
-.recent-post-img img { width: 100%; height: 100%; object-fit: cover; }
-.recent-post-text h6 { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.4; margin-bottom: 4px; transition: color 0.2s; }
-.recent-post-item:hover .recent-post-text h6 { color: var(--accent); }
-.recent-post-text span { font-size: 11.5px; color: var(--text-light); }
-.tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
-.tag-pill { padding: 6px 14px; border: 1.5px solid var(--border); border-radius: 50px; font-size: 12.5px; font-weight: 700; color: var(--text); font-family: var(--font-head); cursor: pointer; transition: var(--transition); }
-.tag-pill:hover { border-color: var(--accent); color: var(--accent); background: #fff3e0; }
-.sidebar-cta { background: linear-gradient(135deg, var(--primary), #2d5499); border-radius: var(--radius); padding: 28px 22px; text-align: center; color: #fff; }
-.sidebar-cta i { font-size: 36px; color: var(--accent); margin-bottom: 12px; display: block; }
-.sidebar-cta h5 { font-family: var(--font-head); font-size: 16px; font-weight: 800; margin-bottom: 10px; }
-.sidebar-cta p { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 18px; line-height: 1.6; }
+      /* Related posts */
+      .related-posts-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 48px;
+      }
+      .related-card {
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        border: 1.5px solid var(--border);
+        transition: var(--transition);
+      }
+      .related-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-3px);
+      }
+      .related-card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+      }
+      .related-card-body {
+        padding: 12px 14px;
+      }
+      .related-card-body .tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        font-family: var(--font-head);
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .related-card-body h6 {
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--dark);
+        line-height: 1.4;
+        transition: color 0.2s;
+      }
+      .related-card:hover .related-card-body h6 {
+        color: var(--accent);
+      }
 
-@media (max-width: 900px) {
-  .blog-detail-layout { grid-template-columns: 1fr; }
-  .related-posts-grid { grid-template-columns: 1fr; }
-  .blog-hero-img { height: 280px; }
-}
-</style>
-</head>
-<body>
+      /* Sidebar */
 
-<div class="topbar"><div class="container topbar-inner"><div class="topbar-left"><span><i class="fas fa-phone"></i> +264 81 245 5852</span><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span></div><div class="topbar-right"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div></div>
+      .sidebar-widget {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .sidebar-widget h5 {
+        font-family: var(--font-head);
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+      }
+      .recent-post-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+      }
+      .recent-post-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .recent-post-img {
+        width: 70px;
+        min-width: 70px;
+        height: 56px;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .recent-post-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .recent-post-text h6 {
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--dark);
+        line-height: 1.4;
+        margin-bottom: 4px;
+        transition: color 0.2s;
+      }
+      .recent-post-item:hover .recent-post-text h6 {
+        color: var(--accent);
+      }
+      .recent-post-text span {
+        font-size: 11.5px;
+        color: var(--text-light);
+      }
+      .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag-pill {
+        padding: 6px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 50px;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--text);
+        font-family: var(--font-head);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .tag-pill:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: #fff3e0;
+      }
+      .sidebar-cta {
+        background: linear-gradient(135deg, var(--primary), #2d5499);
+        border-radius: var(--radius);
+        padding: 28px 22px;
+        text-align: center;
+        color: #fff;
+      }
+      .sidebar-cta i {
+        font-size: 36px;
+        color: var(--accent);
+        margin-bottom: 12px;
+        display: block;
+      }
+      .sidebar-cta h5 {
+        font-family: var(--font-head);
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .sidebar-cta p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 18px;
+        line-height: 1.6;
+      }
 
-<header class="site-header" id="siteHeader"><div class="container"><div class="header-inner">
-  <a href="../index.html" class="logo"><svg class="logo-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div class="logo-text"><span class="logo-name">ZUSAMMEN</span><span class="logo-sub">Tours and Travel Agency</span></div></a>
-  <nav class="site-nav">
-    <div class="nav-item"><a href="../index.html">Home</a></div>
-    <div class="nav-item"><a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="tours.html">Tour Grid</a><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a><a href="tours.html?cat=Family+Safaris">Family Safaris</a></div></div>
-    <div class="nav-item"><a href="about.html">Pages <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="testimonials.html">Testimonials</a><a href="gallery.html">Gallery</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a></div></div>
-    <div class="nav-item"><a href="blog-grid.html">Blogs <i class="fas fa-chevron-down"></i></a><div class="nav-dropdown"><a href="blog-grid.html">Blog Grid</a></div></div>
-    <div class="nav-item"><a href="contact.html">Contact Us</a></div>
-  </nav>
-  <div class="header-btns"><a href="contact.html" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Contact Us</a></div>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-</div></div></header>
-
-<nav class="mobile-nav" id="mobileNav">
-  <div class="mobile-nav-header"><span class="logo-name" style="font-size:18px;color:var(--primary)">ZUSAMMEN <span style="color:var(--accent)">TOURS</span></span><button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button></div>
-  <a href="../index.html">Home</a><a href="tours.html">Tours</a><a href="about.html">About Us</a><a href="blog-grid.html">Blog</a><a href="contact.html">Contact Us</a>
-</nav>
-
-<div class="page-hero" id="blogHero">
-  <h1 id="blogHeroTitle">Blog</h1>
-  <div class="breadcrumb"><a href="../index.html"><i class="fas fa-home"></i></a><i class="fas fa-chevron-right"></i><a href="blog-grid.html">Blog</a><i class="fas fa-chevron-right"></i><span id="blogBreadcrumb">Article</span></div>
-</div>
-
-<div style="background:var(--bg)">
-  <div class="container">
-    <div class="blog-detail-layout">
-
-      <!-- MAIN -->
-      <article class="blog-detail-main">
-        <img id="blogMainImg" src="" alt="Blog" class="blog-hero-img">
-        <span class="blog-tag-pill" id="blogTag">Travel</span>
-        <h1 class="blog-title" id="blogTitle" style="margin-top:14px"></h1>
-        <div class="blog-detail-meta">
-          <span><i class="fas fa-user"></i> <span id="blogAuthor">Zusammen Tours</span></span>
-          <span><i class="fas fa-calendar"></i> <span id="blogDate"></span></span>
-          <span><i class="fas fa-clock"></i> <span id="blogReadTime"></span></span>
+      @media (max-width: 900px) {
+        .blog-detail-layout {
+          grid-template-columns: 1fr;
+        }
+        .related-posts-grid {
+          grid-template-columns: 1fr;
+        }
+        .blog-hero-img {
+          height: 280px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-left">
+          <span><i class="fas fa-phone"></i> +264 81 245 5852</span
+          ><span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
-        <div class="blog-content" id="blogContent"></div>
-
-        <!-- Share -->
-        <div class="blog-share">
-          <span>Share This Article:</span>
-          <button class="share-btn share-fb" title="Share on Facebook"><i class="fab fa-facebook-f"></i></button>
-          <button class="share-btn share-tw" title="Share on Twitter"><i class="fab fa-twitter"></i></button>
-          <button class="share-btn share-wa" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></button>
-          <button class="share-btn share-li" title="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></button>
+        <div class="topbar-right">
+          <a href="#"><i class="fab fa-facebook-f"></i></a
+          ><a href="#"><i class="fab fa-instagram"></i></a
+          ><a href="#"><i class="fab fa-tripadvisor"></i></a>
         </div>
+      </div>
+    </div>
 
-        <!-- Related -->
-        <div style="margin-top:48px">
-          <h4 style="font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--dark);margin-bottom:20px">Related Articles</h4>
-          <div class="related-posts-grid" id="relatedPosts"></div>
+    <header class="site-header" id="siteHeader">
+      <div class="container">
+        <div class="header-inner">
+          <a href="../index.html" class="logo">
+            <img
+              src="../assets/logo/zusammen-logo.png"
+              alt="Zusammen Tours Logo"
+              style="height: 48px; width: auto; object-fit: contain"
+            />
+            <div class="logo-text">
+              <span class="logo-name">ZUSAMMEN</span
+              ><span class="logo-sub">Tours and Travel Agency</span>
+            </div></a
+          >
+          <nav class="site-nav">
+            <div class="nav-item"><a href="../index.html">Home</a></div>
+            <div class="nav-item">
+              <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="tours.html">Tour Grid</a
+                ><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a
+                ><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a
+                ><a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
+              <div class="nav-dropdown">
+                <a href="about.html">About Us</a><a href="faq.html">FAQ</a
+                ><a href="testimonials.html">Testimonials</a
+                ><a href="gallery.html">Gallery</a
+                ><a href="privacy.html">Privacy Policy</a
+                ><a href="terms.html">Terms &amp; Conditions</a>
+              </div>
+            </div>
+            <div class="nav-item">
+              <a href="blog-grid.html"
+                >Blogs <i class="fas fa-chevron-down"></i
+              ></a>
+              <div class="nav-dropdown">
+                <a href="blog-grid.html">Blog Grid</a>
+              </div>
+            </div>
+            <div class="nav-item"><a href="contact.html">Contact Us</a></div>
+          </nav>
+          <div class="header-btns">
+            <a href="contact.html" class="btn btn-primary"
+              ><i class="fas fa-paper-plane"></i> Contact Us</a
+            >
+          </div>
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
         </div>
-      </article>
+      </div>
+    </header>
 
-      <!-- SIDEBAR -->
-      <aside class="blog-sidebar">
-        <!-- CTA widget -->
-        <div class="sidebar-cta">
-          <i class="fas fa-compass"></i>
-          <h5>Ready to Explore Africa?</h5>
-          <p>Browse our handpicked safari tours and let us plan your perfect journey.</p>
-          <a href="tours.html" class="btn btn-primary btn-block"><i class="fas fa-search"></i> Browse Tours</a>
-          <a href="contact.html" class="btn" style="margin-top:10px;background:rgba(255,255,255,0.12);color:#fff;width:100%;justify-content:center;display:flex;align-items:center;gap:7px;padding:10px 22px;border-radius:var(--radius-sm);font-family:var(--font-head);font-size:14px;font-weight:700"><i class="fas fa-paper-plane"></i> Get a Quote</a>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-header">
+        <img
+          src="../assets/logo/zusammen-logo.png"
+          alt="Zusammen Tours"
+          style="height: 36px; width: auto; object-fit: contain"
+        /><button class="mobile-close" id="mobileClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="../index.html">Home</a><a href="tours.html">Tours</a
+      ><a href="about.html">About Us</a><a href="blog-grid.html">Blog</a
+      ><a href="contact.html">Contact Us</a>
+    </nav>
+
+    <div class="page-hero" id="blogHero">
+      <h1 id="blogHeroTitle">Blog</h1>
+      <div class="breadcrumb">
+        <a href="../index.html"><i class="fas fa-home"></i></a
+        ><i class="fas fa-chevron-right"></i><a href="blog-grid.html">Blog</a
+        ><i class="fas fa-chevron-right"></i
+        ><span id="blogBreadcrumb">Article</span>
+      </div>
+    </div>
+
+    <div style="background: var(--bg)">
+      <div class="container">
+        <div class="blog-detail-layout">
+          <!-- MAIN -->
+          <article class="blog-detail-main">
+            <img id="blogMainImg" src="" alt="Blog" class="blog-hero-img" />
+            <span class="blog-tag-pill" id="blogTag">Travel</span>
+            <h1 class="blog-title" id="blogTitle" style="margin-top: 14px"></h1>
+            <div class="blog-detail-meta">
+              <span
+                ><i class="fas fa-user"></i>
+                <span id="blogAuthor">Zusammen Tours</span></span
+              >
+              <span
+                ><i class="fas fa-calendar"></i> <span id="blogDate"></span
+              ></span>
+              <span
+                ><i class="fas fa-clock"></i> <span id="blogReadTime"></span
+              ></span>
+            </div>
+            <div class="blog-content" id="blogContent"></div>
+
+            <!-- Share -->
+            <div class="blog-share">
+              <span>Share This Article:</span>
+              <button class="share-btn share-fb" title="Share on Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </button>
+              <button class="share-btn share-tw" title="Share on Twitter">
+                <i class="fab fa-twitter"></i>
+              </button>
+              <button class="share-btn share-wa" title="Share on WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+              </button>
+              <button class="share-btn share-li" title="Share on LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </button>
+            </div>
+
+            <!-- Related -->
+            <div style="margin-top: 48px">
+              <h4
+                style="
+                  font-family: var(--font-head);
+                  font-size: 20px;
+                  font-weight: 800;
+                  color: var(--dark);
+                  margin-bottom: 20px;
+                "
+              >
+                Related Articles
+              </h4>
+              <div class="related-posts-grid" id="relatedPosts"></div>
+            </div>
+          </article>
+
+          <!-- SIDEBAR -->
+          <aside class="blog-sidebar">
+            <!-- CTA widget -->
+            <div class="sidebar-cta">
+              <i class="fas fa-compass"></i>
+              <h5>Ready to Explore Africa?</h5>
+              <p>
+                Browse our handpicked safari tours and let us plan your perfect
+                journey.
+              </p>
+              <a href="tours.html" class="btn btn-primary btn-block"
+                ><i class="fas fa-search"></i> Browse Tours</a
+              >
+              <a
+                href="contact.html"
+                class="btn"
+                style="
+                  margin-top: 10px;
+                  background: rgba(255, 255, 255, 0.12);
+                  color: #fff;
+                  width: 100%;
+                  justify-content: center;
+                  display: flex;
+                  align-items: center;
+                  gap: 7px;
+                  padding: 10px 22px;
+                  border-radius: var(--radius-sm);
+                  font-family: var(--font-head);
+                  font-size: 14px;
+                  font-weight: 700;
+                "
+                ><i class="fas fa-paper-plane"></i> Get a Quote</a
+              >
+            </div>
+
+            <!-- Recent posts -->
+            <div class="sidebar-widget">
+              <h5>Recent Posts</h5>
+              <div id="recentPosts"></div>
+            </div>
+
+            <!-- Tags -->
+            <div class="sidebar-widget">
+              <h5>Topics</h5>
+              <div class="tag-cloud">
+                <span class="tag-pill">Travel Tips</span>
+                <span class="tag-pill">Namibia</span>
+                <span class="tag-pill">Botswana</span>
+                <span class="tag-pill">Kenya</span>
+                <span class="tag-pill">Rwanda</span>
+                <span class="tag-pill">Wildlife</span>
+                <span class="tag-pill">Fly-In Safaris</span>
+                <span class="tag-pill">Luxury</span>
+                <span class="tag-pill">Family Travel</span>
+                <span class="tag-pill">Solo Travel</span>
+                <span class="tag-pill">Photography</span>
+                <span class="tag-pill">Sustainability</span>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="sidebar-widget">
+              <h5>Newsletter</h5>
+              <p
+                style="
+                  font-size: 13.5px;
+                  color: var(--text-light);
+                  margin-bottom: 14px;
+                  line-height: 1.6;
+                "
+              >
+                Get safari inspiration and travel tips delivered to your inbox.
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  style="
+                    border: 1.5px solid var(--border);
+                    border-radius: var(--radius-sm);
+                    padding: 11px 14px;
+                    font-size: 14px;
+                    outline: none;
+                    font-family: var(--font-body);
+                    transition: var(--transition);
+                  "
+                  onfocus="this.style.borderColor = 'var(--accent)'"
+                  onblur="this.style.borderColor = 'var(--border)'"
+                />
+                <button
+                  class="btn btn-primary btn-block"
+                  style="justify-content: center"
+                >
+                  <i class="fas fa-paper-plane"></i> Subscribe
+                </button>
+              </div>
+            </div>
+          </aside>
         </div>
+      </div>
+    </div>
 
-        <!-- Recent posts -->
-        <div class="sidebar-widget">
-          <h5>Recent Posts</h5>
-          <div id="recentPosts"></div>
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Start Your African Adventure Today</h2>
+        <p>
+          Whether it's your first safari or your tenth, Zusammen Tours will
+          craft an unforgettable experience just for you.
+        </p>
+        <div class="cta-actions">
+          <a href="tours.html" class="btn btn-white btn-lg"
+            ><i class="fas fa-compass"></i> Explore Tours</a
+          >
+          <a href="contact.html" class="btn btn-dark btn-lg"
+            ><i class="fas fa-paper-plane"></i> GET STARTED</a
+          >
         </div>
+      </div>
+    </section>
 
-        <!-- Tags -->
-        <div class="sidebar-widget">
-          <h5>Topics</h5>
-          <div class="tag-cloud">
-            <span class="tag-pill">Travel Tips</span>
-            <span class="tag-pill">Namibia</span>
-            <span class="tag-pill">Botswana</span>
-            <span class="tag-pill">Kenya</span>
-            <span class="tag-pill">Rwanda</span>
-            <span class="tag-pill">Wildlife</span>
-            <span class="tag-pill">Fly-In Safaris</span>
-            <span class="tag-pill">Luxury</span>
-            <span class="tag-pill">Family Travel</span>
-            <span class="tag-pill">Solo Travel</span>
-            <span class="tag-pill">Photography</span>
-            <span class="tag-pill">Sustainability</span>
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="footer-logo">
+                <img
+                  src="../assets/logo/zusammen-logo.png"
+                  alt="Zusammen Tours"
+                  style="height: 40px; width: auto; object-fit: contain"
+                />
+                <div>
+                  <div class="footer-logo-name">ZUSAMMEN</div>
+                  <div class="footer-logo-sub">Tours and Travel Agency</div>
+                </div>
+              </div>
+              <p>Luxury safari experiences across Namibia and Africa.</p>
+              <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Tours</h4>
+              <ul>
+                <li><a href="tours.html">All Tours</a></li>
+                <li>
+                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
+                </li>
+                <li>
+                  <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Pages</h4>
+              <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog-grid.html">Blog</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms &amp; Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <ul>
+                <li><a href="tel:+264812455852">+264 81 245 5852</a></li>
+                <li>
+                  <a href="mailto:info@zusammentravels.com"
+                    >info@zusammentravels.com</a
+                  >
+                </li>
+                <li><a href="#">Windhoek, Namibia</a></li>
+              </ul>
+            </div>
           </div>
         </div>
-
-        <!-- Newsletter -->
-        <div class="sidebar-widget">
-          <h5>Newsletter</h5>
-          <p style="font-size:13.5px;color:var(--text-light);margin-bottom:14px;line-height:1.6">Get safari inspiration and travel tips delivered to your inbox.</p>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <input type="email" placeholder="your@email.com" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;font-size:14px;outline:none;font-family:var(--font-body);transition:var(--transition)" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
-            <button class="btn btn-primary btn-block" style="justify-content:center"><i class="fas fa-paper-plane"></i> Subscribe</button>
-          </div>
+      </div>
+      <div class="footer-bottom">
+        <div
+          class="container"
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+          "
+        >
+          <span
+            >Copyright &copy; 2026. All Rights Reserved,
+            <a href="../index.html">Zusammen Tours and Travel Agency</a></span
+          >
         </div>
-      </aside>
+      </div>
+    </footer>
+    <button id="btt" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
-    </div>
-  </div>
-</div>
+    <script src="../js/main.js"></script>
+    <script>
+      // Full blog content library
+      const BLOG_CONTENT = {
+        1: {
+          body: `<p>Even in 2026, with the rise of travel apps and sophisticated online booking platforms, using a trusted travel agency remains one of the smartest decisions you can make when planning a trip across Africa.</p><h4>The Complexity of African Travel</h4><p>Africa is not a destination you can simply book through a generic travel website. The continent spans 54 diverse countries, each with its own visa requirements, health regulations, safety considerations and logistical challenges. Fly-in safari logistics, for example, require precise coordination between charter flights, lodges and ground transfers — all of which need to align perfectly for your trip to run smoothly.</p><blockquote>A great travel agency doesn't just book your trip — it becomes your expert partner, advocate and emergency contact all in one.</blockquote><h4>What a Good Agency Gives You</h4><ul><li>Deep, first-hand knowledge of each destination and accommodation property</li><li>Access to exclusive rates and availability not available to the public</li><li>Crisis management if something goes wrong during your journey</li><li>A personalised itinerary crafted around your specific interests and budget</li><li>Pre-departure support including visa guidance, vaccinations and packing lists</li></ul><h4>The Zusammen Difference</h4><p>At Zusammen Tours, we go beyond simply making bookings. We have personally visited every destination we sell and stayed at every lodge we recommend. When you book with us, you're getting authentic, lived experience rather than information scraped from a website.</p><p>Our team is available before, during and after your safari — ensuring that from the moment you start planning to the moment you return home, you feel supported every step of the way.</p>`,
+        },
+        2: {
+          body: `<p>Africa has long been celebrated for its extraordinary wildlife and sweeping landscapes — but its accommodation experiences are increasingly becoming destinations in their own right.</p><h4>Sleeping Under the Stars: Desert Domes</h4><p>Namibia's Namib Desert offers some of the world's most extraordinary stargazing. Geodesic dome tents positioned in remote desert valleys allow guests to sleep beneath a canopy of billions of stars, with nothing but silence and the Milky Way overhead. These experiences combine adventure with extraordinary comfort — plush bedding, private decks and butler service.</p><blockquote>The best African lodges don't just give you a place to sleep — they give you an experience you'll spend years trying to describe to people who weren't there.</blockquote><h4>Treetop Living in the Delta</h4><p>In the Okavango Delta, several camps offer elevated walkways and treehouses that allow guests to experience the sights and sounds of the bush from a completely different perspective — eye-level with the canopy, listening to the nocturnal orchestra below.</p><h4>Underwater Rooms</h4><ul><li>Some East African properties now offer partially submerged suites overlooking coral reefs</li><li>Private plunge pools with direct bush views have become standard at luxury properties</li><li>Converted colonial farmhouses in the Namibian highlands offer a taste of another era</li><li>Floating suites on the Chobe River bring you within metres of drinking elephants</li></ul><p>Whatever your style, Africa's accommodation scene has evolved to offer experiences that are as memorable as the wildlife itself.</p>`,
+        },
+        3: {
+          body: `<p>There's something uniquely liberating about travelling alone across Africa's diverse nations. Without compromise, without schedule, without the need to consider anyone's preferences but your own — solo travel through Africa is one of life's most transformative experiences.</p><h4>Is Africa Safe for Solo Travellers?</h4><p>Safety is the first question most solo travellers ask, and it's a fair one. The answer, as with most places, depends entirely on where you go and how you travel. The countries in which Zusammen Tours operates — Namibia, Botswana, Kenya, Rwanda, Tanzania, Zimbabwe, Uganda, Zambia and South Africa — all have well-established tourism infrastructure and are widely regarded as safe and welcoming for international visitors.</p><blockquote>Africa taught me that being alone doesn't mean being lonely. In fact, I met more people, had more conversations and formed more genuine connections than on any group trip I'd ever taken.</blockquote><h4>The Social Side of Solo Safari</h4><ul><li>Joining a small-group safari naturally brings you into contact with like-minded travellers</li><li>Lodge communal dining creates easy, natural conversation with fellow guests</li><li>Local guides often become genuine friends over the course of a multi-day safari</li><li>Solo travellers are frequently invited to join other guests' activities and excursions</li></ul><h4>Practical Solo Travel Tips</h4><p>Booking through a reputable agency like Zusammen Tours ensures that every detail of your solo trip is managed professionally. From airport pickups to lodge introductions, you will never feel alone — even when you are.</p>`,
+        },
+        default: {
+          body: `<p>Africa is one of the most extraordinary travel destinations on earth — a continent of staggering diversity, natural wonder and human warmth that continues to captivate travellers from every corner of the globe.</p><h4>Why Africa Captivates</h4><p>No other continent offers the combination of sweeping wilderness, abundant wildlife, ancient cultures and sheer geographical variety that Africa does. From the red sand dunes of Namibia's Namib Desert to the mist-shrouded mountains of Rwanda and the turquoise waters of Zanzibar, Africa defies every expectation.</p><blockquote>Africa is not a destination you visit once. It gets under your skin in ways no other place can, and it calls you back again and again.</blockquote><h4>The Zusammen Approach to African Travel</h4><ul><li>Every itinerary is crafted from scratch around your specific interests and travel style</li><li>We only recommend lodges and camps we have personally visited and approved</li><li>Our guides are experienced, licensed professionals with deep local knowledge</li><li>We handle every detail — from visas and vaccinations to in-country logistics and emergency support</li></ul><p>Whether you're a first-time safari-goer or a seasoned Africa traveller, Zusammen Tours brings the same level of care, expertise and passion to every single journey. Let us plan yours.</p>`,
+        },
+      };
 
-<!-- CTA -->
-<section class="cta-section">
-  <div class="container">
-    <h2>Start Your African Adventure Today</h2>
-    <p>Whether it's your first safari or your tenth, Zusammen Tours will craft an unforgettable experience just for you.</p>
-    <div class="cta-actions">
-      <a href="tours.html" class="btn btn-white btn-lg"><i class="fas fa-compass"></i> Explore Tours</a>
-      <a href="contact.html" class="btn btn-dark btn-lg"><i class="fas fa-paper-plane"></i> GET STARTED</a>
-    </div>
-  </div>
-</section>
+      const ALL_BLOGS_DETAIL = [
+        {
+          id: 1,
+          title: "Why Booking Through a Travel Agency Still Matters in 2026",
+          tag: "Travel Tips",
+          excerpt:
+            "Even in 2026, with the rise of travel apps and online booking platforms, using a trusted travel agency remains one of the smartest ways to plan a trip across Africa.",
+          img: "../assets/blogs/Why Booking Through a Travel Agency Still Matters in 2026.jpg",
+          date: "15 Jan 2026",
+          author: "Zusammen Tours",
+          readTime: "5 min read",
+        },
+        {
+          id: 2,
+          title:
+            "Unusual Accommodation Experiences in Africa: Beyond the Ordinary",
+          tag: "Accommodation",
+          excerpt:
+            "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars — Africa offers accommodation experiences that become part of your travel story.",
+          img: "../assets/blogs/Unusual Accommodation Experiences in Africa.jpg",
+          date: "08 Feb 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 3,
+          title:
+            "Travelling Solo in Africa: Empowerment, Adventure and Connection",
+          tag: "Solo Travel",
+          excerpt:
+            "There's something uniquely liberating about travelling alone across Africa's diverse nations — from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
+          img: "../assets/blogs/Travelling Solo in Africa.jpg",
+          date: "22 Feb 2026",
+          author: "Zusammen Tours",
+          readTime: "8 min read",
+        },
+        {
+          id: 4,
+          title: "Travel Mistakes to Avoid in Africa",
+          tag: "Travel Tips",
+          excerpt:
+            "Africa is a dream destination, but first-time visitors can sometimes make costly mistakes. Here's what to watch out for.",
+          img: "../assets/blogs/Travel Mistakes to Avoid in Africa.jpg",
+          date: "01 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "7 min read",
+        },
+        {
+          id: 5,
+          title: "Top Romantic Destinations in Africa for Couples",
+          tag: "Romance",
+          excerpt:
+            "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar.",
+          img: "../assets/blogs/Top Romantic Destinations in Africa for Couples.jpg",
+          date: "12 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "6 min read",
+        },
+        {
+          id: 6,
+          title: "Africa Beyond the Famous: Underrated Spots",
+          tag: "Destinations",
+          excerpt:
+            "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover.",
+          img: "../assets/blogs/Africa Beyond the Famous Underrated Spots Every Traveller S....jpg",
+          date: "25 Mar 2026",
+          author: "Zusammen Tours",
+          readTime: "9 min read",
+        },
+      ];
 
-<footer><div class="footer-top"><div class="container"><div class="footer-grid">
-  <div class="footer-brand"><div class="footer-logo"><svg width="36" height="36" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="10" r="5" fill="#1F3A6D"/><path d="M22 15 C10 15 6 28 6 36 L16 36 C16 30 18 26 22 26 C26 26 28 30 28 36 L38 36 C38 28 34 15 22 15Z" fill="#1F3A6D"/><circle cx="10" cy="16" r="4" fill="#F7941D"/><path d="M10 20 C4 20 2 30 2 36 L12 36 C12 32 13 29 15 27 C13 24 11 21 10 20Z" fill="#F7941D"/><circle cx="34" cy="16" r="4" fill="#8DC63F"/><path d="M34 20 C40 20 42 30 42 36 L32 36 C32 32 31 29 29 27 C31 24 33 21 34 20Z" fill="#8DC63F"/></svg><div><div class="footer-logo-name">ZUSAMMEN</div><div class="footer-logo-sub">Tours and Travel Agency</div></div></div><p>Luxury safari experiences across Namibia and Africa.</p><div class="footer-social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tripadvisor"></i></a></div></div>
-  <div class="footer-col"><h4>Tours</h4><ul><li><a href="tours.html">All Tours</a></li><li><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a></li><li><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a></li></ul></div>
-  <div class="footer-col"><h4>Pages</h4><ul><li><a href="about.html">About Us</a></li><li><a href="faq.html">FAQ</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="blog-grid.html">Blog</a></li></ul></div>
-  <div class="footer-col"><h4>Support</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-  <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+264812455852">+264 81 245 5852</a></li><li><a href="mailto:info@zusammentravels.com">info@zusammentravels.com</a></li><li><a href="#">Windhoek, Namibia</a></li></ul></div>
-</div></div></div>
-<div class="footer-bottom"><div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;width:100%"><span>Copyright &copy; 2026. All Rights Reserved, <a href="../index.html">Zusammen Tours and Travel Agency</a></span></div></div>
-</footer>
-<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+      function loadBlogDetail() {
+        const id = parseInt(
+          new URLSearchParams(window.location.search).get("id") || "1",
+        );
+        const blog =
+          ALL_BLOGS_DETAIL.find((b) => b.id === id) || ALL_BLOGS_DETAIL[0];
 
-<script src="../js/main.js"></script>
-<script>
-// Full blog content library
-const BLOG_CONTENT = {
-  1: { body: `<p>Even in 2026, with the rise of travel apps and sophisticated online booking platforms, using a trusted travel agency remains one of the smartest decisions you can make when planning a trip across Africa.</p><h4>The Complexity of African Travel</h4><p>Africa is not a destination you can simply book through a generic travel website. The continent spans 54 diverse countries, each with its own visa requirements, health regulations, safety considerations and logistical challenges. Fly-in safari logistics, for example, require precise coordination between charter flights, lodges and ground transfers — all of which need to align perfectly for your trip to run smoothly.</p><blockquote>A great travel agency doesn't just book your trip — it becomes your expert partner, advocate and emergency contact all in one.</blockquote><h4>What a Good Agency Gives You</h4><ul><li>Deep, first-hand knowledge of each destination and accommodation property</li><li>Access to exclusive rates and availability not available to the public</li><li>Crisis management if something goes wrong during your journey</li><li>A personalised itinerary crafted around your specific interests and budget</li><li>Pre-departure support including visa guidance, vaccinations and packing lists</li></ul><h4>The Zusammen Difference</h4><p>At Zusammen Tours, we go beyond simply making bookings. We have personally visited every destination we sell and stayed at every lodge we recommend. When you book with us, you're getting authentic, lived experience rather than information scraped from a website.</p><p>Our team is available before, during and after your safari — ensuring that from the moment you start planning to the moment you return home, you feel supported every step of the way.</p>` },
-  2: { body: `<p>Africa has long been celebrated for its extraordinary wildlife and sweeping landscapes — but its accommodation experiences are increasingly becoming destinations in their own right.</p><h4>Sleeping Under the Stars: Desert Domes</h4><p>Namibia's Namib Desert offers some of the world's most extraordinary stargazing. Geodesic dome tents positioned in remote desert valleys allow guests to sleep beneath a canopy of billions of stars, with nothing but silence and the Milky Way overhead. These experiences combine adventure with extraordinary comfort — plush bedding, private decks and butler service.</p><blockquote>The best African lodges don't just give you a place to sleep — they give you an experience you'll spend years trying to describe to people who weren't there.</blockquote><h4>Treetop Living in the Delta</h4><p>In the Okavango Delta, several camps offer elevated walkways and treehouses that allow guests to experience the sights and sounds of the bush from a completely different perspective — eye-level with the canopy, listening to the nocturnal orchestra below.</p><h4>Underwater Rooms</h4><ul><li>Some East African properties now offer partially submerged suites overlooking coral reefs</li><li>Private plunge pools with direct bush views have become standard at luxury properties</li><li>Converted colonial farmhouses in the Namibian highlands offer a taste of another era</li><li>Floating suites on the Chobe River bring you within metres of drinking elephants</li></ul><p>Whatever your style, Africa's accommodation scene has evolved to offer experiences that are as memorable as the wildlife itself.</p>` },
-  3: { body: `<p>There's something uniquely liberating about travelling alone across Africa's diverse nations. Without compromise, without schedule, without the need to consider anyone's preferences but your own — solo travel through Africa is one of life's most transformative experiences.</p><h4>Is Africa Safe for Solo Travellers?</h4><p>Safety is the first question most solo travellers ask, and it's a fair one. The answer, as with most places, depends entirely on where you go and how you travel. The countries in which Zusammen Tours operates — Namibia, Botswana, Kenya, Rwanda, Tanzania, Zimbabwe, Uganda, Zambia and South Africa — all have well-established tourism infrastructure and are widely regarded as safe and welcoming for international visitors.</p><blockquote>Africa taught me that being alone doesn't mean being lonely. In fact, I met more people, had more conversations and formed more genuine connections than on any group trip I'd ever taken.</blockquote><h4>The Social Side of Solo Safari</h4><ul><li>Joining a small-group safari naturally brings you into contact with like-minded travellers</li><li>Lodge communal dining creates easy, natural conversation with fellow guests</li><li>Local guides often become genuine friends over the course of a multi-day safari</li><li>Solo travellers are frequently invited to join other guests' activities and excursions</li></ul><h4>Practical Solo Travel Tips</h4><p>Booking through a reputable agency like Zusammen Tours ensures that every detail of your solo trip is managed professionally. From airport pickups to lodge introductions, you will never feel alone — even when you are.</p>` },
-  default: { body: `<p>Africa is one of the most extraordinary travel destinations on earth — a continent of staggering diversity, natural wonder and human warmth that continues to captivate travellers from every corner of the globe.</p><h4>Why Africa Captivates</h4><p>No other continent offers the combination of sweeping wilderness, abundant wildlife, ancient cultures and sheer geographical variety that Africa does. From the red sand dunes of Namibia's Namib Desert to the mist-shrouded mountains of Rwanda and the turquoise waters of Zanzibar, Africa defies every expectation.</p><blockquote>Africa is not a destination you visit once. It gets under your skin in ways no other place can, and it calls you back again and again.</blockquote><h4>The Zusammen Approach to African Travel</h4><ul><li>Every itinerary is crafted from scratch around your specific interests and travel style</li><li>We only recommend lodges and camps we have personally visited and approved</li><li>Our guides are experienced, licensed professionals with deep local knowledge</li><li>We handle every detail — from visas and vaccinations to in-country logistics and emergency support</li></ul><p>Whether you're a first-time safari-goer or a seasoned Africa traveller, Zusammen Tours brings the same level of care, expertise and passion to every single journey. Let us plan yours.</p>` }
-};
+        document.title = `${blog.title} – Zusammen Tours`;
+        document.getElementById("blogHeroTitle").textContent = blog.tag;
+        document.getElementById("blogBreadcrumb").textContent =
+          blog.title.substring(0, 40) + "...";
+        document.getElementById("blogMainImg").src = blog.img;
+        document.getElementById("blogMainImg").alt = blog.title;
+        document.getElementById("blogTag").textContent = blog.tag;
+        document.getElementById("blogTitle").textContent = blog.title;
+        document.getElementById("blogAuthor").textContent = blog.author;
+        document.getElementById("blogDate").textContent = blog.date;
+        document.getElementById("blogReadTime").textContent = blog.readTime;
 
-const ALL_BLOGS_DETAIL = [
-  { id:1, title:'Why Booking Through a Travel Agency Still Matters in 2026', tag:'Travel Tips', excerpt:'Even in 2026, with the rise of travel apps and online booking platforms, using a trusted travel agency remains one of the smartest ways to plan a trip across Africa.', img:'https://images.unsplash.com/photo-1553290322-de87a4bd8f9e?w=1200&q=80', date:'15 Jan 2026', author:'Zusammen Tours', readTime:'5 min read' },
-  { id:2, title:'Unusual Accommodation Experiences in Africa: Beyond the Ordinary', tag:'Accommodation', excerpt:'From treetop lodges in the Okavango to desert geodesic domes under Namibia\'s stars — Africa offers accommodation experiences that become part of your travel story.', img:'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=1200&q=80', date:'08 Feb 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:3, title:'Travelling Solo in Africa: Empowerment, Adventure and Connection', tag:'Solo Travel', excerpt:'There\'s something uniquely liberating about travelling alone across Africa\'s diverse nations — from Namibia\'s vast deserts to Zimbabwe\'s spectacular waterfalls.', img:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80', date:'22 Feb 2026', author:'Zusammen Tours', readTime:'8 min read' },
-  { id:4, title:'Travel Mistakes to Avoid in Africa', tag:'Travel Tips', excerpt:'Africa is a dream destination, but first-time visitors can sometimes make costly mistakes. Here\'s what to watch out for.', img:'https://images.unsplash.com/photo-1489493512598-d08130f49bea?w=1200&q=80', date:'01 Mar 2026', author:'Zusammen Tours', readTime:'7 min read' },
-  { id:5, title:'Top Romantic Destinations in Africa for Couples', tag:'Romance', excerpt:'From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar.', img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1200&q=80', date:'12 Mar 2026', author:'Zusammen Tours', readTime:'6 min read' },
-  { id:6, title:'Africa Beyond the Famous: Underrated Spots', tag:'Destinations', excerpt:'Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover.', img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=80', date:'25 Mar 2026', author:'Zusammen Tours', readTime:'9 min read' }
-];
+        const content = BLOG_CONTENT[id] || BLOG_CONTENT.default;
+        document.getElementById("blogContent").innerHTML = content.body;
 
-function loadBlogDetail() {
-  const id = parseInt(new URLSearchParams(window.location.search).get('id') || '1');
-  const blog = ALL_BLOGS_DETAIL.find(b => b.id === id) || ALL_BLOGS_DETAIL[0];
-
-  document.title = `${blog.title} – Zusammen Tours`;
-  document.getElementById('blogHeroTitle').textContent = blog.tag;
-  document.getElementById('blogBreadcrumb').textContent = blog.title.substring(0, 40) + '...';
-  document.getElementById('blogMainImg').src = blog.img;
-  document.getElementById('blogMainImg').alt = blog.title;
-  document.getElementById('blogTag').textContent = blog.tag;
-  document.getElementById('blogTitle').textContent = blog.title;
-  document.getElementById('blogAuthor').textContent = blog.author;
-  document.getElementById('blogDate').textContent = blog.date;
-  document.getElementById('blogReadTime').textContent = blog.readTime;
-
-  const content = BLOG_CONTENT[id] || BLOG_CONTENT.default;
-  document.getElementById('blogContent').innerHTML = content.body;
-
-  // Recent posts
-  const recent = ALL_BLOGS_DETAIL.filter(b => b.id !== id).slice(0, 4);
-  document.getElementById('recentPosts').innerHTML = recent.map(b => `
+        // Recent posts
+        const recent = ALL_BLOGS_DETAIL.filter((b) => b.id !== id).slice(0, 4);
+        document.getElementById("recentPosts").innerHTML = recent
+          .map(
+            (b) => `
     <div class="recent-post-item" onclick="window.location='blog-detail.html?id=${b.id}'">
       <div class="recent-post-img"><img src="${b.img}" alt="${b.title}" loading="lazy"></div>
       <div class="recent-post-text"><h6>${b.title}</h6><span><i class="fas fa-calendar" style="margin-right:4px;color:var(--accent)"></i>${b.date}</span></div>
     </div>
-  `).join('');
+  `,
+          )
+          .join("");
 
-  // Related posts
-  const related = ALL_BLOGS_DETAIL.filter(b => b.id !== id).slice(0, 4);
-  document.getElementById('relatedPosts').innerHTML = related.map(b => `
+        // Related posts
+        const related = ALL_BLOGS_DETAIL.filter((b) => b.id !== id).slice(0, 4);
+        document.getElementById("relatedPosts").innerHTML = related
+          .map(
+            (b) => `
     <a href="blog-detail.html?id=${b.id}" class="related-card">
       <img src="${b.img}" alt="${b.title}" loading="lazy">
       <div class="related-card-body"><div class="tag">${b.tag}</div><h6>${b.title}</h6></div>
     </a>
-  `).join('');
+  `,
+          )
+          .join("");
 
-  // Share buttons
-  document.querySelectorAll('.share-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const url = window.location.href;
-      const title = blog.title;
-      let shareUrl = '';
-      if (btn.classList.contains('share-fb')) shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      else if (btn.classList.contains('share-tw')) shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
-      else if (btn.classList.contains('share-wa')) shareUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
-      else if (btn.classList.contains('share-li')) shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
-      if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
-    });
-  });
-}
+        // Share buttons
+        document.querySelectorAll(".share-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const url = window.location.href;
+            const title = blog.title;
+            let shareUrl = "";
+            if (btn.classList.contains("share-fb"))
+              shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            else if (btn.classList.contains("share-tw"))
+              shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+            else if (btn.classList.contains("share-wa"))
+              shareUrl = `https://wa.me/?text=${encodeURIComponent(title + " " + url)}`;
+            else if (btn.classList.contains("share-li"))
+              shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+            if (shareUrl)
+              window.open(shareUrl, "_blank", "width=600,height=400");
+          });
+        });
+      }
 
-document.addEventListener('DOMContentLoaded', loadBlogDetail);
-</script>
-</body>
+      document.addEventListener("DOMContentLoaded", loadBlogDetail);
+    </script>
+  </body>
 </html>
