@@ -455,28 +455,28 @@ const PARTNERS = [
   { name: "Angama", file: "assets/partners/angama-logo-white.png" },
   { name: "Chiawa Safaris", file: "assets/partners/Chiawa Safaris.png" },
   { name: "Chiwani Camps", file: "assets/partners/Chiwani Camps.webp" },
-  { name: "City Lodge Hotels", file: "assets/partners/City Lodge Hotels.jpg" },
-  { name: "Hilton Hotels", file: "assets/partners/Hilton Hotel & Resorts.jpg" },
+  { name: "City Lodge Hotels", file: "assets/partners/City Lodge Hotels.png" },
+  { name: "Hilton Hotels", file: "assets/partners/Hilton Hotel & Resorts.png" },
   {
     name: "More Family Collection",
-    file: "assets/partners/more family collection.jpg",
+    file: "assets/partners/more family collection.png",
   },
   {
     name: "Natural Selection",
-    file: "assets/partners/Natural Selection Logo(1).png",
+    file: "assets/partners/Natural Selection Logo.png",
   },
   { name: "Ondili", file: "assets/partners/ondili-logo.png" },
   { name: "One&Only", file: "assets/partners/one and only.png" },
-  { name: "Ongava", file: "assets/partners/Ongava.jpg" },
+  { name: "Ongava", file: "assets/partners/Ongava.png" },
   {
     name: "Onguma Lodge",
     file: "assets/partners/Onguma Lodge Etosha National Park.png",
   },
   {
     name: "Wilderness Air",
-    file: "assets/partners/png-clipart-botswana-wilderness-air-wilderness-safaris-air-charter-safari-text-logo.png",
+    file: "assets/partners/botswana wilderness air.png",
   },
-  { name: "Red Carnation", file: "assets/partners/Red Carnation Logo.jpg" },
+  { name: "Red Carnation", file: "assets/partners/Red Carnation Logo.png" },
   { name: "Time + Tide", file: "assets/partners/Time Tide.png" },
   {
     name: "Virgin Limited Edition",
@@ -484,11 +484,11 @@ const PARTNERS = [
   },
   {
     name: "Wilderness",
-    file: "assets/partners/Wilderness-Logo-400x284-1.webp",
+    file: "assets/partners/Wilderness-Logo-400x284-1.png",
   },
   {
     name: "Zambezi Crescent",
-    file: "assets/partners/Zambezi Crescent Collection.jpg",
+    file: "assets/partners/Zambezi Crescent Collection.png",
   },
 ];
 
