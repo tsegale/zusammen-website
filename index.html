@@ -21,7 +21,7 @@
     />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+  <body style="overflow-x: hidden">
     <!-- TOPBAR -->
     <div class="topbar">
       <div class="container topbar-inner">
@@ -640,6 +640,7 @@
     <section class="testi-section">
       <div class="container">
         <div class="testi-layout">
+          <!-- LEFT: heading + slider -->
           <div class="testi-left">
             <div class="section-tag">
               <i class="fas fa-circle"></i> Testimonials
@@ -647,40 +648,45 @@
             <h2 class="section-title">
               What Our <span class="highlight">Clients Say</span>
             </h2>
+
+            <!-- Slider viewport — clips overflow -->
             <div class="testi-slider-wrap">
+              <!-- Track — filled by JS, each slide is 100% wide -->
               <div class="testi-slider" id="testiSlider"></div>
             </div>
-            <div
-              id="testiDots"
-              style="display: flex; gap: 8px; margin-top: 16px"
-            ></div>
-            <div class="testi-review-links" style="margin-top: 20px">
+
+            <!-- Dot navigation -->
+            <div class="testi-nav" id="testiDots"></div>
+
+            <!-- Platform review links -->
+            <div class="testi-review-links">
               <a
                 href="https://maps.google.com"
                 target="_blank"
+                rel="noopener"
                 class="review-link-btn"
-                ><i class="fab fa-google" style="color: #ea4335"></i> Review on
-                Google</a
               >
+                <i class="fab fa-google" style="color: #ea4335"></i> Review on
+                Google
+              </a>
               <a
                 href="https://tripadvisor.com"
                 target="_blank"
+                rel="noopener"
                 class="review-link-btn"
-                ><i class="fab fa-tripadvisor" style="color: #00af87"></i>
-                Review on TripAdvisor</a
               >
+                <i class="fab fa-tripadvisor" style="color: #00af87"></i> Review
+                on TripAdvisor
+              </a>
             </div>
           </div>
+
+          <!-- RIGHT: decorative photo (hidden on mobile via CSS) -->
           <div class="testi-img">
             <img
               src="assets/gallery/chobe-national-park-botswana-wildlife-safari.jpg"
-              alt="Happy Travellers"
-              style="
-                height: 420px;
-                width: 100%;
-                object-fit: cover;
-                border-radius: 16px;
-              "
+              alt="Safari experience"
+              onerror="this.parentElement.style.display = 'none'"
             />
           </div>
         </div>

@@ -19,7 +19,7 @@ const TOURS = [
     nights: 7,
     guests: 12,
     minAge: 6,
-    // img: "assets/gallery/etosha-national-park-namibia-wildlife-safari-at-waterhole.jpg",
+    img: "assets/gallery/etosha-national-park-namibia-wildlife-safari-at-waterhole.jpg",
     description:
       "Experience the golden dunes of Sossusvlei, salt pans of Deadvlei and game-rich Etosha National Park on this ultimate Namibia luxury safari.",
     destinations: "Windhoek → Sossusvlei → Etosha → Swakopmund",
@@ -59,7 +59,7 @@ const TOURS = [
     nights: 6,
     guests: 8,
     minAge: 6,
-    // img: "assets/gallery/okavango-delta-botswana-wetland-safari-mokoro-excursion.jpg",
+    img: "assets/gallery/okavango-delta-botswana-wetland-safari-mokoro-excursion.jpg",
     description:
       "Fly directly into the heart of the Okavango Delta — one of Africa's last great wilderness areas — and discover a world of mokoro rides, elephant encounters and extraordinary birdlife.",
     destinations: "Maun → Okavango Delta → Chobe NP → Kasane",
@@ -99,7 +99,7 @@ const TOURS = [
     nights: 5,
     guests: 10,
     minAge: 15,
-    // img: "assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg",
+    img: "assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg",
     description:
       "Trek through the misty Volcanoes National Park to spend a magical hour with mountain gorillas, then explore vibrant Kigali and the serene shores of Lake Kivu.",
     destinations: "Kigali → Volcanoes NP → Lake Kivu",
@@ -139,7 +139,7 @@ const TOURS = [
     nights: 4,
     guests: 14,
     minAge: 12,
-    // img: "assets/gallery/victoria-falls-zimbabwe-waterfall-adventure.webp",
+    img: "assets/gallery/victoria-falls-zimbabwe-waterfall-adventure.webp",
     description:
       "Stand at the edge of one of the world's Seven Natural Wonders, thrill at Hwange's wildlife and enjoy the best of Zimbabwe's iconic landscapes.",
     destinations: "Harare → Victoria Falls → Hwange NP",
@@ -179,7 +179,7 @@ const TOURS = [
     nights: 6,
     guests: 16,
     minAge: 6,
-    // img: "assets/gallery/maasai-mara-kenya-safari-wildlife.jpg",
+    img: "assets/gallery/maasai-mara-kenya-safari-wildlife.jpg",
     description:
       "Witness one of nature's greatest spectacles — the Great Wildebeest Migration — in the Maasai Mara, and explore Nairobi's vibrant culture and Amboseli's Kilimanjaro views.",
     destinations: "Nairobi → Amboseli NP → Maasai Mara",
@@ -219,7 +219,7 @@ const TOURS = [
     nights: 9,
     guests: 8,
     minAge: 6,
-    // img: "assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
+    img: "assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
     description:
       "Combine the raw wilderness of the Serengeti with the turquoise beaches of Zanzibar for the ultimate African adventure — safari by day, spice island relaxation by night.",
     destinations: "Arusha → Serengeti → Ngorongoro → Zanzibar",
@@ -672,104 +672,182 @@ function initCategoryModal() {
 }
 
 /* ===== TOURS SLIDER ===== */
-/* ===== TOURS SLIDER ===== */
-function buildToursSlider() {
-  const slider = $("#toursSlider");
-  if (!slider) return;
-  slider.innerHTML = TOURS.map((t) => buildTourCard(t)).join("");
-  updateToursSlider();
-
-  const dots = $("#toursDots");
-  const totalSlides =
-    window.innerWidth < 600
-      ? TOURS.length
-      : window.innerWidth < 900
-        ? Math.ceil(TOURS.length / 2)
-        : Math.ceil(TOURS.length / 3);
-  if (dots) {
-    dots.innerHTML = Array.from(
-      { length: totalSlides },
-      (_, i) =>
-        `<button class="slider-dot ${i === 0 ? "active" : ""}" data-i="${i}"></button>`,
-    ).join("");
-    $$(".slider-dot", dots).forEach((d) =>
-      d.addEventListener("click", () => {
-        currentTourPage = +d.dataset.i;
-        updateToursSlider();
-      }),
-    );
-  }
-
-  $("#toursNext")?.addEventListener("click", () => {
-    const total = Math.ceil(TOURS.length / getVisibleTours());
-    currentTourPage = (currentTourPage + 1) % total;
-    updateToursSlider();
-  });
-  $("#toursPrev")?.addEventListener("click", () => {
-    const total = Math.ceil(TOURS.length / getVisibleTours());
-    currentTourPage = (currentTourPage - 1 + total) % total;
-    updateToursSlider();
-  });
-
-  // Auto slide
-  toursSliderInterval = setInterval(() => {
-    const total = Math.ceil(TOURS.length / getVisibleTours());
-    currentTourPage = (currentTourPage + 1) % total;
-    updateToursSlider();
-  }, 5000);
-}
-
 function getVisibleTours() {
   if (window.innerWidth < 600) return 1;
   if (window.innerWidth < 900) return 2;
   return 3;
 }
 
-function updateToursSlider() {
-  const slider = $("#toursSlider");
-  if (!slider) return;
-  const visible = getVisibleTours();
-  const cardWidth = slider.parentElement.offsetWidth / visible;
-  const gap = 22;
-  const offset = currentTourPage * (visible * cardWidth);
-  slider.style.transform = `translateX(-${currentTourPage * ((100 / TOURS.length) * visible)}%)`;
-  $$(".slider-dot").forEach((d, i) =>
-    d.classList.toggle("active", i === currentTourPage),
-  );
+function getTotalPages() {
+  return Math.ceil(TOURS.length / getVisibleTours());
 }
 
-function buildTourCard(t, detailed = false) {
+function buildToursSlider() {
+  const wrap = document.getElementById("toursSlider")?.parentElement;
+  const slider = document.getElementById("toursSlider");
+  if (!slider || !wrap) return;
+
+  slider.innerHTML = TOURS.map((t) => buildTourCard(t)).join("");
+
+  // Wait for browser to paint before measuring offsetWidth
+  requestAnimationFrame(() => {
+    sizeSlider();
+    updateToursSlider();
+  });
+
+  // Resize handler — debounced
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      currentTourPage = 0;
+      sizeSlider();
+      updateToursSlider();
+    }, 150);
+  });
+
+  // Dots
+  const dots = document.getElementById("toursDots");
+  if (dots) {
+    const rebuildDots = () => {
+      const total = getTotalPages();
+      dots.innerHTML = Array.from(
+        { length: total },
+        (_, i) =>
+          `<button class="slider-dot ${i === 0 ? "active" : ""}" data-i="${i}"></button>`,
+      ).join("");
+      dots.querySelectorAll(".slider-dot").forEach((d) =>
+        d.addEventListener("click", () => {
+          currentTourPage = +d.dataset.i;
+          updateToursSlider();
+          clearInterval(toursSliderInterval);
+          startToursAuto();
+        }),
+      );
+    };
+    rebuildDots();
+    window.addEventListener("resize", rebuildDots);
+  }
+
+  document.getElementById("toursNext")?.addEventListener("click", () => {
+    currentTourPage = (currentTourPage + 1) % getTotalPages();
+    updateToursSlider();
+    clearInterval(toursSliderInterval);
+    startToursAuto();
+  });
+  document.getElementById("toursPrev")?.addEventListener("click", () => {
+    currentTourPage = (currentTourPage - 1 + getTotalPages()) % getTotalPages();
+    updateToursSlider();
+    clearInterval(toursSliderInterval);
+    startToursAuto();
+  });
+
+  startToursAuto();
+}
+
+function sizeSlider() {
+  const wrap = document.getElementById("toursSlider")?.parentElement;
+  const slider = document.getElementById("toursSlider");
+  if (!slider || !wrap) return;
+
+  // Temporarily remove transform so offsetWidth is accurate
+  slider.style.transition = "none";
+  slider.style.transform = "translateX(0)";
+
+  const visible = getVisibleTours();
+  const wrapWidth = wrap.offsetWidth; // measured after reset
+
+  if (wrapWidth === 0) {
+    // DOM not ready yet — retry
+    requestAnimationFrame(sizeSlider);
+    return;
+  }
+
+  const slotWidth = wrapWidth / visible;
+
+  // Set each slot to exact pixel width
+  slider.querySelectorAll(".slide-slot").forEach((slot) => {
+    slot.style.width = slotWidth + "px";
+    slot.style.minWidth = slotWidth + "px";
+    slot.style.maxWidth = slotWidth + "px";
+  });
+
+  // Total track width = number of cards × slot width
+  slider.style.width = slotWidth * TOURS.length + "px";
+
+  // Re-enable transition
+  requestAnimationFrame(() => {
+    slider.style.transition =
+      "transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)";
+  });
+}
+
+function startToursAuto() {
+  toursSliderInterval = setInterval(() => {
+    currentTourPage = (currentTourPage + 1) % getTotalPages();
+    updateToursSlider();
+  }, 5000);
+}
+
+function updateToursSlider() {
+  const wrap = document.getElementById("toursSlider")?.parentElement;
+  const slider = document.getElementById("toursSlider");
+  if (!slider || !wrap) return;
+
+  const visible = getVisibleTours();
+  const wrapWidth = wrap.offsetWidth;
+  if (wrapWidth === 0) return;
+
+  // Read slot width from the DOM (set by sizeSlider)
+  const firstSlot = slider.querySelector(".slide-slot");
+  const slotWidth = firstSlot ? firstSlot.offsetWidth : wrapWidth / visible;
+  const pxOffset = currentTourPage * visible * slotWidth;
+
+  slider.style.transform = `translateX(-${pxOffset}px)`;
+
+  // Update dots
+  document
+    .querySelectorAll(".slider-dot")
+    .forEach((d, i) => d.classList.toggle("active", i === currentTourPage));
+}
+
+function buildTourCard(t) {
   return `
-    <div class="tour-card" data-id="${t.id}">
-      <div class="tour-img">
-        <img src="${t.img}" alt="${t.title}" loading="lazy" onerror="this.parentElement.classList.add('img-placeholder');this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-image\\'></i><span>${t.title}</span>'">
-        <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
-        <span class="tour-cat">${t.category}</span>
-        <button class="tour-wishlist" onclick="toggleWishlist(this)" title="Save to wishlist"><i class="fas fa-heart"></i></button>
-      </div>
-      <div class="tour-body">
-        <div class="tour-rating">
-          <span class="stars">${"★".repeat(t.rating)}</span>
-          <span>${t.rating}.0</span>
-          <span class="count">(${t.reviews} Reviews)</span>
+    <div class="slide-slot">
+      <div class="tour-card" data-id="${t.id}">
+        <div class="tour-img">
+          <img src="${t.img}" alt="${t.title}" loading="lazy"
+               onerror="this.style.display='none';this.parentElement.style.background='#e0e7ef';this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#aaa;font-size:13px;font-family:var(--font-head)\'>Image coming soon</div>'">
+          <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
+          <span class="tour-cat">${t.category}</span>
+          <button class="tour-wishlist" onclick="event.stopPropagation();toggleWishlist(this)" title="Save">
+            <i class="fas fa-heart"></i>
+          </button>
         </div>
-        <h5>${t.title}</h5>
-        <div class="tour-loc"><i class="fas fa-map-marker-alt"></i> ${t.location}</div>
-        <div class="tour-divider"></div>
-        <div class="tour-footer-row">
-          <div class="tour-price">
-            <div class="from-lbl">Starts From</div>
-            <span class="amount">${fmt(t.price)}</span>
-            ${t.oldPrice ? `<span class="old-price">${fmt(t.oldPrice)}</span>` : ""}
+        <div class="tour-body">
+          <div class="tour-rating">
+            <span class="stars">${"★".repeat(t.rating)}</span>
+            <span>${t.rating}.0</span>
+            <span class="count">(${t.reviews} Reviews)</span>
           </div>
-          <div class="tour-meta-row">
-            <span><i class="fas fa-clock"></i> ${t.days} Days</span>
-            <span><i class="fas fa-users"></i> ${t.guests}</span>
+          <h5>${t.title}</h5>
+          <div class="tour-loc"><i class="fas fa-map-marker-alt"></i> ${t.location}</div>
+          <div class="tour-divider"></div>
+          <div class="tour-footer-row">
+            <div class="tour-price">
+              <div class="from-lbl">Starts From</div>
+              <span class="amount">${fmt(t.price)}</span>
+              ${t.oldPrice ? `<span class="old-price">${fmt(t.oldPrice)}</span>` : ""}
+            </div>
+            <div class="tour-meta-row">
+              <span><i class="fas fa-clock"></i> ${t.days}D/${t.nights}N</span>
+              <span><i class="fas fa-users"></i> ${t.guests}</span>
+            </div>
           </div>
+          <button class="send-request-btn" onclick="event.stopPropagation();openEnquiry(${t.id})">
+            <i class="fas fa-paper-plane"></i> SEND REQUEST NOW
+          </button>
         </div>
-        <button class="send-request-btn" onclick="openEnquiry(${t.id})">
-          <i class="fas fa-paper-plane"></i> SEND REQUEST NOW
-        </button>
       </div>
     </div>
   `;
@@ -813,21 +891,24 @@ function buildBlogs() {
 
 /* ===== TESTIMONIALS SLIDER ===== */
 function buildTestimonials() {
-  const slider = $("#testiSlider");
-  const dots = $("#testiDots");
+  const slider = document.getElementById("testiSlider");
+  const dots = document.getElementById("testiDots");
   if (!slider) return;
+
+  // Build slides — each slide is exactly 100% of the slider-wrap width
   slider.innerHTML = REVIEWS.map(
     (r) => `
     <div class="testi-slide">
       <div class="testi-card">
-        <div class="testi-quote">"</div>
+        <span class="testi-quote">&#8220;</span>
         <div class="testi-stars">${'<i class="fas fa-star"></i>'.repeat(r.rating)}</div>
-        <p class="testi-text">"${r.text}"</p>
+        <p class="testi-text">&ldquo;${r.text}&rdquo;</p>
         <div class="testi-author">
-          <img src="${r.img}" alt="${r.name}" onerror="this.style.display='none'">
+          <img src="${r.img}" alt="${r.name}"
+               onerror="this.outerHTML='<div style=\'width:48px;height:48px;border-radius:50%;background:var(--bg2);flex-shrink:0\'></div>'">
           <div>
             <h6>${r.name}</h6>
-            <span>${r.country} · ${r.tour}</span>
+            <span>${r.country}&nbsp;&middot;&nbsp;${r.tour}</span>
           </div>
         </div>
       </div>
@@ -835,12 +916,13 @@ function buildTestimonials() {
   `,
   ).join("");
 
+  // Build dots
   if (dots) {
     dots.innerHTML = REVIEWS.map(
       (_, i) =>
-        `<button class="testi-dot ${i === 0 ? "active" : ""}" data-i="${i}"></button>`,
+        `<button class="testi-dot ${i === 0 ? "active" : ""}" data-i="${i}" aria-label="Review ${i + 1}"></button>`,
     ).join("");
-    $$(".testi-dot", dots).forEach((d) =>
+    dots.querySelectorAll(".testi-dot").forEach((d) =>
       d.addEventListener("click", () => {
         currentTestiSlide = +d.dataset.i;
         updateTesti();
@@ -861,12 +943,25 @@ function startTestiAuto() {
 }
 
 function updateTesti() {
-  const slider = $("#testiSlider");
-  if (slider)
-    slider.style.transform = `translateX(-${currentTestiSlide * 100}%)`;
-  $$(".testi-dot").forEach((d, i) =>
-    d.classList.toggle("active", i === currentTestiSlide),
-  );
+  const slider = document.getElementById("testiSlider");
+  if (!slider) return;
+
+  // Use pixel-based translation (same bulletproof approach as tour slider)
+  const wrap = slider.parentElement;
+  const wrapW = wrap ? wrap.offsetWidth : 0;
+  const offset =
+    wrapW > 0
+      ? currentTestiSlide * wrapW // px per slide = wrap width
+      : currentTestiSlide * 100; // fallback (shouldn't happen)
+
+  // If wrapWidth is 0 DOM not ready — translateX % still works here because
+  // each .testi-slide is min-width:100% of the flex parent which IS the wrap
+  slider.style.transform = `translateX(-${currentTestiSlide * 100}%)`;
+
+  // Sync dots
+  document
+    .querySelectorAll(".testi-dot")
+    .forEach((d, i) => d.classList.toggle("active", i === currentTestiSlide));
 }
 
 /* ===== PARTNERS ===== */
