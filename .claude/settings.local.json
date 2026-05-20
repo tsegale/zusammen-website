@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"C:\\\\Users\\\\jammyy\\\\Desktop\\\\Zusammen\\\\zusammen-backend\\\\database\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\jammyy\\\\Desktop\\\\Zusammen\\\\zusammen-backend\\\\routes\")",
+      "Bash(npm install *)",
+      "Bash(node database/seed.js)",
+      "Bash(npm rebuild *)",
+      "Bash(Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue)",
+      "Bash(node server.js)",
+      "Bash(curl -s http://localhost:3000/api/health)",
+      "Bash(curl -s http://localhost:3000/api/tours)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'count={d[\\\\\"count\\\\\"]}, first={d[\\\\\"data\\\\\"][0][\\\\\"title\\\\\"]}'\\)\")",
+      "Bash(curl -s http://localhost:3000/api/tours/1)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'title={d[\\\\\"title\\\\\"]}, includes={d[\\\\\"includes\\\\\"][0]}'\\)\")",
+      "Bash(curl -s \"http://localhost:3000/api/tours?location=Kenya\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'count={d[\\\\\"count\\\\\"]}'\\)\")",
+      "Bash(curl -s http://localhost:3000/api/blogs)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'total={d[\\\\\"total\\\\\"]}, pages={d[\\\\\"pages\\\\\"]}'\\)\")",
+      "Bash(curl -s http://localhost:3000/api/faqs)",
+      "Bash(curl -s -X POST http://localhost:3000/api/enquiries -H 'Content-Type: application/json' -d '{\"tour_id\":1,\"tour_name\":\"Namibia Desert & Etosha Safari\",\"first_name\":\"James\",\"last_name\":\"Smith\",\"email\":\"james@example.com\",\"phone\":\"+264 81 123 4567\",\"travel_from\":\"2026-07-10\",\"travel_to\":\"2026-07-18\",\"adults\":2,\"children\":1,\"message\":\"Private guide please.\"}')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d\\)\")",
+      "Bash(curl -s http://localhost:3000/api/enquiries -H 'x-admin-key: zusammen-admin-secret-key-2026')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'total={d[\\\\\"total\\\\\"]}'\\)\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/tours -H 'Content-Type: application/json' -H 'x-admin-key: zusammen-admin-secret-key-2026' -d '{\"title\":\"Test Safari\",\"location\":\"Zambia\",\"category\":\"Luxury Safaris\",\"price\":75000,\"days\":5,\"nights\":4}')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'id={d[\\\\\"id\\\\\"]}, title={d[\\\\\"title\\\\\"]}'\\)\")",
+      "Bash(curl -s -X DELETE http://localhost:3000/api/tours/7 -H 'x-admin-key: zusammen-admin-secret-key-2026')",
+      "Bash(curl -s -X DELETE http://localhost:3000/api/tours/1)",
+      "Bash(curl -s http://localhost:3000/api/tours/999)",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('count='+d.count+', first='+d.data[0].title\\)\")",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('title='+d.title+', includes='+JSON.stringify\\(d.includes\\)\\)\")",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('count='+d.count\\)\")",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('total='+d.total+', pages='+d.pages\\)\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/enquiries -H 'Content-Type: application/json' -d '{\"tour_id\":1,\"tour_name\":\"Namibia Desert & Etosha Safari\",\"first_name\":\"James\",\"last_name\":\"Smith\",\"email\":\"james@example.com\",\"travel_from\":\"2026-07-10\",\"travel_to\":\"2026-07-18\",\"adults\":2,\"children\":1,\"message\":\"Private guide please.\"}')",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\(JSON.stringify\\(d\\)\\)\")",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\)\\); console.log\\('total='+d.total\\)\")"
+    ]
+  }
+}
