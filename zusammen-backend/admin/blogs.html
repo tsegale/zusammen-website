@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blogs — Zusammen Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>ZUSAMMEN TOURS</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="section-label">Main Menu</span>
+    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
+    <a href="/admin/blogs.html" class="active"><span class="icon">✏️</span> Blogs</a>
+    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
+    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-nav sidebar-bottom">
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
+    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <h1>Blogs</h1>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-accent" onclick="openAddPanel()">+ Add New Blog</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="card">
+    <div class="card-header">
+      <h2>All Blog Posts</h2>
+      <span id="blogCount" class="text-muted text-sm"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Tag</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="blogsBody">
+          <tr class="loading-row"><td colspan="6">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeBlogPanel()"></div>
+
+<!-- SLIDE-IN PANEL -->
+<div class="panel" id="blogPanel">
+  <div class="panel-header">
+    <h3 id="panelTitle">Add New Blog</h3>
+    <button class="close-btn" onclick="closeBlogPanel()">×</button>
+  </div>
+  <div class="panel-body">
+    <input type="hidden" id="blogId" />
+
+    <div class="panel-section">
+      <div class="panel-section-label">Post Details</div>
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" id="f_title" placeholder="e.g. Why Booking Through a Travel Agency Matters" />
+      </div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Tag / Category</label>
+          <input type="text" id="f_tag" placeholder="e.g. Travel Tips" />
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" id="f_author" placeholder="Zusammen Tours" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Published Date</label>
+        <input type="date" id="f_published_at" />
+      </div>
+      <div class="form-group">
+        <label>Read Time</label>
+        <input type="text" id="f_read_time" placeholder="e.g. 5 min read" />
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Content</div>
+      <div class="form-group">
+        <label>Excerpt (short summary)</label>
+        <textarea id="f_excerpt" rows="3" placeholder="A brief 1–2 sentence summary shown in blog listings…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Full Content (HTML allowed)</label>
+        <textarea id="f_content" rows="10" placeholder="&lt;p&gt;Write your full blog post here…&lt;/p&gt;"></textarea>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Media</div>
+      <div class="form-group">
+        <label>Cover Image URL</label>
+        <input type="text" id="f_image_url" placeholder="assets/blogs/your-image.jpg" />
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-ghost" onclick="closeBlogPanel()">Cancel</button>
+    <button class="btn btn-primary" id="saveBlogBtn" onclick="saveBlog()">Save Blog</button>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  let blogs = [];
+
+  async function loadBlogs() {
+    try {
+      const data = await apiFetch("/api/admin/blogs");
+      blogs = data.data || [];
+      renderBlogs(blogs);
+      document.getElementById("blogCount").textContent = `${blogs.length} posts`;
+    } catch (err) {
+      showToast("Failed to load blogs: " + err.message, "error");
+    }
+  }
+
+  function renderBlogs(list) {
+    const tbody = document.getElementById("blogsBody");
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">✏️</div><p>No blog posts yet.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(b => `
+      <tr>
+        <td class="fw-600" title="${b.title}" style="max-width:240px">${b.title}</td>
+        <td><span class="badge badge-in-progress" style="font-size:11px">${b.tag || "—"}</span></td>
+        <td class="text-muted">${b.author || "—"}</td>
+        <td class="text-muted">${formatDate(b.published_at)}</td>
+        <td>${getActiveBadge(b.active)}</td>
+        <td>
+          <div class="td-actions">
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${b.id})">✏</button>
+            <button class="btn btn-sm ${b.active ? "btn-danger" : "btn-accent"}" onclick="toggleBlog(${b.id}, ${b.active})">
+              ${b.active ? "Deactivate" : "Activate"}
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function openAddPanel() {
+    document.getElementById("panelTitle").textContent = "Add New Blog";
+    document.getElementById("blogId").value = "";
+    document.getElementById("saveBlogBtn").textContent = "Save Blog";
+    clearForm();
+    openPanel("panelOverlay", "blogPanel");
+  }
+
+  function openEditPanel(id) {
+    const b = blogs.find(x => x.id === id);
+    if (!b) return;
+    document.getElementById("panelTitle").textContent = "Edit Blog";
+    document.getElementById("blogId").value = b.id;
+    document.getElementById("saveBlogBtn").textContent = "Update Blog";
+    document.getElementById("f_title").value       = b.title || "";
+    document.getElementById("f_tag").value         = b.tag || "";
+    document.getElementById("f_author").value      = b.author || "Zusammen Tours";
+    document.getElementById("f_read_time").value   = b.read_time || "";
+    document.getElementById("f_excerpt").value     = b.excerpt || "";
+    document.getElementById("f_content").value     = b.content || "";
+    document.getElementById("f_image_url").value   = b.image_url || "";
+    if (b.published_at) {
+      const d = new Date(b.published_at);
+      if (!isNaN(d)) document.getElementById("f_published_at").value = d.toISOString().slice(0, 10);
+    }
+    openPanel("panelOverlay", "blogPanel");
+  }
+
+  function closeBlogPanel() { closePanel("panelOverlay", "blogPanel"); }
+
+  function clearForm() {
+    ["f_title","f_tag","f_author","f_read_time","f_excerpt","f_content","f_image_url","f_published_at"]
+      .forEach(id => { document.getElementById(id).value = ""; });
+    document.getElementById("f_author").value = "Zusammen Tours";
+    document.getElementById("f_published_at").value = new Date().toISOString().slice(0, 10);
+  }
+
+  async function saveBlog() {
+    const id    = document.getElementById("blogId").value;
+    const title = document.getElementById("f_title").value.trim();
+    if (!title) { showToast("Title is required", "error"); return; }
+
+    const body = {
+      title,
+      tag:          document.getElementById("f_tag").value.trim() || null,
+      author:       document.getElementById("f_author").value.trim() || "Zusammen Tours",
+      read_time:    document.getElementById("f_read_time").value.trim() || null,
+      excerpt:      document.getElementById("f_excerpt").value.trim() || null,
+      content:      document.getElementById("f_content").value.trim() || null,
+      image_url:    document.getElementById("f_image_url").value.trim() || null,
+      published_at: document.getElementById("f_published_at").value || new Date().toISOString(),
+    };
+
+    const btn = document.getElementById("saveBlogBtn");
+    btn.disabled = true; btn.textContent = "Saving…";
+
+    try {
+      if (id) {
+        await apiFetch(`/api/blogs/${id}`, { method: "PUT", body: JSON.stringify(body) });
+        showToast("Blog updated", "success");
+      } else {
+        await apiFetch("/api/blogs", { method: "POST", body: JSON.stringify(body) });
+        showToast("Blog created", "success");
+      }
+      closeBlogPanel();
+      await loadBlogs();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? "Update Blog" : "Save Blog";
+    }
+  }
+
+  async function toggleBlog(id, currentlyActive) {
+    const action = currentlyActive ? "deactivate" : "activate";
+    if (!confirm(`${action.charAt(0).toUpperCase() + action.slice(1)} this blog post?`)) return;
+    try {
+      await apiFetch(`/api/blogs/${id}`, { method: "PUT", body: JSON.stringify({ active: currentlyActive ? 0 : 1 }) });
+      showToast(`Blog ${action}d`, "success");
+      await loadBlogs();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    }
+  }
+
+  checkAuth().then(ok => { if (ok) loadBlogs(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Zusammen Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>ZUSAMMEN TOURS</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="section-label">Main Menu</span>
+    <a href="/admin/index.html" class="active"><span class="icon">📊</span> Dashboard</a>
+    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
+    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
+    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
+    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-nav sidebar-bottom">
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
+    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <h1>Dashboard</h1>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Stat Cards -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card blue">
+      <div class="stat-icon">🗺</div>
+      <div class="stat-info"><h3 id="statTours">—</h3><p>Active Tours</p></div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">✏️</div>
+      <div class="stat-info"><h3 id="statBlogs">—</h3><p>Published Blogs</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❓</div>
+      <div class="stat-info"><h3 id="statFaqs">—</h3><p>Active FAQs</p></div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon">✉️</div>
+      <div class="stat-info"><h3 id="statNew">—</h3><p>New Enquiries</p></div>
+    </div>
+  </div>
+
+  <!-- Recent Enquiries -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Recent Enquiries</h2>
+      <a href="/admin/enquiries.html" class="btn btn-ghost btn-sm">View All</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Tour</th>
+            <th>Travel Dates</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="enquiriesBody">
+          <tr class="loading-row"><td colspan="6">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script src="admin.js"></script>
+<script>
+  async function loadDashboard() {
+    try {
+      const stats = await apiFetch("/api/admin/stats");
+      document.getElementById("statTours").textContent = stats.tours;
+      document.getElementById("statBlogs").textContent = stats.blogs;
+      document.getElementById("statFaqs").textContent = stats.faqs;
+      document.getElementById("statNew").textContent  = stats.newEnquiries;
+    } catch (err) {
+      showToast("Failed to load stats: " + err.message, "error");
+    }
+
+    try {
+      const data = await apiFetch("/api/enquiries?limit=10");
+      const tbody = document.getElementById("enquiriesBody");
+      const rows = data.data || [];
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>No enquiries yet</p></div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map(e => `
+        <tr class="tr-link" onclick="window.location='/admin/enquiries.html'">
+          <td>${formatDate(e.created_at)}</td>
+          <td class="fw-600">${e.first_name} ${e.last_name}</td>
+          <td class="text-muted">${e.email}</td>
+          <td>${e.tour_name || "—"}</td>
+          <td>${e.travel_from ? formatDate(e.travel_from) + " → " + formatDate(e.travel_to) : "—"}</td>
+          <td>${getStatusBadge(e.status)}</td>
+        </tr>
+      `).join("");
+    } catch (err) {
+      showToast("Failed to load enquiries: " + err.message, "error");
+    }
+  }
+
+  checkAuth().then(ok => { if (ok) loadDashboard(); });
+</script>
+</body>
+</html>

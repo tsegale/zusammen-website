@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tours — Zusammen Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>ZUSAMMEN TOURS</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="section-label">Main Menu</span>
+    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a href="/admin/tours.html" class="active"><span class="icon">🗺</span> Tours</a>
+    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
+    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
+    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-nav sidebar-bottom">
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
+    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <h1>Tours</h1>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-accent" onclick="openAddPanel()">+ Add New Tour</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="card">
+    <div class="card-header">
+      <h2 id="tableTitle">All Tours</h2>
+      <span id="tourCount" class="text-muted text-sm"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Price (NAD)</th>
+            <th>Days</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="toursBody">
+          <tr class="loading-row"><td colspan="7">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeTourPanel()"></div>
+
+<!-- SLIDE-IN PANEL -->
+<div class="panel" id="tourPanel">
+  <div class="panel-header">
+    <h3 id="panelTitle">Add New Tour</h3>
+    <button class="close-btn" onclick="closeTourPanel()">×</button>
+  </div>
+  <div class="panel-body">
+    <input type="hidden" id="tourId" />
+
+    <div class="panel-section">
+      <div class="panel-section-label">Basic Info</div>
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" id="f_title" placeholder="e.g. Namibia Desert & Etosha Safari" required />
+      </div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" id="f_location" placeholder="e.g. Namibia" />
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="f_category">
+            <option value="">Select category…</option>
+            <option>All-Inclusive Safaris</option>
+            <option>Cross Border Luxury Safaris</option>
+            <option>Family Safaris</option>
+            <option>Fly-In Safaris</option>
+            <option>Luxury Safaris</option>
+            <option>Self-Drive Safaris</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Pricing (NAD)</div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Price *</label>
+          <input type="number" id="f_price" placeholder="85000" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Old Price (optional)</label>
+          <input type="number" id="f_old_price" placeholder="95000" min="0" />
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Schedule & Capacity</div>
+      <div class="form-row cols-3">
+        <div class="form-group">
+          <label>Days *</label>
+          <input type="number" id="f_days" placeholder="8" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Nights *</label>
+          <input type="number" id="f_nights" placeholder="7" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Max Guests</label>
+          <input type="number" id="f_guests" placeholder="12" min="1" />
+        </div>
+      </div>
+      <div class="form-row cols-4">
+        <div class="form-group">
+          <label>Min Age</label>
+          <input type="number" id="f_min_age" placeholder="6" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Min People</label>
+          <input type="number" id="f_min_people" placeholder="2" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Max People</label>
+          <input type="number" id="f_max_people" placeholder="12" min="1" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Available Dates</label>
+        <input type="text" id="f_available_dates" placeholder="Year-round, best Jun–Oct" />
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Content</div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="f_description" rows="3" placeholder="Brief description of the tour…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Destinations</label>
+        <input type="text" id="f_destinations" placeholder="Windhoek → Sossusvlei → Etosha" />
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Lists (one item per line)</div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Includes</label>
+          <textarea id="f_includes" rows="4" placeholder="Professional guide&#10;Luxury lodge&#10;All meals"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Excludes</label>
+          <textarea id="f_excludes" rows="4" placeholder="International flights&#10;Visa fees&#10;Travel insurance"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Highlights</label>
+        <textarea id="f_highlights" rows="3" placeholder="Sossusvlei red dunes&#10;Etosha game drives"></textarea>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Media</div>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input type="text" id="f_image_url" placeholder="assets/gallery/etosha-national-park.jpg" />
+        <p class="form-hint">Relative path from frontend root or absolute URL</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-ghost" onclick="closeTourPanel()">Cancel</button>
+    <button class="btn btn-primary" id="saveTourBtn" onclick="saveTour()">Save Tour</button>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  let tours = [];
+
+  async function loadTours() {
+    try {
+      const data = await apiFetch("/api/admin/tours");
+      tours = data.data || [];
+      renderTours(tours);
+      document.getElementById("tourCount").textContent = `${tours.length} tours`;
+    } catch (err) {
+      showToast("Failed to load tours: " + err.message, "error");
+    }
+  }
+
+  function renderTours(list) {
+    const tbody = document.getElementById("toursBody");
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🗺</div><p>No tours yet. Add your first tour!</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(t => `
+      <tr>
+        <td class="fw-600" title="${t.title}">${t.title}</td>
+        <td>${t.location}</td>
+        <td class="text-muted">${t.category}</td>
+        <td>${formatPrice(t.price)}</td>
+        <td>${t.days}D / ${t.nights}N</td>
+        <td>${getActiveBadge(t.active)}</td>
+        <td>
+          <div class="td-actions">
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${t.id})">✏</button>
+            <button class="btn btn-sm ${t.active ? 'btn-danger' : 'btn-accent'}" onclick="toggleTour(${t.id}, ${t.active})">
+              ${t.active ? "Deactivate" : "Activate"}
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function openAddPanel() {
+    document.getElementById("panelTitle").textContent = "Add New Tour";
+    document.getElementById("tourId").value = "";
+    document.getElementById("saveTourBtn").textContent = "Save Tour";
+    clearForm();
+    openPanel("panelOverlay", "tourPanel");
+  }
+
+  function openEditPanel(id) {
+    const t = tours.find(x => x.id === id);
+    if (!t) return;
+    document.getElementById("panelTitle").textContent = "Edit Tour";
+    document.getElementById("tourId").value = t.id;
+    document.getElementById("saveTourBtn").textContent = "Update Tour";
+    document.getElementById("f_title").value         = t.title || "";
+    document.getElementById("f_location").value      = t.location || "";
+    document.getElementById("f_category").value      = t.category || "";
+    document.getElementById("f_price").value         = t.price || "";
+    document.getElementById("f_old_price").value     = t.old_price || "";
+    document.getElementById("f_days").value          = t.days || "";
+    document.getElementById("f_nights").value        = t.nights || "";
+    document.getElementById("f_guests").value        = t.guests || "";
+    document.getElementById("f_min_age").value       = t.min_age || "";
+    document.getElementById("f_min_people").value    = t.min_people || "";
+    document.getElementById("f_max_people").value    = t.max_people || "";
+    document.getElementById("f_available_dates").value = t.available_dates || "";
+    document.getElementById("f_description").value   = t.description || "";
+    document.getElementById("f_destinations").value  = t.destinations || "";
+    document.getElementById("f_includes").value      = (t.includes || []).join("\n");
+    document.getElementById("f_excludes").value      = (t.excludes || []).join("\n");
+    document.getElementById("f_highlights").value    = (t.highlights || []).join("\n");
+    document.getElementById("f_image_url").value     = t.image_url || "";
+    openPanel("panelOverlay", "tourPanel");
+  }
+
+  function closeTourPanel() { closePanel("panelOverlay", "tourPanel"); }
+
+  function clearForm() {
+    ["f_title","f_location","f_price","f_old_price","f_days","f_nights",
+     "f_guests","f_min_age","f_min_people","f_max_people","f_available_dates",
+     "f_description","f_destinations","f_includes","f_excludes","f_highlights","f_image_url"]
+      .forEach(id => { document.getElementById(id).value = ""; });
+    document.getElementById("f_category").value = "";
+  }
+
+  function lines(id) {
+    return document.getElementById(id).value.split("\n").map(s => s.trim()).filter(Boolean);
+  }
+
+  async function saveTour() {
+    const id = document.getElementById("tourId").value;
+    const title    = document.getElementById("f_title").value.trim();
+    const location = document.getElementById("f_location").value.trim();
+    const category = document.getElementById("f_category").value;
+    const price    = parseFloat(document.getElementById("f_price").value);
+    const days     = parseInt(document.getElementById("f_days").value);
+    const nights   = parseInt(document.getElementById("f_nights").value);
+
+    if (!title || !location || !category || isNaN(price) || isNaN(days) || isNaN(nights)) {
+      showToast("Please fill in all required fields (Title, Location, Category, Price, Days, Nights)", "error");
+      return;
+    }
+
+    const body = {
+      title, location, category, price,
+      old_price:       parseFloat(document.getElementById("f_old_price").value) || null,
+      days, nights,
+      guests:          parseInt(document.getElementById("f_guests").value) || 12,
+      min_age:         parseInt(document.getElementById("f_min_age").value) || 0,
+      min_people:      parseInt(document.getElementById("f_min_people").value) || 2,
+      max_people:      parseInt(document.getElementById("f_max_people").value) || 12,
+      available_dates: document.getElementById("f_available_dates").value.trim() || null,
+      description:     document.getElementById("f_description").value.trim() || null,
+      destinations:    document.getElementById("f_destinations").value.trim() || null,
+      includes:        lines("f_includes"),
+      excludes:        lines("f_excludes"),
+      highlights:      lines("f_highlights"),
+      image_url:       document.getElementById("f_image_url").value.trim() || null,
+    };
+
+    const btn = document.getElementById("saveTourBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try {
+      if (id) {
+        await apiFetch(`/api/tours/${id}`, { method: "PUT", body: JSON.stringify(body) });
+        showToast("Tour updated successfully", "success");
+      } else {
+        await apiFetch("/api/tours", { method: "POST", body: JSON.stringify(body) });
+        showToast("Tour created successfully", "success");
+      }
+      closeTourPanel();
+      await loadTours();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? "Update Tour" : "Save Tour";
+    }
+  }
+
+  async function toggleTour(id, currentlyActive) {
+    const action = currentlyActive ? "deactivate" : "activate";
+    if (!confirm(`Are you sure you want to ${action} this tour?`)) return;
+    try {
+      await apiFetch(`/api/tours/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ active: currentlyActive ? 0 : 1 }),
+      });
+      showToast(`Tour ${action}d`, "success");
+      await loadTours();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    }
+  }
+
+  checkAuth().then(ok => { if (ok) loadTours(); });
+</script>
+</body>
+</html>

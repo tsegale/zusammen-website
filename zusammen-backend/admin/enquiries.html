@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enquiries — Zusammen Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <style>
+    .enquiry-message {
+      background: #F8FAFC; border-left: 3px solid var(--accent);
+      padding: 12px 14px; border-radius: 0 8px 8px 0;
+      font-size: 13.5px; line-height: 1.6; color: var(--text);
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .detail-section { margin-bottom: 18px; }
+    .detail-section-title {
+      font-size: 10.5px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .7px; color: var(--accent);
+      margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border);
+    }
+    .status-select-row { display: flex; gap: 10px; align-items: center; margin-top: 16px; }
+    .status-select-row select { max-width: 200px; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>ZUSAMMEN TOURS</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="section-label">Main Menu</span>
+    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
+    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
+    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
+    <a href="/admin/enquiries.html" class="active"><span class="icon">✉️</span> Enquiries</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-nav sidebar-bottom">
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
+    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <h1>Enquiries</h1>
+  </div>
+  <div class="topbar-right">
+    <span id="totalCount" class="text-muted text-sm"></span>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- Filter Bar -->
+  <div class="card" style="padding:16px 22px;margin-bottom:18px">
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all"      onclick="setFilter('all')">All</button>
+      <button class="filter-btn"        data-filter="new"      onclick="setFilter('new')">New</button>
+      <button class="filter-btn"        data-filter="in-progress" onclick="setFilter('in-progress')">In Progress</button>
+      <button class="filter-btn"        data-filter="replied"  onclick="setFilter('replied')">Replied</button>
+      <button class="filter-btn"        data-filter="closed"   onclick="setFilter('closed')">Closed</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Tour</th>
+            <th>Travel Dates</th>
+            <th>Guests</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="enquiriesBody">
+          <tr class="loading-row"><td colspan="8">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 id="modalName">Enquiry Details</h3>
+      <button class="close-btn" onclick="closeModal('modalOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="detail-section">
+        <div class="detail-section-title">Tour & Travel</div>
+        <div class="detail-grid">
+          <span class="detail-label">Tour</span>
+          <span class="detail-value" id="d_tour_name">—</span>
+          <span class="detail-label">Travel From</span>
+          <span class="detail-value" id="d_travel_from">—</span>
+          <span class="detail-value" id="d_travel_to" style="display:none"></span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Client Contact</div>
+        <div class="detail-grid">
+          <span class="detail-label">Full Name</span>
+          <span class="detail-value fw-600" id="d_name">—</span>
+          <span class="detail-label">Email</span>
+          <span class="detail-value" id="d_email">—</span>
+          <span class="detail-label">Phone</span>
+          <span class="detail-value" id="d_phone">—</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Party Size</div>
+        <div class="detail-grid">
+          <span class="detail-label">Adults</span>
+          <span class="detail-value" id="d_adults">—</span>
+          <span class="detail-label">Children (3–12)</span>
+          <span class="detail-value" id="d_children">—</span>
+          <span class="detail-label">Child Price</span>
+          <span class="detail-value text-muted" style="font-size:12px">60% of adult rate (ages 3–12)</span>
+        </div>
+      </div>
+
+      <div class="detail-section" id="messageSection">
+        <div class="detail-section-title">Message</div>
+        <div class="enquiry-message" id="d_message"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Update Status</div>
+        <div class="status-select-row">
+          <select id="statusSelect">
+            <option value="new">New</option>
+            <option value="in-progress">In Progress</option>
+            <option value="replied">Replied</option>
+            <option value="closed">Closed</option>
+          </select>
+          <button class="btn btn-primary" onclick="updateStatus()" id="updateStatusBtn">Update Status</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <span id="d_created" class="text-muted text-sm"></span>
+      <button class="btn btn-ghost" onclick="closeModal('modalOverlay')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  let allEnquiries = [];
+  let currentFilter = "all";
+  let currentEnquiryId = null;
+
+  async function loadEnquiries() {
+    try {
+      const data = await apiFetch("/api/enquiries?limit=200");
+      allEnquiries = data.data || [];
+      renderEnquiries();
+      document.getElementById("totalCount").textContent = `${allEnquiries.length} total`;
+    } catch (err) {
+      showToast("Failed to load enquiries: " + err.message, "error");
+    }
+  }
+
+  function setFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.filter === filter);
+    });
+    renderEnquiries();
+  }
+
+  function renderEnquiries() {
+    const list = currentFilter === "all"
+      ? allEnquiries
+      : allEnquiries.filter(e => e.status === currentFilter);
+
+    const tbody = document.getElementById("enquiriesBody");
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">✉️</div><p>No enquiries${currentFilter !== "all" ? " with status "" + currentFilter + """ : ""}.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(e => `
+      <tr class="tr-link" onclick="openEnquiry(${e.id})">
+        <td class="text-muted">${formatDate(e.created_at)}</td>
+        <td class="fw-600">${e.first_name} ${e.last_name}</td>
+        <td class="text-muted" style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${e.email}</td>
+        <td class="text-muted">${e.phone || "—"}</td>
+        <td style="max-width:160px" title="${e.tour_name || ""}">${e.tour_name || "—"}</td>
+        <td class="text-muted">
+          ${e.travel_from ? formatDate(e.travel_from) + " → " + formatDate(e.travel_to) : "—"}
+        </td>
+        <td>${e.adults}A / ${e.children}C</td>
+        <td>${getStatusBadge(e.status)}</td>
+      </tr>
+    `).join("");
+  }
+
+  function openEnquiry(id) {
+    const e = allEnquiries.find(x => x.id === id);
+    if (!e) return;
+    currentEnquiryId = id;
+
+    document.getElementById("modalName").textContent = `${e.first_name} ${e.last_name}`;
+    document.getElementById("d_tour_name").textContent  = e.tour_name || "—";
+    document.getElementById("d_travel_from").textContent = e.travel_from
+      ? formatDate(e.travel_from) + " → " + formatDate(e.travel_to)
+      : "—";
+    document.getElementById("d_name").textContent    = `${e.first_name} ${e.last_name}`;
+    document.getElementById("d_email").textContent   = e.email;
+    document.getElementById("d_phone").textContent   = e.phone || "—";
+    document.getElementById("d_adults").textContent   = e.adults;
+    document.getElementById("d_children").textContent = e.children;
+
+    const msgSection = document.getElementById("messageSection");
+    if (e.message) {
+      document.getElementById("d_message").textContent = e.message;
+      msgSection.style.display = "block";
+    } else {
+      msgSection.style.display = "none";
+    }
+
+    document.getElementById("d_created").textContent = "Received " + formatDate(e.created_at);
+    document.getElementById("statusSelect").value = e.status || "new";
+
+    openModal("modalOverlay");
+  }
+
+  function handleOverlayClick(event) {
+    if (event.target === event.currentTarget) closeModal("modalOverlay");
+  }
+
+  async function updateStatus() {
+    if (!currentEnquiryId) return;
+    const status = document.getElementById("statusSelect").value;
+    const btn = document.getElementById("updateStatusBtn");
+    btn.disabled = true; btn.textContent = "Saving…";
+
+    try {
+      await apiFetch(`/api/enquiries/${currentEnquiryId}`, {
+        method: "PUT",
+        body: JSON.stringify({ status }),
+      });
+      // Update local cache
+      const e = allEnquiries.find(x => x.id === currentEnquiryId);
+      if (e) e.status = status;
+      showToast("Status updated to "" + status + """, "success");
+      closeModal("modalOverlay");
+      renderEnquiries();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    } finally {
+      btn.disabled = false; btn.textContent = "Update Status";
+    }
+  }
+
+  checkAuth().then(ok => { if (ok) loadEnquiries(); });
+</script>
+</body>
+</html>

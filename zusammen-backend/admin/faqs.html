@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQs — Zusammen Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>ZUSAMMEN TOURS</h2>
+    <p>Admin Panel</p>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="section-label">Main Menu</span>
+    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
+    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
+    <a href="/admin/faqs.html" class="active"><span class="icon">❓</span> FAQs</a>
+    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-nav sidebar-bottom">
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
+    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+  </div>
+</aside>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <h1>FAQs</h1>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-accent" onclick="openAddPanel()">+ Add New FAQ</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="card">
+    <div class="card-header">
+      <h2>Frequently Asked Questions</h2>
+      <span id="faqCount" class="text-muted text-sm"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px">Order</th>
+            <th>Question</th>
+            <th style="width:90px">Status</th>
+            <th style="width:200px">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="faqsBody">
+          <tr class="loading-row"><td colspan="4">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeFaqPanel()"></div>
+
+<!-- SLIDE-IN PANEL -->
+<div class="panel" id="faqPanel">
+  <div class="panel-header">
+    <h3 id="panelTitle">Add New FAQ</h3>
+    <button class="close-btn" onclick="closeFaqPanel()">×</button>
+  </div>
+  <div class="panel-body">
+    <input type="hidden" id="faqId" />
+    <div class="form-group">
+      <label>Question *</label>
+      <input type="text" id="f_question" placeholder="e.g. What is your cancellation policy?" />
+    </div>
+    <div class="form-group">
+      <label>Answer *</label>
+      <textarea id="f_answer" rows="6" placeholder="Write the answer here…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Sort Order</label>
+      <input type="number" id="f_sort_order" placeholder="1" min="0" />
+      <p class="form-hint">Lower numbers appear first. FAQs with the same order are sorted by ID.</p>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-ghost" onclick="closeFaqPanel()">Cancel</button>
+    <button class="btn btn-primary" id="saveFaqBtn" onclick="saveFaq()">Save FAQ</button>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+<script>
+  let faqs = [];
+
+  async function loadFaqs() {
+    try {
+      const data = await apiFetch("/api/admin/faqs");
+      faqs = data.data || [];
+      renderFaqs(faqs);
+      document.getElementById("faqCount").textContent = `${faqs.length} FAQs`;
+    } catch (err) {
+      showToast("Failed to load FAQs: " + err.message, "error");
+    }
+  }
+
+  function renderFaqs(list) {
+    const tbody = document.getElementById("faqsBody");
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">❓</div><p>No FAQs yet.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map((f, idx) => `
+      <tr>
+        <td class="text-muted fw-600">${f.sort_order}</td>
+        <td title="${f.question}">${f.question}</td>
+        <td>${getActiveBadge(f.active)}</td>
+        <td>
+          <div class="td-actions" style="flex-wrap:wrap">
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${f.id})">✏</button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Move Up" onclick="moveUp(${idx})" ${idx === 0 ? "disabled" : ""}>↑</button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Move Down" onclick="moveDown(${idx})" ${idx === list.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="btn btn-sm ${f.active ? "btn-danger" : "btn-accent"}" onclick="toggleFaq(${f.id}, ${f.active})">
+              ${f.active ? "Off" : "On"}
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  async function moveUp(idx) {
+    if (idx === 0) return;
+    await swapOrder(faqs[idx], faqs[idx - 1]);
+  }
+
+  async function moveDown(idx) {
+    if (idx >= faqs.length - 1) return;
+    await swapOrder(faqs[idx], faqs[idx + 1]);
+  }
+
+  async function swapOrder(a, b) {
+    try {
+      const aOrder = a.sort_order;
+      const bOrder = b.sort_order;
+      // If same order value, use IDs to differentiate
+      const newA = bOrder === aOrder ? bOrder - 1 : bOrder;
+      const newB = bOrder === aOrder ? aOrder + 1 : aOrder;
+      await Promise.all([
+        apiFetch(`/api/faqs/${a.id}`, { method: "PUT", body: JSON.stringify({ sort_order: newA }) }),
+        apiFetch(`/api/faqs/${b.id}`, { method: "PUT", body: JSON.stringify({ sort_order: newB }) }),
+      ]);
+      await loadFaqs();
+    } catch (err) {
+      showToast("Reorder failed: " + err.message, "error");
+    }
+  }
+
+  function openAddPanel() {
+    document.getElementById("panelTitle").textContent = "Add New FAQ";
+    document.getElementById("faqId").value = "";
+    document.getElementById("saveFaqBtn").textContent = "Save FAQ";
+    document.getElementById("f_question").value = "";
+    document.getElementById("f_answer").value = "";
+    document.getElementById("f_sort_order").value = faqs.length + 1;
+    openPanel("panelOverlay", "faqPanel");
+  }
+
+  function openEditPanel(id) {
+    const f = faqs.find(x => x.id === id);
+    if (!f) return;
+    document.getElementById("panelTitle").textContent = "Edit FAQ";
+    document.getElementById("faqId").value = f.id;
+    document.getElementById("saveFaqBtn").textContent = "Update FAQ";
+    document.getElementById("f_question").value   = f.question || "";
+    document.getElementById("f_answer").value     = f.answer || "";
+    document.getElementById("f_sort_order").value = f.sort_order || 0;
+    openPanel("panelOverlay", "faqPanel");
+  }
+
+  function closeFaqPanel() { closePanel("panelOverlay", "faqPanel"); }
+
+  async function saveFaq() {
+    const id       = document.getElementById("faqId").value;
+    const question = document.getElementById("f_question").value.trim();
+    const answer   = document.getElementById("f_answer").value.trim();
+    if (!question || !answer) { showToast("Question and answer are required", "error"); return; }
+
+    const body = {
+      question, answer,
+      sort_order: parseInt(document.getElementById("f_sort_order").value) || 0,
+    };
+
+    const btn = document.getElementById("saveFaqBtn");
+    btn.disabled = true; btn.textContent = "Saving…";
+
+    try {
+      if (id) {
+        await apiFetch(`/api/faqs/${id}`, { method: "PUT", body: JSON.stringify(body) });
+        showToast("FAQ updated", "success");
+      } else {
+        await apiFetch("/api/faqs", { method: "POST", body: JSON.stringify(body) });
+        showToast("FAQ created", "success");
+      }
+      closeFaqPanel();
+      await loadFaqs();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? "Update FAQ" : "Save FAQ";
+    }
+  }
+
+  async function toggleFaq(id, currentlyActive) {
+    try {
+      await apiFetch(`/api/faqs/${id}`, { method: "PUT", body: JSON.stringify({ active: currentlyActive ? 0 : 1 }) });
+      showToast("FAQ status updated", "success");
+      await loadFaqs();
+    } catch (err) {
+      showToast("Error: " + err.message, "error");
+    }
+  }
+
+  checkAuth().then(ok => { if (ok) loadFaqs(); });
+</script>
+</body>
+</html>
