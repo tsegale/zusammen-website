@@ -750,6 +750,8 @@
                   style="margin-top: 16px"
                 >
                   <input type="hidden" id="enquiryTourInput" name="tour" />
+                  <input type="hidden" name="adults" id="hdnAdults" value="1" />
+                  <input type="hidden" name="children" id="hdnChildren" value="0" />
                   <div class="booking-field">
                     <label>Travel From</label
                     ><input type="date" name="travelFrom" id="bookFrom" />
@@ -982,6 +984,7 @@
       <i class="fas fa-arrow-up"></i>
     </button>
 
+    <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
       const THUMB_IMGS = [
@@ -1041,11 +1044,35 @@
   `;
       }
 
-      function loadTour() {
+      async function loadTourFromAPI(id) {
+        try {
+          const res = await fetch(
+            'http://localhost:3000/api/tours/' + id
+          );
+          if (!res.ok) return null;
+          const t = await res.json();
+          // Map backend field names to frontend names
+          return {
+            ...t,
+            oldPrice:       t.old_price      ?? null,
+            minAge:         t.min_age        ?? 6,
+            minPeople:      t.min_people     ?? 2,
+            maxPeople:      t.max_people     ?? 12,
+            img:            t.image_url      || '',
+            availableDates: t.available_dates || '',
+            includes:  Array.isArray(t.includes)   ? t.includes   : JSON.parse(t.includes   || '[]'),
+            excludes:  Array.isArray(t.excludes)   ? t.excludes   : JSON.parse(t.excludes   || '[]'),
+            highlights:Array.isArray(t.highlights) ? t.highlights : JSON.parse(t.highlights || '[]'),
+          };
+        } catch { return null; }
+      }
+
+      async function loadTour() {
         const id = parseInt(
           new URLSearchParams(window.location.search).get("id") || "1",
         );
-        const tour = ZT.TOURS.find((t) => t.id === id) || ZT.TOURS[0];
+        const apiTour = await loadTourFromAPI(id);
+        const tour = apiTour || ZT.TOURS.find((t) => t.id === id) || ZT.TOURS[0];
         currentTour = tour;
 
         document.title = `${tour.title} – Zusammen Tours`;
@@ -1119,17 +1146,25 @@
         updatePriceBreakdown();
       }
 
-      // Form submit
+      // Form submit — sends to backend via WPAPI
       document
         .getElementById("detailEnquiryForm")
-        ?.addEventListener("submit", function (e) {
+        ?.addEventListener("submit", async function (e) {
           e.preventDefault();
+          // Sync counter values into hidden inputs before reading FormData
+          document.getElementById("hdnAdults").value   = bookAdults;
+          document.getElementById("hdnChildren").value = bookChildren;
           const btn = this.querySelector('[type="submit"]');
           btn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
           btn.disabled = true;
-          setTimeout(() => {
+          const result = await WPAPI.submitEnquiry(this, currentTour?.title || '');
+          if (result.success) {
             this.innerHTML = `<div style="text-align:center;padding:20px"><i class="fas fa-check-circle" style="font-size:48px;color:var(--secondary);display:block;margin-bottom:12px"></i><h4 style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--dark)">Request Sent!</h4><p style="color:var(--text-light);margin-top:8px">Our team will contact you within 24 hours regarding your interest in <strong>${currentTour?.title}</strong>.</p></div>`;
-          }, 1200);
+          } else {
+            btn.innerHTML = 'SEND REQUEST NOW <i class="fas fa-paper-plane"></i>';
+            btn.disabled = false;
+            alert('Unable to send your request. Please call us on +264 81 245 5852.');
+          }
         });
 
       document.addEventListener("DOMContentLoaded", loadTour);

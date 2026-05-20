@@ -32,7 +32,7 @@ function adminOnly(req, res, next) {
 router.get("/", (req, res) => {
   try {
     const { category, location, q } = req.query;
-    let sql = "SELECT * FROM tours WHERE active = 1";
+    let sql = "SELECT * FROM tours WHERE 1=1";
     const params = [];
 
     if (category) {
