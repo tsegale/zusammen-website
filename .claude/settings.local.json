@@ -61,7 +61,24 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/admin/admin.js)",
       "Bash(git rm *)",
       "Bash(git add *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "Bash(curl -s -c /tmp/cookies2.txt -H 'Origin: http://localhost:3000' -H 'Content-Type: application/json' -X POST http://localhost:3000/api/admin/login -d '{\"email\":\"admin@zusammentours.com\",\"password\":\"admin123\"}' -v)",
+      "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}\\\\n' -X OPTIONS http://localhost:3000/api/admin/login -H 'Origin: http://localhost:3000' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type' -v)",
+      "Bash(curl -s -X POST http://localhost:3000/api/admin/login -H 'Origin: http://localhost:3000' -H 'Content-Type: application/json' -d '{\"email\":\"wrong@test.com\",\"password\":\"badpass\"}')",
+      "Bash(curl -s -c /tmp/admin_test.txt -X POST http://localhost:3000/api/admin/login -H 'Origin: http://localhost:3000' -H 'Content-Type: application/json' -d '{\"email\":\"admin@zusammentours.com\",\"password\":\"admin123\"}')",
+      "Bash(curl -s -b /tmp/admin_test.txt http://localhost:3000/api/admin/check)",
+      "Bash(curl -s -b /tmp/admin_test.txt http://localhost:3000/api/admin/stats)",
+      "Bash(curl -s -b /tmp/admin_test.txt http://localhost:3000/api/admin/tours)",
+      "Bash(python -c \"import sys,json;d=json.load\\(sys.stdin\\);print\\(f'  Tours:   {d[\\\\\"count\\\\\"]} records'\\)\")",
+      "Bash(curl -s -b /tmp/admin_test.txt http://localhost:3000/api/admin/blogs)",
+      "Bash(python -c \"import sys,json;d=json.load\\(sys.stdin\\);print\\(f'  Blogs:   {d[\\\\\"count\\\\\"]} records'\\)\")",
+      "Bash(curl -s -b /tmp/admin_test.txt http://localhost:3000/api/admin/faqs)",
+      "Bash(python -c \"import sys,json;d=json.load\\(sys.stdin\\);print\\(f'  FAQs:    {d[\\\\\"count\\\\\"]} records'\\)\")",
+      "Bash(curl -s -b /tmp/admin_test.txt \"http://localhost:3000/api/enquiries?limit=50\")",
+      "Bash(python -c \"import sys,json;d=json.load\\(sys.stdin\\);print\\(f'  Enquiries: {d[\\\\\"count\\\\\"]} records'\\)\")",
+      "Bash(curl -s -b /tmp/admin_test.txt -X PUT http://localhost:3000/api/faqs/1 -H 'Content-Type: application/json' -d '{\"sort_order\":1}')",
+      "Bash(curl -s -b /tmp/admin_test.txt -X PUT http://localhost:3000/api/enquiries/1 -H 'Content-Type: application/json' -d '{\"status\":\"new\"}')"
     ]
   }
 }
