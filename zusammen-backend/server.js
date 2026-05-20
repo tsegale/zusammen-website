@@ -15,23 +15,28 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 /* ── CORS ─────────────────────────────────────────────────────── */
-const allowedOrigins = [
-  process.env.FRONTEND_URL || "http://127.0.0.1:5500",
-  "https://zusammentravels.com",
-  "https://www.zusammentravels.com",
-];
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowed = [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      "http://localhost:5500",
+      "http://127.0.0.1:5500",
+      "http://localhost",
+      "https://zusammentravels.com",
+      "https://www.zusammentravels.com",
+      process.env.FRONTEND_URL,
+    ].filter(Boolean);
+    if (!origin || allowed.includes(origin)) return callback(null, true);
+    callback(new Error("CORS: origin not allowed"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-admin-key"],
+};
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      callback(new Error("CORS: origin not allowed"));
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "x-admin-key"],
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 /* ── BODY PARSER ──────────────────────────────────────────────── */
 app.use(express.json());
@@ -42,7 +47,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "zusammen-secret-2026",
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, sameSite: "lax", maxAge: 8 * 60 * 60 * 1000 },
+    cookie: { secure: false, httpOnly: true, sameSite: "lax", maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 
@@ -96,6 +101,8 @@ app.post("/api/admin/login", (req, res) => {
   const adminEmail    = process.env.ADMIN_EMAIL    || "admin@zusammentours.com";
   const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
 
+  console.log(`[login] received email="${email}" | expected="${adminEmail}"`);
+
   if (!email || !password)
     return res.status(400).json({ error: "Email and password are required" });
   if (email !== adminEmail)
@@ -104,6 +111,8 @@ app.post("/api/admin/login", (req, res) => {
   const valid = adminPassword.startsWith("$2")
     ? bcrypt.compareSync(password, adminPassword)
     : password === adminPassword;
+
+  console.log(`[login] password valid=${valid}`);
 
   if (!valid) return res.status(401).json({ error: "Invalid credentials" });
 
