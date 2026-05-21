@@ -1244,8 +1244,12 @@ function renderTours(tours) {
   }
 
   grid.innerHTML = tours.map(t => {
-    const img = t.img || t.image_url ||
+    let img = t.img || t.image_url ||
       '../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg';
+    // DB stores paths relative to root (assets/...). Fix for pages/ subdirectory.
+    if (img && !img.startsWith('http') && !img.startsWith('/') && !img.startsWith('../')) {
+      img = '../' + img;
+    }
     return `
       <div class="tour-card"
            style="cursor:pointer"
