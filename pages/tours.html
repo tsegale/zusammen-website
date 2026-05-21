@@ -985,16 +985,32 @@
       const API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
       const TOUR_TYPES = [
-        { name: "Across Borders Safaris",  icon: "fa-globe-africa",   img: "../assets/gallery/okavango-delta-botswana-wetland-safari-mokoro-excursion.jpg" },
-        { name: "All-Inclusive Safaris",   icon: "fa-star",           img: "../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg" },
-        { name: "Beyond Namibia Safaris",  icon: "fa-map-marked-alt", img: "../assets/gallery/victoria-falls-zimbabwe-waterfall-adventure.webp" },
-        { name: "Family Safaris",          icon: "fa-users",          img: "../assets/gallery/maasai-mara-kenya-safari-wildlife.jpg" },
-        { name: "Fly-In Safaris",          icon: "fa-plane",          img: "../assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg" },
-        { name: "Luxury Safaris",          icon: "fa-crown",          img: "../assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg" },
-        { name: "Self-Drive Safaris",      icon: "fa-car",            img: "../assets/gallery/sossusvlei-namibia-red-sand-dunes-and-deadvlei-clay-pan-at-sunrise.jpg" },
+        { name: "Across Borders Safaris",  icon: "fa-globe-africa"   },
+        { name: "All-Inclusive Safaris",   icon: "fa-star"           },
+        { name: "Beyond Namibia Safaris",  icon: "fa-map-marked-alt" },
+        { name: "Family Safaris",          icon: "fa-users"          },
+        { name: "Fly-In Safaris",          icon: "fa-plane"          },
+        { name: "Luxury Safaris",          icon: "fa-crown"          },
+        { name: "Self-Drive Safaris",      icon: "fa-car"            },
       ];
 
       let activeType = null;
+
+      // Override openEnquiry so it finds tours in ALL_TOURS (API data) not just the
+      // hardcoded fallback TOURS array in main.js
+      window.openEnquiry = function (tourId) {
+        const tour = (window.ALL_TOURS || []).find(t => t.id == tourId)
+                  || (window.ZT && ZT.TOURS.find(t => t.id == tourId));
+        const modal   = document.getElementById('enquiryModal');
+        const nameEl  = document.getElementById('enquiryTourName');
+        const inputEl = document.getElementById('enquiryTourInput');
+        if (nameEl)  nameEl.textContent  = tour ? 'Enquiry for: ' + tour.title : '';
+        if (inputEl) inputEl.value       = tour ? tour.title : '';
+        if (modal) {
+          modal.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      };
 
       function buildTypePills() {
         const wrap = document.getElementById('typePills');
@@ -1005,7 +1021,10 @@
             <div class="type-pill-icon"><i class="fas ${t.icon}"></i></div>
             <div>
               <h6>${t.name}</h6>
-              <span>${tours.filter(tour => tour.category === t.name || t.name.includes(tour.category.split(' ')[0])).length || 0} Tours</span>
+              <span>${tours.filter(tour =>
+                tour.category === t.name ||
+                t.name.toLowerCase().includes(tour.category.split(' ')[0].toLowerCase())
+              ).length} Tours</span>
             </div>
           </div>`).join('');
 
@@ -1035,9 +1054,9 @@
 
       function applyFilters() {
         let tours = [...(window.ALL_TOURS || [])];
-        const searchVal = document.getElementById('filterSearch')?.value?.toLowerCase() || '';
-        const priceMin  = parseInt(document.getElementById('priceMin')?.value  || 0);
-        const priceMax  = parseInt(document.getElementById('priceMax')?.value  || 9999999);
+        const searchVal = (document.getElementById('filterSearch')?.value || '').toLowerCase();
+        const priceMin  = Number(document.getElementById('priceMin')?.value  ?? 0);
+        const priceMax  = Number(document.getElementById('priceMax')?.value  ?? 9999999);
         const sort      = document.getElementById('sortSelect')?.value || 'recommended';
 
         const urlQ   = new URLSearchParams(window.location.search).get('q');
@@ -1088,10 +1107,10 @@
             }));
         }
 
-        if (sort === 'price-asc')     tours.sort((a, b) => a.price - b.price);
-        else if (sort === 'price-desc')    tours.sort((a, b) => b.price - a.price);
-        else if (sort === 'duration-asc')  tours.sort((a, b) => a.days  - b.days);
-        else if (sort === 'rating')        tours.sort((a, b) => b.rating - a.rating);
+        if (sort === 'price-asc')        tours.sort((a, b) => a.price  - b.price);
+        else if (sort === 'price-desc')  tours.sort((a, b) => b.price  - a.price);
+        else if (sort === 'duration-asc')tours.sort((a, b) => a.days   - b.days);
+        else if (sort === 'rating')      tours.sort((a, b) => b.rating - a.rating);
 
         renderTours(tours);
       }
@@ -1113,51 +1132,67 @@
           return;
         }
 
-        const fmt = n => 'N$' + Number(n).toLocaleString('en-ZA');
+        // Use the same buildTourCard from main.js to keep identical card UI
+        if (window.ZT && ZT.buildTourCard) {
+          grid.innerHTML = tours.map(t => ZT.buildTourCard(t)).join('');
+        } else {
+          // Fallback if ZT not ready — identical card markup
+          const fmtP = n => 'N$' + Number(n).toLocaleString('en-ZA');
+          grid.innerHTML = tours.map(t => `
+            <div class="slide-slot">
+              <div class="tour-card" data-id="${t.id}">
+                <div class="tour-img">
+                  <img src="${t.img || t.image_url || ''}" alt="${t.title}" loading="lazy"
+                       onerror="this.style.display='none';this.parentElement.style.background='#e0e7ef'">
+                  <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
+                  <span class="tour-cat">${t.category}</span>
+                  <button class="tour-wishlist" onclick="event.stopPropagation();toggleWishlist(this)" title="Save">
+                    <i class="fas fa-heart"></i>
+                  </button>
+                </div>
+                <div class="tour-body">
+                  <div class="tour-rating">
+                    <span class="stars">${'★'.repeat(t.rating || 5)}</span>
+                    <span>${t.rating || 5}.0</span>
+                    <span class="count">(${t.reviews || 0} Reviews)</span>
+                  </div>
+                  <h5>${t.title}</h5>
+                  <div class="tour-loc"><i class="fas fa-map-marker-alt"></i> ${t.location}</div>
+                  <div class="tour-divider"></div>
+                  <div class="tour-footer-row">
+                    <div class="tour-price">
+                      <div class="from-lbl">Starts From</div>
+                      <span class="amount">${fmtP(t.price)}</span>
+                      ${t.oldPrice ? `<span class="old-price">${fmtP(t.oldPrice)}</span>` : ''}
+                    </div>
+                    <div class="tour-meta-row">
+                      <span><i class="fas fa-clock"></i> ${t.days}D/${t.nights}N</span>
+                      <span><i class="fas fa-users"></i> ${t.guests}</span>
+                    </div>
+                  </div>
+                  <button class="send-request-btn" onclick="event.stopPropagation();openEnquiry(${t.id})">
+                    <i class="fas fa-paper-plane"></i> SEND REQUEST NOW
+                  </button>
+                </div>
+              </div>
+            </div>`).join('');
+        }
 
-        grid.innerHTML = tours.map(t => {
-          const img = t.img || t.image_url || '../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg';
-          return `
-            <div class="tour-card" onclick="window.location='tour-detail.html?id=${t.id}'" style="cursor:pointer">
-              <div class="tour-img">
-                <img src="${img}" alt="${t.title}" loading="lazy"
-                     onerror="this.style.display='none';this.parentElement.style.background='var(--bg2)'">
-                <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
-                <span class="tour-cat">${t.category}</span>
-              </div>
-              <div class="tour-body">
-                <div class="tour-rating">
-                  <span class="stars">${'★'.repeat(t.rating || 5)}</span>
-                  <span>${t.rating || 5}.0</span>
-                  <span class="count">(${t.reviews || 0} Reviews)</span>
-                </div>
-                <h5>${t.title}</h5>
-                <div class="tour-loc"><i class="fas fa-map-marker-alt"></i> ${t.location}</div>
-                <div class="tour-divider"></div>
-                <div class="tour-footer-row">
-                  <div class="tour-price">
-                    <div class="from-lbl">Starts From</div>
-                    <span class="amount">${fmt(t.price)}</span>
-                    ${t.oldPrice ? `<span class="old-price">${fmt(t.oldPrice)}</span>` : ''}
-                  </div>
-                  <div class="tour-meta-row">
-                    <span><i class="fas fa-clock"></i> ${t.days}D/${t.nights}N</span>
-                    <span><i class="fas fa-users"></i> ${t.guests}</span>
-                  </div>
-                </div>
-                <button class="send-request-btn"
-                        onclick="event.stopPropagation();window.location='tour-detail.html?id=${t.id}'">
-                  <i class="fas fa-eye"></i> VIEW TOUR
-                </button>
-              </div>
-            </div>`;
-        }).join('');
+        // Make clicking the card body navigate to tour detail
+        grid.querySelectorAll('.tour-card').forEach(card => {
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', (e) => {
+            if (!e.target.closest('.tour-wishlist, .send-request-btn')) {
+              window.location = 'tour-detail.html?id=' + card.dataset.id;
+            }
+          });
+        });
       }
 
       function resetFilters() {
         document.getElementById('filterSearch').value = '';
         document.getElementById('priceMin').value = 0;
-        document.getElementById('priceMax').value = 500000;
+        document.getElementById('priceMax').value = 2000000;
         document.querySelectorAll('.dest-check, .type-check, .dur-check').forEach(c => c.checked = false);
         activeType = null;
         document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
@@ -1182,40 +1217,60 @@
             console.log('tours.html: loaded', tours.length, 'tours from API');
           }
         } catch (err) {
-          console.warn('tours.html: API failed, using fallback');
+          console.warn('tours.html: API failed, using ZT.TOURS fallback');
         }
 
+        // Fallback to hardcoded tours from main.js if API unreachable
         if (!tours.length && window.ZT && ZT.TOURS && ZT.TOURS.length) {
-          tours = ZT.TOURS;
+          tours = [...ZT.TOURS];
         }
 
-        // Set price filter range from actual data so no tours are hidden by default
+        window.ALL_TOURS = tours;
+
+        // Reset price filter to cover all actual tours (avoids filtering them out)
         if (tours.length) {
           const prices = tours.map(t => t.price).filter(Boolean);
           const maxP   = Math.ceil(Math.max(...prices) * 1.1);
           const minEl  = document.getElementById('priceMin');
           const maxEl  = document.getElementById('priceMax');
-          if (minEl) { minEl.value = 0; minEl.min = 0; }
+          if (minEl) { minEl.value = 0;    minEl.min = 0; }
           if (maxEl) { maxEl.value = maxP; maxEl.max = maxP; }
         }
-
-        window.ALL_TOURS = tours;
 
         buildTypePills();
         applyFilters();
 
+        // Wire sidebar search + filters
         document.getElementById('filterSearch')?.addEventListener('input', () => setTimeout(applyFilters, 300));
         document.getElementById('priceMin')?.addEventListener('input', applyFilters);
         document.getElementById('priceMax')?.addEventListener('input', applyFilters);
         document.querySelectorAll('.dest-check, .dur-check').forEach(c => c.addEventListener('change', applyFilters));
 
+        // Override the top search button: main.js navigates to pages/tours.html?q=...
+        // which is wrong when already in pages/. Clone removes old listener then we add ours.
+        const searchBtn = document.getElementById('searchBtn');
+        if (searchBtn) {
+          const clone = searchBtn.cloneNode(true);
+          searchBtn.parentNode.replaceChild(clone, searchBtn);
+          clone.addEventListener('click', () => {
+            const dest = document.getElementById('destInput')?.value?.trim();
+            if (!dest) { document.getElementById('destInput')?.focus(); return; }
+            const fs = document.getElementById('filterSearch');
+            if (fs) { fs.value = dest; }
+            applyFilters();
+            document.querySelector('.filters-sidebar')?.scrollIntoView({ behavior: 'smooth' });
+          });
+        }
+
+        // Pre-select category from URL ?cat=
         const urlCat = new URLSearchParams(window.location.search).get('cat');
         if (urlCat) {
+          const catStr = urlCat.replace(/\+/g, ' ');
           document.querySelectorAll('.type-pill').forEach(p => {
             if (p.querySelector('h6')?.textContent?.toLowerCase()
-                  .includes(urlCat.replace(/\+/g, ' ').split(' ')[0].toLowerCase())) {
+                  .includes(catStr.split(' ')[0].toLowerCase())) {
               p.classList.add('active');
-              activeType = urlCat.replace(/\+/g, ' ');
+              activeType = catStr;
             }
           });
           applyFilters();
