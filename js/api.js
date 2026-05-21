@@ -5,6 +5,7 @@
    ============================================================ */
 
 const API_BASE = 'http://localhost:3000/api';
+window.API_BASE = API_BASE;
 
 /* ── fetchTours ──────────────────────────────────────────── */
 async function fetchTours() {

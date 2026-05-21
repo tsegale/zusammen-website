@@ -995,6 +995,9 @@
         "../assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
       ];
 
+      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
+      const fmt = n => 'N$' + Number(n).toLocaleString('en-ZA');
+
       let bookAdults = 1,
         bookChildren = 0,
         currentTour = null;
@@ -1038,97 +1041,110 @@
         const pb = document.getElementById("priceBreakdown");
         if (!pb) return;
         pb.innerHTML = `
-    <div class="price-line"><span>Adults (${bookAdults} × ${ZT.fmt(currentTour.price)})</span><span>${ZT.fmt(adultTotal)}</span></div>
-    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${ZT.fmt(childRate)}) <span class="child-note">60% off</span></span><span>${ZT.fmt(childTotal)}</span></div>` : ""}
-    <div class="price-line total"><span>Total Estimate</span><span>${ZT.fmt(grand)}</span></div>
+    <div class="price-line"><span>Adults (${bookAdults} × ${fmt(currentTour.price)})</span><span>${fmt(adultTotal)}</span></div>
+    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${fmt(childRate)}) <span class="child-note">60% off</span></span><span>${fmt(childTotal)}</span></div>` : ""}
+    <div class="price-line total"><span>Total Estimate</span><span>${fmt(grand)}</span></div>
   `;
       }
 
-      async function loadTourFromAPI(id) {
-        try {
-          const res = await fetch(
-            'http://localhost:3000/api/tours/' + id
-          );
-          if (!res.ok) return null;
-          return await res.json();
-        } catch { return null; }
-      }
-
       async function loadTour() {
-        const id = parseInt(
-          new URLSearchParams(window.location.search).get("id") || "1",
-        );
-        const apiTour = await loadTourFromAPI(id);
-        const tour = apiTour || ZT.TOURS.find((t) => t.id === id) || ZT.TOURS[0];
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (!id) return;
+
+        let tour = null;
+
+        try {
+          const res = await fetch(API_BASE + '/tours/' + id);
+          if (res.ok) {
+            tour = await res.json();
+            console.log('tour-detail: loaded from API:', tour.title);
+          }
+        } catch (err) {
+          console.warn('tour-detail: API failed');
+        }
+
+        if (!tour && window.ZT && ZT.TOURS) {
+          tour = ZT.TOURS.find(t => t.id == id) || null;
+        }
+
+        if (!tour) {
+          const el = document.getElementById('detailTitle');
+          if (el) el.textContent = 'Tour not found';
+          return;
+        }
+
+        // Normalise field names — API returns camelCase but be safe with fallbacks
+        tour.img            = tour.img            || tour.image_url      || '';
+        tour.oldPrice       = tour.oldPrice       || tour.old_price      || null;
+        tour.minAge         = tour.minAge         || tour.min_age        || 6;
+        tour.minPeople      = tour.minPeople      || tour.min_people     || 2;
+        tour.maxPeople      = tour.maxPeople      || tour.max_people     || 12;
+        tour.availableDates = tour.availableDates || tour.available_dates || 'Year-round';
+
+        const safeParse = v => {
+          if (!v) return [];
+          if (Array.isArray(v)) return v;
+          try { return JSON.parse(v); }
+          catch { return v.split('\n').map(s => s.trim()).filter(Boolean); }
+        };
+        tour.includes   = safeParse(tour.includes);
+        tour.excludes   = safeParse(tour.excludes);
+        tour.highlights = safeParse(tour.highlights);
+
         currentTour = tour;
 
-        document.title = `${tour.title} – Zusammen Tours`;
-        document.getElementById("detailHeroTitle").textContent = tour.title;
-        document.getElementById("detailBreadcrumb").textContent = tour.title;
-        document.getElementById("detailTitle").textContent = tour.title;
-        document.getElementById("detailLocation").textContent = tour.location;
-        document.getElementById("detailCategory").textContent = tour.category;
-        document.getElementById("detailStars").innerHTML =
-          "★".repeat(tour.rating) + "☆".repeat(5 - tour.rating);
-        document.getElementById("detailReviews").textContent = tour.reviews;
-        document.getElementById("detailDesc").textContent = tour.description;
-        document.getElementById("bookPrice").textContent = ZT.fmt(tour.price);
-        document.getElementById("enquiryTourInput").value = tour.title;
-        if (tour.oldPrice)
-          document.getElementById("bookOldPrice").innerHTML =
-            `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${ZT.fmt(tour.oldPrice)}</span>`;
-        document.getElementById("bookDest").textContent =
-          tour.destinations?.split("→")[0] || tour.location;
-        document.getElementById("bookDates").textContent =
-          tour.availableDates || "Year-round";
-        document.getElementById("bookDuration").textContent =
-          `${tour.days} Days, ${tour.nights} Nights`;
-        document.getElementById("bookPeople").textContent =
-          `Min ${tour.minPeople || 2}, Max ${tour.maxPeople || tour.guests}`;
-        document.getElementById("bookMinAge").textContent =
-          `${tour.minAge || 6} years`;
-        document.getElementById("locPickup").textContent =
-          tour.destinations?.split("→")[0]?.trim() || tour.location;
-        document.getElementById("locDropoff").textContent =
-          tour.destinations?.split("→").slice(-1)[0]?.trim() || tour.location;
+        document.title = tour.title + ' – Zusammen Tours';
 
-        // Highlights
-        const hl = document.getElementById("detailHighlights");
-        if (hl && tour.highlights)
-          hl.innerHTML = tour.highlights
-            .map(
-              (h) =>
-                `<div class="highlight-item"><i class="fas fa-check-circle"></i><span>${h}</span></div>`,
-            )
-            .join("");
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || ''; };
 
-        // Includes/Excludes
-        const inc = document.getElementById("detailIncludes");
-        const exc = document.getElementById("detailExcludes");
-        if (inc && tour.includes)
-          inc.innerHTML = tour.includes
-            .map(
-              (i) =>
-                `<div class="inc-item"><i class="fas fa-check"></i><span>${i}</span></div>`,
-            )
-            .join("");
-        if (exc && tour.excludes)
-          exc.innerHTML = tour.excludes
-            .map(
-              (e) =>
-                `<div class="exc-item"><i class="fas fa-times"></i><span>${e}</span></div>`,
-            )
-            .join("");
+        set('detailHeroTitle',  tour.title);
+        set('detailBreadcrumb', tour.title);
+        set('detailTitle',      tour.title);
+        set('detailLocation',   tour.location);
+        set('detailCategory',   tour.category);
+        set('detailReviews',    tour.reviews || 0);
+        set('detailDesc',       tour.description);
+        set('bookDest',         tour.destinations?.split('→')[0]?.trim() || tour.location);
+        set('bookDates',        tour.availableDates);
+        set('bookDuration',     tour.days + ' Days, ' + tour.nights + ' Nights');
+        set('bookPeople',       'Min ' + tour.minPeople + ', Max ' + tour.maxPeople);
+        set('bookMinAge',       tour.minAge + ' years');
+        set('bookPrice',        fmt(tour.price));
+        set('locPickup',        tour.destinations?.split('→')[0]?.trim()       || tour.location);
+        set('locDropoff',       tour.destinations?.split('→').slice(-1)[0]?.trim() || tour.location);
 
-        // Gallery
-        const imgs = [tour.img, ...THUMB_IMGS.slice(0, 4)];
-        document.getElementById("mainImg").src = tour.img;
-        document.getElementById("thumbsRow").innerHTML = imgs
-          .map(
-            (img, i) =>
-              `<div class="detail-thumb ${i === 0 ? "active" : ""}" onclick="setThumb(${i})"><img src="${img}" alt="Tour photo ${i + 1}"></div>`,
-          )
-          .join("");
+        const starsEl = document.getElementById('detailStars');
+        if (starsEl) starsEl.innerHTML = '★'.repeat(tour.rating || 5) + '☆'.repeat(5 - (tour.rating || 5));
+
+        const enquiryInput = document.getElementById('enquiryTourInput');
+        if (enquiryInput) enquiryInput.value = tour.title;
+
+        const oldPriceEl = document.getElementById('bookOldPrice');
+        if (oldPriceEl && tour.oldPrice)
+          oldPriceEl.innerHTML = `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${fmt(tour.oldPrice)}</span>`;
+
+        const mainImg = document.getElementById('mainImg');
+        if (mainImg && tour.img) mainImg.src = tour.img;
+
+        const hl = document.getElementById('detailHighlights');
+        if (hl && tour.highlights.length)
+          hl.innerHTML = tour.highlights.map(h =>
+            `<div class="highlight-item"><i class="fas fa-check-circle"></i><span>${h}</span></div>`).join('');
+
+        const inc = document.getElementById('detailIncludes');
+        if (inc && tour.includes.length)
+          inc.innerHTML = tour.includes.map(i =>
+            `<div class="inc-item"><i class="fas fa-check"></i><span>${i}</span></div>`).join('');
+
+        const exc = document.getElementById('detailExcludes');
+        if (exc && tour.excludes.length)
+          exc.innerHTML = tour.excludes.map(e =>
+            `<div class="exc-item"><i class="fas fa-times"></i><span>${e}</span></div>`).join('');
+
+        const galleryImgs = [tour.img, ...THUMB_IMGS.slice(0, 4)].filter(Boolean);
+        document.getElementById('thumbsRow').innerHTML = galleryImgs.map((img, i) =>
+          `<div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="setThumb(${i})"><img src="${img}" alt="Tour photo ${i + 1}"></div>`
+        ).join('');
 
         updatePriceBreakdown();
       }

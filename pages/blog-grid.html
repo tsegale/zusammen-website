@@ -559,24 +559,28 @@
         },
       ];
 
-      let displayedCount = 9;
-      let activeTag = "All";
+      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
-      const allTags = ["All", ...new Set(ALL_BLOGS.map((b) => b.tag))];
+      let displayedCount = 9;
+      let activeTag = 'All';
 
       function buildTagFilters() {
-        const wrap = document.getElementById("blogTagFilters");
+        const source = window.LIVE_BLOGS || ALL_BLOGS;
+        const tags   = ['All', ...new Set(source.map(b => b.tag))];
+        const wrap   = document.getElementById('blogTagFilters');
         if (!wrap) return;
-        wrap.innerHTML = allTags
-          .map(
-            (t) => `
-          <button onclick="filterByTag('${t}', this)" style="padding:7px 16px;border-radius:50px;border:1.5px solid ${t === activeTag ? "var(--accent)" : "var(--border)"};background:${t === activeTag ? "var(--accent)" : "transparent"};color:${t === activeTag ? "#fff" : "var(--dark)"};font-family:var(--font-head);font-size:12.5px;font-weight:700;cursor:pointer;transition:var(--transition)">${t}</button>
-        `,
-          )
-          .join("");
+        wrap.innerHTML = tags.map(t => `
+          <button onclick="filterByTag('${t}', this)"
+            style="padding:7px 16px;border-radius:50px;
+              border:1.5px solid ${t === activeTag ? 'var(--accent)' : 'var(--border)'};
+              background:${t === activeTag ? 'var(--accent)' : 'transparent'};
+              color:${t === activeTag ? '#fff' : 'var(--dark)'};
+              font-family:var(--font-head);font-size:12.5px;font-weight:700;
+              cursor:pointer;transition:var(--transition)">${t}</button>
+        `).join('');
       }
 
-      function filterByTag(tag, el) {
+      function filterByTag(tag) {
         activeTag = tag;
         displayedCount = 9;
         buildTagFilters();
@@ -584,21 +588,18 @@
       }
 
       function renderBlogs() {
-        const grid = document.getElementById("allBlogsGrid");
-        const viewMore = document.getElementById("viewMoreWrap");
+        const grid     = document.getElementById('allBlogsGrid');
+        const viewMore = document.getElementById('viewMoreWrap');
         if (!grid) return;
-        const filtered =
-          activeTag === "All"
-            ? ALL_BLOGS
-            : ALL_BLOGS.filter((b) => b.tag === activeTag);
-        const visible = filtered.slice(0, displayedCount);
-        grid.innerHTML = visible
-          .map(
-            (b) => `
+        const source   = window.LIVE_BLOGS || ALL_BLOGS;
+        const filtered = activeTag === 'All' ? source : source.filter(b => b.tag === activeTag);
+        const visible  = filtered.slice(0, displayedCount);
+        grid.innerHTML = visible.map(b => `
           <div class="blog-card">
             <div class="blog-img">
-              <img src="${b.img}" alt="${b.title}" loading="lazy">
-              <span class="blog-tag-badge">${b.tag}</span>
+              <img src="${b.img || b.image_url || ''}" alt="${b.title}" loading="lazy"
+                   onerror="this.style.display='none';this.parentElement.style.background='var(--bg2)'">
+              <span class="blog-tag-badge">${b.tag || 'Travel'}</span>
             </div>
             <div class="blog-body">
               <div class="blog-meta">
@@ -610,24 +611,48 @@
               <p>${b.excerpt}</p>
               <a href="blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
-          </div>
-        `,
-          )
-          .join("");
-        if (viewMore)
-          viewMore.style.display =
-            displayedCount >= filtered.length ? "none" : "block";
+          </div>`).join('');
+        if (viewMore) viewMore.style.display = displayedCount >= filtered.length ? 'none' : 'block';
       }
 
-      document.getElementById("viewMoreBtn")?.addEventListener("click", () => {
+      document.getElementById('viewMoreBtn')?.addEventListener('click', () => {
         displayedCount += 6;
         renderBlogs();
       });
 
-      document.addEventListener("DOMContentLoaded", () => {
+      async function initBlogGrid() {
+        let blogs = [];
+        try {
+          const res = await fetch(API_BASE + '/blogs');
+          if (res.ok) {
+            const data = await res.json();
+            blogs = data.map(b => ({
+              id:       b.id,
+              title:    b.title,
+              tag:      b.tag      || 'Travel',
+              excerpt:  b.excerpt  || '',
+              img:      b.image_url || b.img || '',
+              date:     b.published_at
+                          ? new Date(b.published_at).toLocaleDateString('en-GB', {
+                              day: 'numeric', month: 'short', year: 'numeric'
+                            })
+                          : '',
+              author:   b.author   || 'Zusammen Tours',
+              readTime: b.read_time || '5 min read',
+            }));
+            console.log('blog-grid: loaded', blogs.length, 'from API');
+          }
+        } catch (err) {
+          console.warn('blog-grid: API failed, using ALL_BLOGS fallback');
+        }
+
+        window.LIVE_BLOGS = blogs.length ? blogs : ALL_BLOGS;
+
         buildTagFilters();
         renderBlogs();
-      });
+      }
+
+      document.addEventListener('DOMContentLoaded', initBlogGrid);
     </script>
   </body>
 </html>

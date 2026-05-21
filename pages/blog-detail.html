@@ -790,75 +790,138 @@
         },
       ];
 
-      function loadBlogDetail() {
-        const id = parseInt(
-          new URLSearchParams(window.location.search).get("id") || "1",
-        );
-        const blog =
-          ALL_BLOGS_DETAIL.find((b) => b.id === id) || ALL_BLOGS_DETAIL[0];
+      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
-        document.title = `${blog.title} – Zusammen Tours`;
-        document.getElementById("blogHeroTitle").textContent = blog.tag;
-        document.getElementById("blogBreadcrumb").textContent =
-          blog.title.substring(0, 40) + "...";
-        document.getElementById("blogMainImg").src = blog.img;
-        document.getElementById("blogMainImg").alt = blog.title;
-        document.getElementById("blogTag").textContent = blog.tag;
-        document.getElementById("blogTitle").textContent = blog.title;
-        document.getElementById("blogAuthor").textContent = blog.author;
-        document.getElementById("blogDate").textContent = blog.date;
-        document.getElementById("blogReadTime").textContent = blog.readTime;
+      async function loadBlogDetail() {
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (!id) return;
 
-        const content = BLOG_CONTENT[id] || BLOG_CONTENT.default;
-        document.getElementById("blogContent").innerHTML = content.body;
+        let blog = null;
 
-        // Recent posts
-        const recent = ALL_BLOGS_DETAIL.filter((b) => b.id !== id).slice(0, 4);
-        document.getElementById("recentPosts").innerHTML = recent
-          .map(
-            (b) => `
-    <div class="recent-post-item" onclick="window.location='blog-detail.html?id=${b.id}'">
-      <div class="recent-post-img"><img src="${b.img}" alt="${b.title}" loading="lazy"></div>
-      <div class="recent-post-text"><h6>${b.title}</h6><span><i class="fas fa-calendar" style="margin-right:4px;color:var(--accent)"></i>${b.date}</span></div>
-    </div>
-  `,
-          )
-          .join("");
+        try {
+          const res = await fetch(API_BASE + '/blogs/' + id);
+          if (res.ok) {
+            blog = await res.json();
+            console.log('blog-detail: loaded from API:', blog.title);
+          }
+        } catch (err) {
+          console.warn('blog-detail: API failed');
+        }
 
-        // Related posts
-        const related = ALL_BLOGS_DETAIL.filter((b) => b.id !== id).slice(0, 4);
-        document.getElementById("relatedPosts").innerHTML = related
-          .map(
-            (b) => `
-    <a href="blog-detail.html?id=${b.id}" class="related-card">
-      <img src="${b.img}" alt="${b.title}" loading="lazy">
-      <div class="related-card-body"><div class="tag">${b.tag}</div><h6>${b.title}</h6></div>
-    </a>
-  `,
-          )
-          .join("");
+        if (!blog) {
+          blog = ALL_BLOGS_DETAIL.find(b => b.id == id) || null;
+        }
+
+        if (!blog) {
+          const el = document.getElementById('blogTitle');
+          if (el) el.textContent = 'Blog post not found';
+          return;
+        }
+
+        // Normalise fields
+        blog.img      = blog.img      || blog.image_url || '';
+        blog.date     = blog.date     || (blog.published_at
+          ? new Date(blog.published_at).toLocaleDateString('en-GB', {
+              day: 'numeric', month: 'short', year: 'numeric'
+            })
+          : '');
+        blog.readTime = blog.readTime || blog.read_time || '5 min read';
+        blog.tag      = blog.tag      || 'Travel';
+
+        document.title = blog.title + ' – Zusammen Tours';
+
+        const set = (elId, val) => { const el = document.getElementById(elId); if (el) el.textContent = val || ''; };
+
+        set('blogHeroTitle',  blog.tag);
+        set('blogBreadcrumb', blog.title.substring(0, 40) + '...');
+        set('blogTitle',      blog.title);
+        set('blogAuthor',     blog.author || 'Zusammen Tours');
+        set('blogDate',       blog.date);
+        set('blogReadTime',   blog.readTime);
+
+        const tagEl = document.getElementById('blogTag');
+        if (tagEl) tagEl.textContent = blog.tag;
+
+        const mainImg = document.getElementById('blogMainImg');
+        if (mainImg) { mainImg.src = blog.img; mainImg.alt = blog.title; }
+
+        const contentEl = document.getElementById('blogContent');
+        if (contentEl) {
+          if (blog.content && blog.content.includes('<')) {
+            contentEl.innerHTML = blog.content;
+          } else if (blog.content) {
+            contentEl.innerHTML = blog.content
+              .split('\n\n')
+              .map(p => `<p>${p.trim()}</p>`)
+              .filter(p => p !== '<p></p>')
+              .join('');
+          } else {
+            const fallback = BLOG_CONTENT[id] || BLOG_CONTENT.default;
+            if (fallback) contentEl.innerHTML = fallback.body;
+          }
+        }
+
+        // Sidebar recent posts + bottom related posts
+        let allBlogs = [];
+        try {
+          const res = await fetch(API_BASE + '/blogs');
+          if (res.ok) allBlogs = await res.json();
+        } catch {}
+
+        const listSource = allBlogs.length
+          ? allBlogs.filter(b => b.id != id).slice(0, 4)
+          : ALL_BLOGS_DETAIL.filter(b => b.id != id).slice(0, 4);
+
+        const recentEl = document.getElementById('recentPosts');
+        if (recentEl) {
+          recentEl.innerHTML = listSource.map(b => {
+            const img  = b.image_url || b.img || '';
+            const date = b.published_at
+              ? new Date(b.published_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+              : (b.date || '');
+            return `
+              <div class="recent-post-item" onclick="window.location='blog-detail.html?id=${b.id}'">
+                <div class="recent-post-img"><img src="${img}" alt="${b.title}" loading="lazy"></div>
+                <div class="recent-post-text">
+                  <h6>${b.title}</h6>
+                  <span><i class="fas fa-calendar" style="margin-right:4px;color:var(--accent)"></i>${date}</span>
+                </div>
+              </div>`;
+          }).join('');
+        }
+
+        const relatedEl = document.getElementById('relatedPosts');
+        if (relatedEl) {
+          relatedEl.innerHTML = listSource.map(b => {
+            const img = b.image_url || b.img || '';
+            return `
+              <a href="blog-detail.html?id=${b.id}" class="related-card">
+                <img src="${img}" alt="${b.title}" loading="lazy">
+                <div class="related-card-body"><div class="tag">${b.tag || 'Travel'}</div><h6>${b.title}</h6></div>
+              </a>`;
+          }).join('');
+        }
 
         // Share buttons
-        document.querySelectorAll(".share-btn").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const url = window.location.href;
+        document.querySelectorAll('.share-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const url   = window.location.href;
             const title = blog.title;
-            let shareUrl = "";
-            if (btn.classList.contains("share-fb"))
+            let shareUrl = '';
+            if (btn.classList.contains('share-fb'))
               shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-            else if (btn.classList.contains("share-tw"))
+            else if (btn.classList.contains('share-tw'))
               shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
-            else if (btn.classList.contains("share-wa"))
-              shareUrl = `https://wa.me/?text=${encodeURIComponent(title + " " + url)}`;
-            else if (btn.classList.contains("share-li"))
+            else if (btn.classList.contains('share-wa'))
+              shareUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
+            else if (btn.classList.contains('share-li'))
               shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
-            if (shareUrl)
-              window.open(shareUrl, "_blank", "width=600,height=400");
+            if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
           });
         });
       }
 
-      document.addEventListener("DOMContentLoaded", loadBlogDetail);
+      document.addEventListener('DOMContentLoaded', loadBlogDetail);
     </script>
   </body>
 </html>
