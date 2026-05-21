@@ -248,7 +248,7 @@ db.initDb()
         console.error(`❌ Port ${PORT} is already in use.`);
         console.error(`   Run this to fix: taskkill /F /IM node.exe`);
         console.error(`   Or change PORT in .env to a different number`);
-        process.exit(1);
+        setImmediate(() => process.exit(1));
       }
     });
   })
