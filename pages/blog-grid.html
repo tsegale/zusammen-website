@@ -594,10 +594,15 @@
         const source   = window.LIVE_BLOGS || ALL_BLOGS;
         const filtered = activeTag === 'All' ? source : source.filter(b => b.tag === activeTag);
         const visible  = filtered.slice(0, displayedCount);
-        grid.innerHTML = visible.map(b => `
+        grid.innerHTML = visible.map(b => {
+          let bImg = b.img || b.image_url || '';
+          if (bImg && !bImg.startsWith('http') && !bImg.startsWith('/') && !bImg.startsWith('../')) {
+            bImg = '../' + bImg;
+          }
+          return `
           <div class="blog-card">
             <div class="blog-img">
-              <img src="${b.img || b.image_url || ''}" alt="${b.title}" loading="lazy"
+              <img src="${bImg}" alt="${b.title}" loading="lazy"
                    onerror="this.style.display='none';this.parentElement.style.background='var(--bg2)'">
               <span class="blog-tag-badge">${b.tag || 'Travel'}</span>
             </div>
@@ -611,7 +616,8 @@
               <p>${b.excerpt}</p>
               <a href="blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
-          </div>`).join('');
+          </div>`;
+        }).join('');
         if (viewMore) viewMore.style.display = displayedCount >= filtered.length ? 'none' : 'block';
       }
 
