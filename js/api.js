@@ -6,54 +6,43 @@
 
 const API_BASE = 'http://localhost:3000/api';
 
-/* ── helpers ─────────────────────────────────────────────── */
-function formatDate(str) {
-  if (!str) return '';
-  const d = new Date(str);
-  if (isNaN(d)) return str;
-  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-}
-
-function mapBlog(b) {
-  return {
-    id:        b.id,
-    title:     b.title,
-    tag:       b.tag       || '',
-    excerpt:   b.excerpt   || '',
-    content:   b.content   || '',
-    img:       b.image_url || '',
-    date:      formatDate(b.published_at),
-    author:    b.author    || 'Zusammen Tours',
-    readTime:  b.read_time || '5 min read',
-    detailUrl: `pages/blog-detail.html?id=${b.id}`,
-  };
-}
-
 /* ── fetchTours ──────────────────────────────────────────── */
-// Backend already returns camelCase (img, oldPrice, minAge, etc.)
-// so we return the array directly — no remapping needed.
 async function fetchTours() {
   try {
     const res = await fetch(API_BASE + '/tours');
-    if (!res.ok) throw new Error('API error ' + res.status);
-    const data = await res.json();
-    console.log('Tours from API:', data.length, 'tours loaded');
-    return data;
+    if (!res.ok) throw new Error('API ' + res.status);
+    const tours = await res.json();
+    console.log('✅ Tours from API:', tours.length, 'loaded');
+    return tours;
   } catch (err) {
-    console.warn('[api] fetchTours failed:', err.message);
+    console.warn('⚠️ fetchTours failed - using fallback:', err.message);
     return null;
   }
 }
 
 /* ── fetchBlogs ──────────────────────────────────────────── */
-async function fetchBlogs(limit = 6) {
+async function fetchBlogs() {
   try {
-    const res = await fetch(`${API_BASE}/blogs?limit=${limit}`);
-    if (!res.ok) throw new Error('API error ' + res.status);
-    const json = await res.json();
-    return (json.data || []).map(mapBlog);
+    const res = await fetch(API_BASE + '/blogs');
+    if (!res.ok) throw new Error('API ' + res.status);
+    const blogs = await res.json();
+    return blogs.map(b => ({
+      id:        b.id,
+      title:     b.title,
+      tag:       b.tag      || 'Travel',
+      excerpt:   b.excerpt  || '',
+      content:   b.content  || '',
+      img:       b.image_url || '',
+      date:      b.published_at
+                   ? new Date(b.published_at).toLocaleDateString(
+                       'en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                   : '',
+      author:    b.author   || 'Zusammen Tours',
+      readTime:  b.read_time || '5 min read',
+      detailUrl: 'pages/blog-detail.html?id=' + b.id,
+    }));
   } catch (err) {
-    console.warn('[api] fetchBlogs failed:', err.message);
+    console.warn('⚠️ fetchBlogs failed - using fallback:', err.message);
     return null;
   }
 }
@@ -61,12 +50,12 @@ async function fetchBlogs(limit = 6) {
 /* ── fetchFAQs ───────────────────────────────────────────── */
 async function fetchFAQs() {
   try {
-    const res = await fetch(`${API_BASE}/faqs`);
-    if (!res.ok) throw new Error('API error ' + res.status);
-    const json = await res.json();
-    return (json.data || []).map(f => ({ q: f.question, a: f.answer }));
+    const res = await fetch(API_BASE + '/faqs');
+    if (!res.ok) throw new Error('API ' + res.status);
+    const faqs = await res.json();
+    return faqs.map(f => ({ q: f.question, a: f.answer }));
   } catch (err) {
-    console.warn('[api] fetchFAQs failed:', err.message);
+    console.warn('⚠️ fetchFAQs failed - using fallback:', err.message);
     return null;
   }
 }

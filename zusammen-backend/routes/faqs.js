@@ -23,7 +23,7 @@ router.get("/", (_req, res) => {
       .all()
       .map(parseFaq);
 
-    res.json({ count: faqs.length, data: faqs });
+    res.json(faqs);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch FAQs" });

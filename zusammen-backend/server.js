@@ -17,18 +17,25 @@ const PORT = process.env.PORT || 3000;
 /* ── CORS ─────────────────────────────────────────────────────── */
 const corsOptions = {
   origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
     const allowed = [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
       "http://localhost:5500",
       "http://127.0.0.1:5500",
+      "http://localhost:5501",
+      "http://127.0.0.1:5501",
+      "http://localhost:5502",
+      "http://127.0.0.1:5502",
       "http://localhost",
+      "http://127.0.0.1",
       "https://zusammentravels.com",
       "https://www.zusammentravels.com",
       process.env.FRONTEND_URL,
     ].filter(Boolean);
-    if (!origin || allowed.includes(origin)) return callback(null, true);
-    callback(new Error("CORS: origin not allowed"));
+    if (allowed.includes(origin)) return callback(null, true);
+    console.warn("CORS blocked origin:", origin);
+    callback(new Error("CORS: origin not allowed - " + origin));
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -203,6 +210,21 @@ app.use("/api/blogs",     blogsRouter);
 app.use("/api/faqs",      faqsRouter);
 app.use("/api/enquiries", enquiriesRouter);
 
+/* ── DEBUG ENDPOINT ───────────────────────────────────────────── */
+app.get("/api/debug", (_req, res) => {
+  res.json({
+    status:    "ok",
+    message:   "Backend is connected",
+    endpoints: {
+      tours:     "/api/tours",
+      blogs:     "/api/blogs",
+      faqs:      "/api/faqs",
+      enquiries: "/api/enquiries",
+      admin:     "/admin",
+    },
+  });
+});
+
 /* ── 404 ──────────────────────────────────────────────────────── */
 app.use((_req, res) => res.status(404).json({ error: "Route not found" }));
 
@@ -217,10 +239,17 @@ app.use((err, _req, res, _next) => {
 /* ── START ────────────────────────────────────────────────────── */
 db.initDb()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`\nZusammen Tours API  → http://localhost:${PORT}`);
-      console.log(`Admin Panel         → http://localhost:${PORT}/admin`);
-      console.log(`Health check        → http://localhost:${PORT}/api/health\n`);
+    const server = app.listen(PORT, () => {
+      console.log(`\n🚀 Server running on http://localhost:${PORT}`);
+      console.log(`📋 Admin panel: http://localhost:${PORT}/admin`);
+      console.log(`🔗 API: http://localhost:${PORT}/api\n`);
+    }).on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(`❌ Port ${PORT} is already in use.`);
+        console.error(`   Run this to fix: taskkill /F /IM node.exe`);
+        console.error(`   Or change PORT in .env to a different number`);
+        process.exit(1);
+      }
     });
   })
   .catch((err) => {

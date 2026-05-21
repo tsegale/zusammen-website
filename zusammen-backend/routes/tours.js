@@ -22,34 +22,41 @@ function parseTour(row) {
   };
 }
 
+function safeParseJSON(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  try { return JSON.parse(value); }
+  catch {
+    return value.split("\n").map(s => s.trim()).filter(Boolean);
+  }
+}
+
 // Used for public API — maps to camelCase names that main.js and api.js expect
 function mapForFrontend(row) {
   if (!row) return null;
   return {
     id:             row.id,
     title:          row.title,
-    slug:           row.slug,
     location:       row.location,
     category:       row.category,
-    rating:         row.rating,
-    reviews:        row.reviews,
-    price:          row.price,
-    oldPrice:       row.old_price    ?? null,
-    days:           row.days,
-    nights:         row.nights,
-    guests:         row.guests,
-    minAge:         row.min_age      ?? 6,
-    minPeople:      row.min_people   ?? 2,
-    maxPeople:      row.max_people   ?? 12,
-    img:            row.image_url    || "",
-    description:    row.description  || "",
-    destinations:   row.destinations || "",
-    includes:       JSON.parse(row.includes   || "[]"),
-    excludes:       JSON.parse(row.excludes   || "[]"),
-    highlights:     JSON.parse(row.highlights || "[]"),
-    availableDates: row.available_dates || "",
-    active:         Boolean(row.active),
-    createdAt:      row.created_at,
+    rating:         Number(row.rating)     || 5,
+    reviews:        Number(row.reviews)    || 0,
+    price:          Number(row.price)      || 0,
+    oldPrice:       row.old_price ? Number(row.old_price) : null,
+    days:           Number(row.days)       || 0,
+    nights:         Number(row.nights)     || 0,
+    guests:         Number(row.guests)     || 0,
+    minAge:         Number(row.min_age)    || 6,
+    minPeople:      Number(row.min_people) || 2,
+    maxPeople:      Number(row.max_people) || 12,
+    img:            row.image_url          || "",
+    description:    row.description        || "",
+    destinations:   row.destinations       || "",
+    includes:       safeParseJSON(row.includes),
+    excludes:       safeParseJSON(row.excludes),
+    highlights:     safeParseJSON(row.highlights),
+    availableDates: row.available_dates    || "Year-round",
+    active:         row.active,
   };
 }
 

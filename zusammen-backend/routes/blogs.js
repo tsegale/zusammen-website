@@ -49,13 +49,7 @@ router.get("/", (req, res) => {
       .all(...params, limit, offset)
       .map(parseBlog);
 
-    res.json({
-      total,
-      page,
-      limit,
-      pages: Math.ceil(total / limit),
-      data: blogs,
-    });
+    res.json(blogs);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch blogs" });
