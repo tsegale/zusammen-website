@@ -10,14 +10,46 @@ function toSlug(str) {
     .replace(/^-|-$/g, "");
 }
 
+// Used internally and for admin routes (snake_case, matches DB columns)
 function parseTour(row) {
   if (!row) return null;
   return {
     ...row,
-    includes: JSON.parse(row.includes || "[]"),
-    excludes: JSON.parse(row.excludes || "[]"),
+    includes:   JSON.parse(row.includes   || "[]"),
+    excludes:   JSON.parse(row.excludes   || "[]"),
     highlights: JSON.parse(row.highlights || "[]"),
-    active: Boolean(row.active),
+    active:     Boolean(row.active),
+  };
+}
+
+// Used for public API — maps to camelCase names that main.js and api.js expect
+function mapForFrontend(row) {
+  if (!row) return null;
+  return {
+    id:             row.id,
+    title:          row.title,
+    slug:           row.slug,
+    location:       row.location,
+    category:       row.category,
+    rating:         row.rating,
+    reviews:        row.reviews,
+    price:          row.price,
+    oldPrice:       row.old_price    ?? null,
+    days:           row.days,
+    nights:         row.nights,
+    guests:         row.guests,
+    minAge:         row.min_age      ?? 6,
+    minPeople:      row.min_people   ?? 2,
+    maxPeople:      row.max_people   ?? 12,
+    img:            row.image_url    || "",
+    description:    row.description  || "",
+    destinations:   row.destinations || "",
+    includes:       JSON.parse(row.includes   || "[]"),
+    excludes:       JSON.parse(row.excludes   || "[]"),
+    highlights:     JSON.parse(row.highlights || "[]"),
+    availableDates: row.available_dates || "",
+    active:         Boolean(row.active),
+    createdAt:      row.created_at,
   };
 }
 
@@ -28,11 +60,11 @@ function adminOnly(req, res, next) {
   next();
 }
 
-/* ── GET /api/tours ───────────────────────────────────────────── */
+/* ── GET /api/tours — returns camelCase array for frontend ────── */
 router.get("/", (req, res) => {
   try {
     const { category, location, q } = req.query;
-    let sql = "SELECT * FROM tours WHERE 1=1";
+    let sql = "SELECT * FROM tours WHERE active = 1";
     const params = [];
 
     if (category) {
@@ -51,23 +83,23 @@ router.get("/", (req, res) => {
 
     sql += " ORDER BY id ASC";
 
-    const tours = db.prepare(sql).all(...params).map(parseTour);
-    res.json({ count: tours.length, data: tours });
+    const tours = db.prepare(sql).all(...params).map(mapForFrontend);
+    res.json(tours);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch tours" });
   }
 });
 
-/* ── GET /api/tours/:id ───────────────────────────────────────── */
+/* ── GET /api/tours/:id — returns camelCase for frontend ─────── */
 router.get("/:id", (req, res) => {
   try {
-    const tour = db
+    const row = db
       .prepare("SELECT * FROM tours WHERE id = ? AND active = 1")
       .get(req.params.id);
 
-    if (!tour) return res.status(404).json({ error: "Tour not found" });
-    res.json(parseTour(tour));
+    if (!row) return res.status(404).json({ error: "Tour not found" });
+    res.json(mapForFrontend(row));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch tour" });
@@ -76,6 +108,7 @@ router.get("/:id", (req, res) => {
 
 /* ── POST /api/tours — admin ──────────────────────────────────── */
 router.post("/", adminOnly, (req, res) => {
+  console.log("POST /api/tours body:", req.body);
   try {
     const {
       title,
@@ -98,6 +131,7 @@ router.post("/", adminOnly, (req, res) => {
       highlights = [],
       available_dates,
       image_url,
+      active = 1,
     } = req.body;
 
     if (!title || !location || !category || !price || !days || !nights) {
@@ -108,49 +142,45 @@ router.post("/", adminOnly, (req, res) => {
 
     const slug = toSlug(title);
 
+    const includesStr  = Array.isArray(includes)   ? JSON.stringify(includes)   : (includes   || "[]");
+    const excludesStr  = Array.isArray(excludes)   ? JSON.stringify(excludes)   : (excludes   || "[]");
+    const highlightsStr = Array.isArray(highlights) ? JSON.stringify(highlights) : (highlights || "[]");
+
     const result = db
       .prepare(
         `INSERT INTO tours (
           title, slug, location, category, rating, reviews,
           price, old_price, days, nights, guests, min_age,
           min_people, max_people, description, destinations,
-          includes, excludes, highlights, available_dates, image_url
+          includes, excludes, highlights, available_dates, image_url, active
         ) VALUES (
           @title, @slug, @location, @category, @rating, @reviews,
           @price, @old_price, @days, @nights, @guests, @min_age,
           @min_people, @max_people, @description, @destinations,
-          @includes, @excludes, @highlights, @available_dates, @image_url
+          @includes, @excludes, @highlights, @available_dates, @image_url, @active
         )`
       )
       .run({
-        title,
-        slug,
-        location,
-        category,
-        rating,
-        reviews,
-        price,
-        old_price: old_price ?? null,
-        days,
-        nights,
-        guests,
-        min_age,
-        min_people,
-        max_people,
-        description: description ?? null,
-        destinations: destinations ?? null,
-        includes: JSON.stringify(includes),
-        excludes: JSON.stringify(excludes),
-        highlights: JSON.stringify(highlights),
+        title, slug, location, category,
+        rating: Number(rating), reviews: Number(reviews),
+        price: Number(price),
+        old_price:   old_price != null ? Number(old_price) : null,
+        days: Number(days), nights: Number(nights),
+        guests: Number(guests), min_age: Number(min_age),
+        min_people: Number(min_people), max_people: Number(max_people),
+        description:     description     ?? null,
+        destinations:    destinations    ?? null,
+        includes:        includesStr,
+        excludes:        excludesStr,
+        highlights:      highlightsStr,
         available_dates: available_dates ?? null,
-        image_url: image_url ?? null,
+        image_url:       image_url       ?? null,
+        active:          Number(active),
       });
 
-    const created = db
-      .prepare("SELECT * FROM tours WHERE id = ?")
-      .get(result.lastInsertRowid);
-
-    res.status(201).json(parseTour(created));
+    const created = db.prepare("SELECT * FROM tours WHERE id = ?").get(result.lastInsertRowid);
+    console.log("POST /api/tours created id:", created.id);
+    res.status(201).json({ success: true, tour: parseTour(created) });
   } catch (err) {
     console.error(err);
     if (err.message && err.message.includes("UNIQUE")) {
@@ -163,31 +193,14 @@ router.post("/", adminOnly, (req, res) => {
 /* ── PUT /api/tours/:id — admin ───────────────────────────────── */
 router.put("/:id", adminOnly, (req, res) => {
   try {
-    const existing = db
-      .prepare("SELECT * FROM tours WHERE id = ?")
-      .get(req.params.id);
-
+    const existing = db.prepare("SELECT * FROM tours WHERE id = ?").get(req.params.id);
     if (!existing) return res.status(404).json({ error: "Tour not found" });
 
     const fields = [
-      "title",
-      "location",
-      "category",
-      "rating",
-      "reviews",
-      "price",
-      "old_price",
-      "days",
-      "nights",
-      "guests",
-      "min_age",
-      "min_people",
-      "max_people",
-      "description",
-      "destinations",
-      "available_dates",
-      "image_url",
-      "active",
+      "title", "location", "category", "rating", "reviews", "price",
+      "old_price", "days", "nights", "guests", "min_age", "min_people",
+      "max_people", "description", "destinations", "available_dates",
+      "image_url", "active",
     ];
 
     const updates = {};
@@ -195,34 +208,29 @@ router.put("/:id", adminOnly, (req, res) => {
       if (req.body[f] !== undefined) updates[f] = req.body[f];
     }
 
-    // JSON fields
     if (req.body.includes !== undefined)
-      updates.includes = JSON.stringify(req.body.includes);
+      updates.includes = Array.isArray(req.body.includes)
+        ? JSON.stringify(req.body.includes)
+        : req.body.includes;
     if (req.body.excludes !== undefined)
-      updates.excludes = JSON.stringify(req.body.excludes);
+      updates.excludes = Array.isArray(req.body.excludes)
+        ? JSON.stringify(req.body.excludes)
+        : req.body.excludes;
     if (req.body.highlights !== undefined)
-      updates.highlights = JSON.stringify(req.body.highlights);
+      updates.highlights = Array.isArray(req.body.highlights)
+        ? JSON.stringify(req.body.highlights)
+        : req.body.highlights;
 
-    // Regenerate slug if title changed
     if (updates.title) updates.slug = toSlug(updates.title);
 
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ error: "No valid fields to update" });
     }
 
-    const setClauses = Object.keys(updates)
-      .map((k) => `${k} = @${k}`)
-      .join(", ");
+    const setClauses = Object.keys(updates).map((k) => `${k} = @${k}`).join(", ");
+    db.prepare(`UPDATE tours SET ${setClauses} WHERE id = @id`).run({ ...updates, id: req.params.id });
 
-    db.prepare(`UPDATE tours SET ${setClauses} WHERE id = @id`).run({
-      ...updates,
-      id: req.params.id,
-    });
-
-    const updated = db
-      .prepare("SELECT * FROM tours WHERE id = ?")
-      .get(req.params.id);
-
+    const updated = db.prepare("SELECT * FROM tours WHERE id = ?").get(req.params.id);
     res.json(parseTour(updated));
   } catch (err) {
     console.error(err);
@@ -233,10 +241,7 @@ router.put("/:id", adminOnly, (req, res) => {
 /* ── DELETE /api/tours/:id — admin (soft delete) ─────────────── */
 router.delete("/:id", adminOnly, (req, res) => {
   try {
-    const existing = db
-      .prepare("SELECT id FROM tours WHERE id = ?")
-      .get(req.params.id);
-
+    const existing = db.prepare("SELECT id FROM tours WHERE id = ?").get(req.params.id);
     if (!existing) return res.status(404).json({ error: "Tour not found" });
 
     db.prepare("UPDATE tours SET active = 0 WHERE id = ?").run(req.params.id);

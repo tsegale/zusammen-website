@@ -322,18 +322,22 @@
       image_url:       document.getElementById("f_image_url").value.trim() || null,
     };
 
+    console.log('Submitting tour data:', body);
+
     const btn = document.getElementById("saveTourBtn");
     btn.disabled = true;
     btn.textContent = "Saving…";
 
     try {
+      let response;
       if (id) {
-        await apiFetch(`/api/tours/${id}`, { method: "PUT", body: JSON.stringify(body) });
+        response = await apiFetch(`/api/tours/${id}`, { method: "PUT", body: JSON.stringify(body) });
         showToast("Tour updated successfully", "success");
       } else {
-        await apiFetch("/api/tours", { method: "POST", body: JSON.stringify(body) });
+        response = await apiFetch("/api/tours", { method: "POST", body: JSON.stringify(body) });
         showToast("Tour created successfully", "success");
       }
+      console.log('Response:', response);
       closeTourPanel();
       await loadTours();
     } catch (err) {

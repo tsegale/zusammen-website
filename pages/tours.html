@@ -1189,7 +1189,14 @@
         applyFilters();
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", async () => {
+        if (window.WPAPI) {
+          const apiTours = await WPAPI.fetchTours();
+          if (apiTours && apiTours.length) {
+            ZT.TOURS.length = 0;
+            ZT.TOURS.push(...apiTours);
+          }
+        }
         buildTypePills();
         applyFilters();
 

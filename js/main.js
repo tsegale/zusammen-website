@@ -1134,11 +1134,20 @@ function initContactForm() {
 }
 
 /* ===== INIT ===== */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   initHeader();
   initSearch();
   buildCategories();
   initCategoryModal();
+
+  if (window.WPAPI) {
+    const apiTours = await WPAPI.fetchTours();
+    if (apiTours && apiTours.length) {
+      TOURS.length = 0;
+      TOURS.push(...apiTours);
+    }
+  }
+
   buildToursSlider();
   buildBlogs();
   buildTestimonials();

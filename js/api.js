@@ -1,7 +1,7 @@
 /* ============================================================
    ZUSAMMEN TOURS — API CLIENT
    Connects the frontend to the Express backend.
-   Exposes window.WPAPI so main.js works unchanged.
+   Exposes window.WPAPI so main.js and page scripts can use it.
    ============================================================ */
 
 const API_BASE = 'http://localhost:3000/api';
@@ -14,33 +14,7 @@ function formatDate(str) {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-function mapTour(t) {
-  return {
-    id:             t.id,
-    title:          t.title,
-    location:       t.location,
-    category:       t.category,
-    rating:         t.rating,
-    reviews:        t.reviews,
-    price:          t.price,
-    oldPrice:       t.old_price ?? null,
-    days:           t.days,
-    nights:         t.nights,
-    guests:         t.guests,
-    minAge:         t.min_age ?? 6,
-    minPeople:      t.min_people ?? 2,
-    maxPeople:      t.max_people ?? 12,
-    img:            t.image_url  || '',
-    description:    t.description || '',
-    destinations:   t.destinations || '',
-    includes:       Array.isArray(t.includes)   ? t.includes   : JSON.parse(t.includes   || '[]'),
-    excludes:       Array.isArray(t.excludes)   ? t.excludes   : JSON.parse(t.excludes   || '[]'),
-    highlights:     Array.isArray(t.highlights) ? t.highlights : JSON.parse(t.highlights || '[]'),
-    availableDates: t.available_dates || '',
-  };
-}
-
-function mapBlog(b, idx) {
+function mapBlog(b) {
   return {
     id:        b.id,
     title:     b.title,
@@ -55,23 +29,27 @@ function mapBlog(b, idx) {
   };
 }
 
-/* ── API functions ───────────────────────────────────────── */
+/* ── fetchTours ──────────────────────────────────────────── */
+// Backend already returns camelCase (img, oldPrice, minAge, etc.)
+// so we return the array directly — no remapping needed.
 async function fetchTours() {
   try {
-    const res = await fetch(`${API_BASE}/tours`);
-    if (!res.ok) return null;
-    const json = await res.json();
-    return (json.data || []).map(mapTour);
+    const res = await fetch(API_BASE + '/tours');
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    console.log('Tours from API:', data.length, 'tours loaded');
+    return data;
   } catch (err) {
     console.warn('[api] fetchTours failed:', err.message);
     return null;
   }
 }
 
+/* ── fetchBlogs ──────────────────────────────────────────── */
 async function fetchBlogs(limit = 6) {
   try {
     const res = await fetch(`${API_BASE}/blogs?limit=${limit}`);
-    if (!res.ok) return null;
+    if (!res.ok) throw new Error('API error ' + res.status);
     const json = await res.json();
     return (json.data || []).map(mapBlog);
   } catch (err) {
@@ -80,10 +58,11 @@ async function fetchBlogs(limit = 6) {
   }
 }
 
+/* ── fetchFAQs ───────────────────────────────────────────── */
 async function fetchFAQs() {
   try {
     const res = await fetch(`${API_BASE}/faqs`);
-    if (!res.ok) return null;
+    if (!res.ok) throw new Error('API error ' + res.status);
     const json = await res.json();
     return (json.data || []).map(f => ({ q: f.question, a: f.answer }));
   } catch (err) {
@@ -92,6 +71,7 @@ async function fetchFAQs() {
   }
 }
 
+/* ── submitEnquiry ───────────────────────────────────────── */
 async function submitEnquiry(formEl, tourName) {
   try {
     const fd = new FormData(formEl);
@@ -104,14 +84,14 @@ async function submitEnquiry(formEl, tourName) {
     const body = {
       first_name: first_name || 'Guest',
       last_name:  last_name  || '—',
-      email:      fd.get('email')      || '',
-      phone:      fd.get('phone')      || '',
-      tour_name:  tourName             || fd.get('tour') || '',
+      email:      fd.get('email')       || '',
+      phone:      fd.get('phone')       || '',
+      tour_name:  tourName              || fd.get('tour') || '',
       travel_from: fd.get('travelFrom') || '',
       travel_to:   fd.get('travelTo')   || '',
       adults:      Number(fd.get('adults'))   || 1,
       children:    Number(fd.get('children')) || 0,
-      message:     fd.get('message')   || '',
+      message:     fd.get('message')    || '',
     };
 
     const res = await fetch(`${API_BASE}/enquiries`, {
@@ -171,3 +151,4 @@ window.WPAPI = {
 };
 
 console.log('✅ api.js loaded — Zusammen Tours backend connected');
+console.log('window.WPAPI set:', !!window.WPAPI);

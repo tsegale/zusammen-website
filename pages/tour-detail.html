@@ -1050,20 +1050,7 @@
             'http://localhost:3000/api/tours/' + id
           );
           if (!res.ok) return null;
-          const t = await res.json();
-          // Map backend field names to frontend names
-          return {
-            ...t,
-            oldPrice:       t.old_price      ?? null,
-            minAge:         t.min_age        ?? 6,
-            minPeople:      t.min_people     ?? 2,
-            maxPeople:      t.max_people     ?? 12,
-            img:            t.image_url      || '',
-            availableDates: t.available_dates || '',
-            includes:  Array.isArray(t.includes)   ? t.includes   : JSON.parse(t.includes   || '[]'),
-            excludes:  Array.isArray(t.excludes)   ? t.excludes   : JSON.parse(t.excludes   || '[]'),
-            highlights:Array.isArray(t.highlights) ? t.highlights : JSON.parse(t.highlights || '[]'),
-          };
+          return await res.json();
         } catch { return null; }
       }
 
