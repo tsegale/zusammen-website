@@ -999,7 +999,7 @@ const TOUR_TYPES = [
 let ALL_TOURS_DATA = [];   // raw data from API
 let activeType     = null;
 
-const fmt = n => 'N$' + Number(n).toLocaleString('en-ZA');
+const fmtPrice = n => 'N$' + Number(n).toLocaleString('en-ZA');
 
 /* ── 1. Fetch tours from backend ─────────────────────── */
 async function loadToursPage() {
@@ -1036,6 +1036,16 @@ async function loadToursPage() {
     ALL_TOURS_DATA = ZT.TOURS;
     console.log('tours.html: using ZT.TOURS fallback,',
                 ALL_TOURS_DATA.length, 'tours');
+  }
+
+  // Reset price inputs so they don't filter out tours on first render
+  const _minEl = document.getElementById('priceMin');
+  const _maxEl = document.getElementById('priceMax');
+  if (_minEl) { _minEl.value = 0; _minEl.min = 0; }
+  if (_maxEl && ALL_TOURS_DATA.length) {
+    const _maxP = Math.ceil(Math.max(...ALL_TOURS_DATA.map(t => Number(t.price)||0)) * 1.1);
+    _maxEl.value = _maxP || 9999999;
+    _maxEl.max   = _maxEl.value;
   }
 
   // Build page UI once data is ready
@@ -1268,10 +1278,10 @@ function renderTours(tours) {
           <div class="tour-footer-row">
             <div class="tour-price">
               <div class="from-lbl">Starts From</div>
-              <span class="amount">${fmt(t.price)}</span>
+              <span class="amount">${fmtPrice(t.price)}</span>
               ${t.oldPrice||t.old_price
                 ? `<span class="old-price">
-                     ${fmt(t.oldPrice||t.old_price)}
+                     ${fmtPrice(t.oldPrice||t.old_price)}
                    </span>`
                 : ''}
             </div>
