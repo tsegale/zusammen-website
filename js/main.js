@@ -1144,7 +1144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const apiTours = await WPAPI.fetchTours();
     if (apiTours && apiTours.length) {
       TOURS.length = 0;
-      TOURS.push(...apiTours);
+      TOURS.push(...apiTours.slice(0, 6));
     }
   }
 
