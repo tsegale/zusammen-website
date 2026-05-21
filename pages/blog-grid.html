@@ -559,7 +559,7 @@
         },
       ];
 
-      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
+      const BLOGS_API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
       let displayedCount = 9;
       let activeTag = 'All';
@@ -623,7 +623,7 @@
       async function initBlogGrid() {
         let blogs = [];
         try {
-          const res = await fetch(API_BASE + '/blogs');
+          const res = await fetch(BLOGS_API_BASE + '/blogs');
           if (res.ok) {
             const data = await res.json();
             blogs = data.map(b => ({

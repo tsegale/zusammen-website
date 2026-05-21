@@ -790,7 +790,7 @@
         },
       ];
 
-      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
+      const BLOG_DETAIL_API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
       async function loadBlogDetail() {
         const id = new URLSearchParams(window.location.search).get('id');
@@ -799,7 +799,7 @@
         let blog = null;
 
         try {
-          const res = await fetch(API_BASE + '/blogs/' + id);
+          const res = await fetch(BLOG_DETAIL_API_BASE + '/blogs/' + id);
           if (res.ok) {
             blog = await res.json();
             console.log('blog-detail: loaded from API:', blog.title);
@@ -864,7 +864,7 @@
         // Sidebar recent posts + bottom related posts
         let allBlogs = [];
         try {
-          const res = await fetch(API_BASE + '/blogs');
+          const res = await fetch(BLOG_DETAIL_API_BASE + '/blogs');
           if (res.ok) allBlogs = await res.json();
         } catch {}
 

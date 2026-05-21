@@ -995,8 +995,8 @@
         "../assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
       ];
 
-      const API_BASE = window.API_BASE || 'http://localhost:3000/api';
-      const fmt = n => 'N$' + Number(n).toLocaleString('en-ZA');
+      const TOUR_DETAIL_API_BASE = window.API_BASE || 'http://localhost:3000/api';
+      const fmtPrice = n => 'N$' + Number(n).toLocaleString('en-ZA');
 
       let bookAdults = 1,
         bookChildren = 0,
@@ -1041,9 +1041,9 @@
         const pb = document.getElementById("priceBreakdown");
         if (!pb) return;
         pb.innerHTML = `
-    <div class="price-line"><span>Adults (${bookAdults} × ${fmt(currentTour.price)})</span><span>${fmt(adultTotal)}</span></div>
-    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${fmt(childRate)}) <span class="child-note">60% off</span></span><span>${fmt(childTotal)}</span></div>` : ""}
-    <div class="price-line total"><span>Total Estimate</span><span>${fmt(grand)}</span></div>
+    <div class="price-line"><span>Adults (${bookAdults} × ${fmtPrice(currentTour.price)})</span><span>${fmtPrice(adultTotal)}</span></div>
+    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${fmtPrice(childRate)}) <span class="child-note">60% off</span></span><span>${fmtPrice(childTotal)}</span></div>` : ""}
+    <div class="price-line total"><span>Total Estimate</span><span>${fmtPrice(grand)}</span></div>
   `;
       }
 
@@ -1054,7 +1054,7 @@
         let tour = null;
 
         try {
-          const res = await fetch(API_BASE + '/tours/' + id);
+          const res = await fetch(TOUR_DETAIL_API_BASE + '/tours/' + id);
           if (res.ok) {
             tour = await res.json();
             console.log('tour-detail: loaded from API:', tour.title);
@@ -1109,7 +1109,7 @@
         set('bookDuration',     tour.days + ' Days, ' + tour.nights + ' Nights');
         set('bookPeople',       'Min ' + tour.minPeople + ', Max ' + tour.maxPeople);
         set('bookMinAge',       tour.minAge + ' years');
-        set('bookPrice',        fmt(tour.price));
+        set('bookPrice',        fmtPrice(tour.price));
         set('locPickup',        tour.destinations?.split('→')[0]?.trim()       || tour.location);
         set('locDropoff',       tour.destinations?.split('→').slice(-1)[0]?.trim() || tour.location);
 
@@ -1121,7 +1121,7 @@
 
         const oldPriceEl = document.getElementById('bookOldPrice');
         if (oldPriceEl && tour.oldPrice)
-          oldPriceEl.innerHTML = `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${fmt(tour.oldPrice)}</span>`;
+          oldPriceEl.innerHTML = `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${fmtPrice(tour.oldPrice)}</span>`;
 
         const mainImg = document.getElementById('mainImg');
         if (mainImg && tour.img) mainImg.src = tour.img;
