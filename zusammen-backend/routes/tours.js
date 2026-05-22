@@ -15,10 +15,11 @@ function parseTour(row) {
   if (!row) return null;
   return {
     ...row,
-    includes:   JSON.parse(row.includes   || "[]"),
-    excludes:   JSON.parse(row.excludes   || "[]"),
-    highlights: JSON.parse(row.highlights || "[]"),
-    active:     Boolean(row.active),
+    includes:       JSON.parse(row.includes       || "[]"),
+    excludes:       JSON.parse(row.excludes       || "[]"),
+    highlights:     JSON.parse(row.highlights     || "[]"),
+    gallery_images: JSON.parse(row.gallery_images || "[]"),
+    active:         Boolean(row.active),
   };
 }
 
@@ -50,11 +51,13 @@ function mapForFrontend(row) {
     minPeople:      Number(row.min_people) || 2,
     maxPeople:      Number(row.max_people) || 12,
     img:            row.image_url          || "",
+    image_url:      row.image_url          || "",
     description:    row.description        || "",
     destinations:   row.destinations       || "",
     includes:       safeParseJSON(row.includes),
     excludes:       safeParseJSON(row.excludes),
     highlights:     safeParseJSON(row.highlights),
+    galleryImages:  safeParseJSON(row.gallery_images),
     availableDates: row.available_dates    || "Year-round",
     active:         row.active,
   };
@@ -138,6 +141,7 @@ router.post("/", adminOnly, (req, res) => {
       highlights = [],
       available_dates,
       image_url,
+      gallery_images = [],
       active = 1,
     } = req.body;
 
@@ -149,9 +153,10 @@ router.post("/", adminOnly, (req, res) => {
 
     const slug = toSlug(title);
 
-    const includesStr  = Array.isArray(includes)   ? JSON.stringify(includes)   : (includes   || "[]");
-    const excludesStr  = Array.isArray(excludes)   ? JSON.stringify(excludes)   : (excludes   || "[]");
-    const highlightsStr = Array.isArray(highlights) ? JSON.stringify(highlights) : (highlights || "[]");
+    const includesStr      = Array.isArray(includes)       ? JSON.stringify(includes)       : (includes       || "[]");
+    const excludesStr      = Array.isArray(excludes)       ? JSON.stringify(excludes)       : (excludes       || "[]");
+    const highlightsStr    = Array.isArray(highlights)     ? JSON.stringify(highlights)     : (highlights     || "[]");
+    const galleryImagesStr = Array.isArray(gallery_images) ? JSON.stringify(gallery_images) : (gallery_images || "[]");
 
     const result = db
       .prepare(
@@ -159,12 +164,12 @@ router.post("/", adminOnly, (req, res) => {
           title, slug, location, category, rating, reviews,
           price, old_price, days, nights, guests, min_age,
           min_people, max_people, description, destinations,
-          includes, excludes, highlights, available_dates, image_url, active
+          includes, excludes, highlights, available_dates, image_url, gallery_images, active
         ) VALUES (
           @title, @slug, @location, @category, @rating, @reviews,
           @price, @old_price, @days, @nights, @guests, @min_age,
           @min_people, @max_people, @description, @destinations,
-          @includes, @excludes, @highlights, @available_dates, @image_url, @active
+          @includes, @excludes, @highlights, @available_dates, @image_url, @gallery_images, @active
         )`
       )
       .run({
@@ -182,6 +187,7 @@ router.post("/", adminOnly, (req, res) => {
         highlights:      highlightsStr,
         available_dates: available_dates ?? null,
         image_url:       image_url       ?? null,
+        gallery_images:  galleryImagesStr,
         active:          Number(active),
       });
 
@@ -227,6 +233,10 @@ router.put("/:id", adminOnly, (req, res) => {
       updates.highlights = Array.isArray(req.body.highlights)
         ? JSON.stringify(req.body.highlights)
         : req.body.highlights;
+    if (req.body.gallery_images !== undefined)
+      updates.gallery_images = Array.isArray(req.body.gallery_images)
+        ? JSON.stringify(req.body.gallery_images)
+        : req.body.gallery_images;
 
     if (updates.title) updates.slug = toSlug(updates.title);
 

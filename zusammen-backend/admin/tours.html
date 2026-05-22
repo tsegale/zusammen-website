@@ -189,9 +189,20 @@
     <div class="panel-section">
       <div class="panel-section-label">Media</div>
       <div class="form-group">
-        <label>Image URL</label>
-        <input type="text" id="f_image_url" placeholder="assets/gallery/etosha-national-park.jpg" />
-        <p class="form-hint">Relative path from frontend root or absolute URL</p>
+        <label>Main Image</label>
+        <div id="mainImageContainer"></div>
+      </div>
+      <div class="form-group">
+        <label>Gallery Images (additional photos)</label>
+        <div class="gallery-items" id="galleryItems"></div>
+        <div id="galleryPickerWrap" style="display:none;margin-bottom:12px">
+          <div id="galleryPickerContainer"></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button type="button" class="btn btn-primary btn-sm" onclick="confirmAddGalleryItem()">Add to Gallery</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelGalleryPicker()">Cancel</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="showGalleryPicker()">+ Add Image</button>
       </div>
     </div>
   </div>
@@ -256,24 +267,28 @@
     document.getElementById("panelTitle").textContent = "Edit Tour";
     document.getElementById("tourId").value = t.id;
     document.getElementById("saveTourBtn").textContent = "Update Tour";
-    document.getElementById("f_title").value         = t.title || "";
-    document.getElementById("f_location").value      = t.location || "";
-    document.getElementById("f_category").value      = t.category || "";
-    document.getElementById("f_price").value         = t.price || "";
-    document.getElementById("f_old_price").value     = t.old_price || "";
-    document.getElementById("f_days").value          = t.days || "";
-    document.getElementById("f_nights").value        = t.nights || "";
-    document.getElementById("f_guests").value        = t.guests || "";
-    document.getElementById("f_min_age").value       = t.min_age || "";
-    document.getElementById("f_min_people").value    = t.min_people || "";
-    document.getElementById("f_max_people").value    = t.max_people || "";
-    document.getElementById("f_available_dates").value = t.available_dates || "";
-    document.getElementById("f_description").value   = t.description || "";
-    document.getElementById("f_destinations").value  = t.destinations || "";
-    document.getElementById("f_includes").value      = (t.includes || []).join("\n");
-    document.getElementById("f_excludes").value      = (t.excludes || []).join("\n");
-    document.getElementById("f_highlights").value    = (t.highlights || []).join("\n");
-    document.getElementById("f_image_url").value     = t.image_url || "";
+    document.getElementById("f_title").value            = t.title || "";
+    document.getElementById("f_location").value         = t.location || "";
+    document.getElementById("f_category").value         = t.category || "";
+    document.getElementById("f_price").value            = t.price || "";
+    document.getElementById("f_old_price").value        = t.old_price || "";
+    document.getElementById("f_days").value             = t.days || "";
+    document.getElementById("f_nights").value           = t.nights || "";
+    document.getElementById("f_guests").value           = t.guests || "";
+    document.getElementById("f_min_age").value          = t.min_age || "";
+    document.getElementById("f_min_people").value       = t.min_people || "";
+    document.getElementById("f_max_people").value       = t.max_people || "";
+    document.getElementById("f_available_dates").value  = t.available_dates || "";
+    document.getElementById("f_description").value      = t.description || "";
+    document.getElementById("f_destinations").value     = t.destinations || "";
+    document.getElementById("f_includes").value         = (t.includes || []).join("\n");
+    document.getElementById("f_excludes").value         = (t.excludes || []).join("\n");
+    document.getElementById("f_highlights").value       = (t.highlights || []).join("\n");
+    makeImageInput("mainImageContainer", "f_image_url", t.image_url || "");
+    document.getElementById("galleryItems").innerHTML = "";
+    const gallery = Array.isArray(t.gallery_images) ? t.gallery_images : [];
+    gallery.forEach(url => { if (url) addGalleryItem(url); });
+    document.getElementById("galleryPickerWrap").style.display = "none";
     openPanel("panelOverlay", "tourPanel");
   }
 
@@ -282,9 +297,12 @@
   function clearForm() {
     ["f_title","f_location","f_price","f_old_price","f_days","f_nights",
      "f_guests","f_min_age","f_min_people","f_max_people","f_available_dates",
-     "f_description","f_destinations","f_includes","f_excludes","f_highlights","f_image_url"]
-      .forEach(id => { document.getElementById(id).value = ""; });
+     "f_description","f_destinations","f_includes","f_excludes","f_highlights"]
+      .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_category").value = "";
+    makeImageInput("mainImageContainer", "f_image_url");
+    document.getElementById("galleryItems").innerHTML = "";
+    document.getElementById("galleryPickerWrap").style.display = "none";
   }
 
   function lines(id) {
@@ -319,7 +337,8 @@
       includes:        lines("f_includes"),
       excludes:        lines("f_excludes"),
       highlights:      lines("f_highlights"),
-      image_url:       document.getElementById("f_image_url").value.trim() || null,
+      image_url:       document.getElementById("f_image_url")?.value.trim() || null,
+      gallery_images:  getGalleryImages(),
     };
 
     console.log('Submitting tour data:', body);
@@ -361,6 +380,41 @@
     } catch (err) {
       showToast("Error: " + err.message, "error");
     }
+  }
+
+  /* ── Gallery helpers ─────────────────────────────────────────── */
+  function showGalleryPicker() {
+    const wrap = document.getElementById("galleryPickerWrap");
+    wrap.style.display = "";
+    makeImageInput("galleryPickerContainer", "galleryPickerHidden");
+  }
+
+  function cancelGalleryPicker() {
+    document.getElementById("galleryPickerWrap").style.display = "none";
+  }
+
+  function confirmAddGalleryItem() {
+    const url = document.getElementById("galleryPickerHidden")?.value?.trim();
+    if (!url) { showToast("Please select or enter an image first", "error"); return; }
+    addGalleryItem(url);
+    cancelGalleryPicker();
+  }
+
+  function addGalleryItem(url) {
+    const list = document.getElementById("galleryItems");
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+    item.innerHTML = `
+      <img src="${url}" alt="Gallery" onerror="this.style.display='none'">
+      <input type="text" class="gallery-item-url" readonly value="${url.replace(/"/g, '&quot;')}">
+      <button type="button" class="gallery-item-remove" onclick="this.closest('.gallery-item').remove()">✕ Remove</button>`;
+    list.appendChild(item);
+  }
+
+  function getGalleryImages() {
+    return [...document.querySelectorAll(".gallery-item-url")]
+      .map(el => el.value.trim())
+      .filter(Boolean);
   }
 
   checkAuth().then(ok => { if (ok) loadTours(); });

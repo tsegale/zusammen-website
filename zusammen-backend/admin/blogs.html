@@ -120,8 +120,8 @@
     <div class="panel-section">
       <div class="panel-section-label">Media</div>
       <div class="form-group">
-        <label>Cover Image URL</label>
-        <input type="text" id="f_image_url" placeholder="assets/blogs/your-image.jpg" />
+        <label>Cover Image</label>
+        <div id="blogImageContainer"></div>
       </div>
     </div>
   </div>
@@ -191,7 +191,7 @@
     document.getElementById("f_read_time").value   = b.read_time || "";
     document.getElementById("f_excerpt").value     = b.excerpt || "";
     document.getElementById("f_content").value     = b.content || "";
-    document.getElementById("f_image_url").value   = b.image_url || "";
+    makeImageInput("blogImageContainer", "f_image_url", b.image_url || "");
     if (b.published_at) {
       const d = new Date(b.published_at);
       if (!isNaN(d)) document.getElementById("f_published_at").value = d.toISOString().slice(0, 10);
@@ -202,10 +202,11 @@
   function closeBlogPanel() { closePanel("panelOverlay", "blogPanel"); }
 
   function clearForm() {
-    ["f_title","f_tag","f_author","f_read_time","f_excerpt","f_content","f_image_url","f_published_at"]
-      .forEach(id => { document.getElementById(id).value = ""; });
+    ["f_title","f_tag","f_author","f_read_time","f_excerpt","f_content","f_published_at"]
+      .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_author").value = "Zusammen Tours";
     document.getElementById("f_published_at").value = new Date().toISOString().slice(0, 10);
+    makeImageInput("blogImageContainer", "f_image_url");
   }
 
   async function saveBlog() {
@@ -220,7 +221,7 @@
       read_time:    document.getElementById("f_read_time").value.trim() || null,
       excerpt:      document.getElementById("f_excerpt").value.trim() || null,
       content:      document.getElementById("f_content").value.trim() || null,
-      image_url:    document.getElementById("f_image_url").value.trim() || null,
+      image_url:    document.getElementById("f_image_url")?.value.trim() || null,
       published_at: document.getElementById("f_published_at").value || new Date().toISOString(),
     };
 

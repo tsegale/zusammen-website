@@ -163,6 +163,7 @@ async function initDb() {
       highlights     TEXT    DEFAULT '[]',
       available_dates TEXT,
       image_url      TEXT,
+      gallery_images TEXT    DEFAULT '[]',
       active         INTEGER DEFAULT 1,
       created_at     TEXT    DEFAULT (datetime('now'))
     );
@@ -208,6 +209,13 @@ async function initDb() {
       created_at  TEXT    DEFAULT (datetime('now'))
     );
   `);
+
+  // Migrate existing databases
+  try {
+    _sqlDb.exec("ALTER TABLE tours ADD COLUMN gallery_images TEXT DEFAULT '[]'");
+  } catch (_) {
+    // Column already exists — ignore
+  }
 
   saveDb();
 

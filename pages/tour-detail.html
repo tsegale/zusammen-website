@@ -987,13 +987,50 @@
     <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
-      const THUMB_IMGS = [
-        "../assets/gallery/sossusvlei-namibia-red-sand-dunes-and-deadvlei-clay-pan-at-sunrise.jpg",
-        "../assets/gallery/okavango-delta-botswana-wetland-safari-mokoro-excursion.jpg",
-        "../assets/gallery/victoria-falls-zimbabwe-waterfall-adventure.webp",
-        "../assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg",
-        "../assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
-      ];
+      const FALLBACK_IMG = "../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg";
+
+      function getTourImages(tour) {
+        const images = [];
+        if (tour.image_url || tour.img) images.push(tour.image_url || tour.img);
+        const gallery = tour.gallery_images || tour.galleryImages;
+        if (gallery) {
+          let parsed = [];
+          if (Array.isArray(gallery)) {
+            parsed = gallery;
+          } else if (typeof gallery === "string") {
+            try { parsed = JSON.parse(gallery); }
+            catch { parsed = gallery.split(/,|\n/).map(s => s.trim()).filter(Boolean); }
+          }
+          images.push(...parsed);
+        }
+        return images.filter(Boolean);
+      }
+
+      function buildTourGallery(tour) {
+        const images = getTourImages(tour);
+        const mainImg = document.getElementById("mainImg");
+        if (mainImg) {
+          mainImg.src = images[0] || FALLBACK_IMG;
+          mainImg.alt = tour.title;
+          mainImg.onerror = function() { this.src = FALLBACK_IMG; };
+        }
+        const thumbsRow = document.getElementById("thumbsRow");
+        if (thumbsRow) {
+          thumbsRow.innerHTML = images.map((img, i) => `
+            <div class="detail-thumb ${i === 0 ? "active" : ""}"
+                 onclick="switchMainImg('${img.replace(/'/g, "\\'")}', this)">
+              <img src="${img}" alt="Tour photo ${i + 1}"
+                   onerror="this.parentElement.style.display='none'">
+            </div>`).join("");
+        }
+      }
+
+      window.switchMainImg = function(src, thumbEl) {
+        const mainImg = document.getElementById("mainImg");
+        if (mainImg) mainImg.src = src;
+        document.querySelectorAll(".detail-thumb").forEach(t => t.classList.remove("active"));
+        thumbEl.classList.add("active");
+      };
 
       const TOUR_DETAIL_API_BASE = window.API_BASE || 'http://localhost:3000/api';
       const fmtPrice = n => 'N$' + Number(n).toLocaleString('en-ZA');
@@ -1011,14 +1048,6 @@
           .forEach((p) => p.classList.remove("active"));
         el.classList.add("active");
         document.getElementById("panel-" + name).classList.add("active");
-      }
-
-      function setThumb(idx) {
-        document.getElementById("mainImg").src =
-          THUMB_IMGS[idx] || THUMB_IMGS[0];
-        document
-          .querySelectorAll(".detail-thumb")
-          .forEach((t, i) => t.classList.toggle("active", i === idx));
       }
 
       function adjBook(type, d) {
@@ -1123,8 +1152,7 @@
         if (oldPriceEl && tour.oldPrice)
           oldPriceEl.innerHTML = `<span style="color:rgba(255,255,255,0.5);text-decoration:line-through;font-size:13px">${fmtPrice(tour.oldPrice)}</span>`;
 
-        const mainImg = document.getElementById('mainImg');
-        if (mainImg && tour.img) mainImg.src = tour.img;
+        buildTourGallery(tour);
 
         const hl = document.getElementById('detailHighlights');
         if (hl && tour.highlights.length)
@@ -1140,11 +1168,6 @@
         if (exc && tour.excludes.length)
           exc.innerHTML = tour.excludes.map(e =>
             `<div class="exc-item"><i class="fas fa-times"></i><span>${e}</span></div>`).join('');
-
-        const galleryImgs = [tour.img, ...THUMB_IMGS.slice(0, 4)].filter(Boolean);
-        document.getElementById('thumbsRow').innerHTML = galleryImgs.map((img, i) =>
-          `<div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="setThumb(${i})"><img src="${img}" alt="Tour photo ${i + 1}"></div>`
-        ).join('');
 
         updatePriceBreakdown();
       }
