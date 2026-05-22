@@ -819,7 +819,7 @@
         }
 
         // Normalise fields
-        blog.img      = blog.img      || blog.image_url || '';
+        blog.img      = blog.img      || blog.image_url || null;
         blog.date     = blog.date     || (blog.published_at
           ? new Date(blog.published_at).toLocaleDateString('en-GB', {
               day: 'numeric', month: 'short', year: 'numeric'
@@ -843,7 +843,16 @@
         if (tagEl) tagEl.textContent = blog.tag;
 
         const mainImg = document.getElementById('blogMainImg');
-        if (mainImg) { mainImg.src = blog.img; mainImg.alt = blog.title; }
+        if (mainImg) {
+          if (blog.img) {
+            mainImg.src = blog.img;
+            mainImg.alt = blog.title;
+            mainImg.setAttribute('referrerpolicy', 'no-referrer');
+            mainImg.setAttribute('crossorigin', 'anonymous');
+          } else {
+            mainImg.style.display = 'none';
+          }
+        }
 
         const contentEl = document.getElementById('blogContent');
         if (contentEl) {
@@ -875,13 +884,13 @@
         const recentEl = document.getElementById('recentPosts');
         if (recentEl) {
           recentEl.innerHTML = listSource.map(b => {
-            const img  = b.image_url || b.img || '';
+            const img  = b.image_url || b.img || null;
             const date = b.published_at
               ? new Date(b.published_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
               : (b.date || '');
             return `
               <div class="recent-post-item" onclick="window.location='blog-detail.html?id=${b.id}'">
-                <div class="recent-post-img"><img src="${img}" alt="${b.title}" loading="lazy"></div>
+                ${img ? `<div class="recent-post-img"><img src="${img}" alt="${b.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.parentElement.style.display='none'"></div>` : ""}
                 <div class="recent-post-text">
                   <h6>${b.title}</h6>
                   <span><i class="fas fa-calendar" style="margin-right:4px;color:var(--accent)"></i>${date}</span>
@@ -893,10 +902,10 @@
         const relatedEl = document.getElementById('relatedPosts');
         if (relatedEl) {
           relatedEl.innerHTML = listSource.map(b => {
-            const img = b.image_url || b.img || '';
+            const img = b.image_url || b.img || null;
             return `
               <a href="blog-detail.html?id=${b.id}" class="related-card">
-                <img src="${img}" alt="${b.title}" loading="lazy">
+                ${img ? `<img src="${img}" alt="${b.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">` : ""}
                 <div class="related-card-body"><div class="tag">${b.tag || 'Travel'}</div><h6>${b.title}</h6></div>
               </a>`;
           }).join('');

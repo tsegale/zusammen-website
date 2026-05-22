@@ -1244,20 +1244,19 @@ function renderTours(tours) {
   }
 
   grid.innerHTML = tours.map(t => {
-    let img = t.img || t.image_url ||
-      '../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg';
-    // DB stores paths relative to root (assets/...). Fix for pages/ subdirectory.
-    if (img && !img.startsWith('http') && !img.startsWith('/') && !img.startsWith('../')) {
-      img = '../' + img;
+    let imgSrc = t.img || t.image_url || null;
+    if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('/') && !imgSrc.startsWith('../')) {
+      imgSrc = '../' + imgSrc;
     }
+    const imgHtml = imgSrc
+      ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">`
+      : "";
     return `
       <div class="tour-card"
            style="cursor:pointer"
            onclick="window.location='tour-detail.html?id=${t.id}'">
         <div class="tour-img">
-          <img src="${img}" alt="${t.title}" loading="lazy"
-               onerror="this.style.display='none';
-               this.parentElement.style.background='var(--bg2)'">
+          ${imgHtml}
           <span class="tour-badge">
             <i class="fas fa-star"></i> Top Rated
           </span>

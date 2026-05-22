@@ -595,17 +595,17 @@
         const filtered = activeTag === 'All' ? source : source.filter(b => b.tag === activeTag);
         const visible  = filtered.slice(0, displayedCount);
         grid.innerHTML = visible.map(b => {
-          let bImg = b.img || b.image_url || '';
+          let bImg = b.img || b.image_url || null;
           if (bImg && !bImg.startsWith('http') && !bImg.startsWith('/') && !bImg.startsWith('../')) {
             bImg = '../' + bImg;
           }
           return `
           <div class="blog-card">
-            <div class="blog-img">
-              <img src="${bImg}" alt="${b.title}" loading="lazy"
-                   onerror="this.style.display='none';this.parentElement.style.background='var(--bg2)'">
+            ${bImg ? `<div class="blog-img">
+              <img src="${bImg}" alt="${b.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous"
+                   onerror="this.parentElement.style.display='none'">
               <span class="blog-tag-badge">${b.tag || 'Travel'}</span>
-            </div>
+            </div>` : ""}
             <div class="blog-body">
               <div class="blog-meta">
                 <span><i class="fas fa-user"></i> ${b.author}</span>

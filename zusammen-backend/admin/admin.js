@@ -131,120 +131,191 @@ function closeModal(overlayId) {
 
 /* ── IMAGE INPUT COMPONENT ─────────────────────────────────────── */
 
-function makeImageInput(containerId, hiddenInputId, initialValue = "") {
+function createImageInput({ containerId, inputId, initialValue = "" }) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  const uid = hiddenInputId;
   container.innerHTML = `
-    <input type="hidden" id="${uid}" value="">
-    <div class="img-input-wrap">
+    <input type="hidden" id="${inputId}" value="">
+    <div class="img-input-wrap" data-iid="${inputId}">
       <div class="img-tabs">
-        <button type="button" class="img-tab active" onclick="imgSwitchTab('${uid}','url',this)">🔗 Paste URL</button>
-        <button type="button" class="img-tab" onclick="imgSwitchTab('${uid}','path',this)">📂 Path</button>
-        <button type="button" class="img-tab" onclick="imgSwitchTab('${uid}','upload',this)">📁 Upload</button>
+        <button type="button" class="img-tab active" onclick="switchImgTab('${inputId}','upload',this)">Upload from Computer</button>
+        <button type="button" class="img-tab" onclick="switchImgTab('${inputId}','url',this)">Paste URL</button>
       </div>
       <div class="img-tab-content">
-        <div class="img-tab-panel active" id="${uid}-panel-url">
-          <input type="text" placeholder="https://... or paste image URL" id="${uid}-url-in"
-            oninput="imgSetValue('${uid}', this.value)">
+        <div class="img-tab-panel active" id="${inputId}-panel-upload">
+          <label class="img-upload-label">
+            <input type="file" accept="image/*" style="display:none" onchange="handleFileUpload('${inputId}',this)">
+            <span class="img-upload-btn">Choose File</span>
+            <span class="img-upload-hint">JPG, PNG, WebP, GIF &middot; max 10 MB</span>
+          </label>
+          <div class="img-progress-wrap" id="${inputId}-progress-wrap" style="display:none">
+            <div class="img-progress" id="${inputId}-progress"></div>
+          </div>
         </div>
-        <div class="img-tab-panel" id="${uid}-panel-path">
-          <input type="text" placeholder="assets/gallery/image.jpg" id="${uid}-path-in"
-            oninput="imgSetValuePath('${uid}', this.value)">
-          <p class="form-hint" style="margin-top:4px">Relative path from frontend root</p>
+        <div class="img-tab-panel" id="${inputId}-panel-url">
+          <input type="text" placeholder="https://example.com/image.jpg" id="${inputId}-url-in"
+            oninput="handleUrlInput('${inputId}', this.value)">
         </div>
-        <div class="img-tab-panel" id="${uid}-panel-upload">
-          <input type="file" accept="image/*" id="${uid}-file-in"
-            onchange="imgUploadFile('${uid}', this)">
-          <p class="form-hint" style="margin-top:4px">Max 10 MB · JPG, PNG, WebP, GIF</p>
+        <div class="img-preview-row" id="${inputId}-preview-row" style="display:none">
+          <img id="${inputId}-preview-img" src="" alt="Preview">
+          <button type="button" class="img-clear-btn" onclick="clearImageValue('${inputId}')">&#10005; Remove</button>
         </div>
-        <div class="img-preview">
-          <img id="${uid}-img-prev" src="" alt="Preview" style="display:none">
-          <span id="${uid}-no-prev" style="color:#aaa;font-size:13px">No image selected</span>
-        </div>
+        <p class="img-no-preview" id="${inputId}-no-preview">No image selected</p>
       </div>
     </div>`;
   if (initialValue) {
-    const urlIn = document.getElementById(uid + "-url-in");
-    if (urlIn) urlIn.value = initialValue;
-    imgSetValue(uid, initialValue);
+    setImageValue(inputId, initialValue);
+    const urlIn = document.getElementById(inputId + "-url-in");
+    if (urlIn) {
+      urlIn.value = initialValue;
+      const urlTab = container.querySelector(".img-tab:last-child");
+      if (urlTab) switchImgTab(inputId, "url", urlTab);
+    }
   }
 }
 
-function imgSwitchTab(uid, tab, btnEl) {
+function switchImgTab(inputId, tab, btnEl) {
   const wrap = btnEl.closest(".img-input-wrap");
   if (!wrap) return;
   wrap.querySelectorAll(".img-tab").forEach((t) => t.classList.remove("active"));
   wrap.querySelectorAll(".img-tab-panel").forEach((p) => p.classList.remove("active"));
   btnEl.classList.add("active");
-  const panel = document.getElementById(uid + "-panel-" + tab);
+  const panel = document.getElementById(inputId + "-panel-" + tab);
   if (panel) panel.classList.add("active");
 }
 
-function imgSetValue(uid, value) {
-  const hidden = document.getElementById(uid);
-  if (hidden) hidden.value = value;
-  const prev = document.getElementById(uid + "-img-prev");
-  const noPrev = document.getElementById(uid + "-no-prev");
-  if (!prev) return;
+function setImageValue(inputId, value) {
+  const hidden = document.getElementById(inputId);
+  if (hidden) hidden.value = value || "";
+  const prevRow = document.getElementById(inputId + "-preview-row");
+  const noPreview = document.getElementById(inputId + "-no-preview");
+  const img = document.getElementById(inputId + "-preview-img");
+  if (!img) return;
   if (value) {
-    prev.src = value;
-    prev.style.display = "";
-    if (noPrev) noPrev.style.display = "none";
-    prev.onerror = function () {
-      this.style.display = "none";
-      if (noPrev) noPrev.style.display = "";
-    };
+    img.src = value;
+    img.onerror = function () { this.style.display = "none"; };
+    img.style.display = "";
+    if (prevRow) prevRow.style.display = "";
+    if (noPreview) noPreview.style.display = "none";
   } else {
-    prev.src = "";
-    prev.style.display = "none";
-    if (noPrev) noPrev.style.display = "";
+    img.src = "";
+    img.style.display = "";
+    if (prevRow) prevRow.style.display = "none";
+    if (noPreview) noPreview.style.display = "";
   }
 }
 
-function imgSetValuePath(uid, value) {
-  const hidden = document.getElementById(uid);
-  if (hidden) hidden.value = value;
-  const previewSrc = value
-    ? value.startsWith("http") || value.startsWith("/")
-      ? value
-      : "../" + value
-    : "";
-  const prev = document.getElementById(uid + "-img-prev");
-  const noPrev = document.getElementById(uid + "-no-prev");
-  if (!prev) return;
-  if (previewSrc) {
-    prev.src = previewSrc;
-    prev.style.display = "";
-    if (noPrev) noPrev.style.display = "none";
-    prev.onerror = function () {
-      this.style.display = "none";
-      if (noPrev) noPrev.style.display = "";
-    };
-  } else {
-    prev.src = "";
-    prev.style.display = "none";
-    if (noPrev) noPrev.style.display = "";
+function clearImageValue(inputId) {
+  setImageValue(inputId, "");
+  const urlIn = document.getElementById(inputId + "-url-in");
+  if (urlIn) urlIn.value = "";
+  const wrap = document.querySelector(`[data-iid="${inputId}"]`);
+  if (wrap) {
+    const fileIn = wrap.querySelector("input[type=file]");
+    if (fileIn) fileIn.value = "";
   }
 }
 
-async function imgUploadFile(uid, fileInput) {
+function getImageValue(inputId) {
+  const hidden = document.getElementById(inputId);
+  return hidden ? hidden.value.trim() : "";
+}
+
+async function handleFileUpload(inputId, fileInput) {
+  if (!fileInput.files || !fileInput.files[0]) return;
+  const progressWrap = document.getElementById(inputId + "-progress-wrap");
+  const progress     = document.getElementById(inputId + "-progress");
+  if (progressWrap) progressWrap.style.display = "";
+  if (progress) { progress.style.transition = "none"; progress.style.width = "0%"; }
+
+  let pct = 0;
+  const ticker = setInterval(() => {
+    pct = Math.min(pct + 12, 85);
+    if (progress) { progress.style.transition = "width .15s"; progress.style.width = pct + "%"; }
+  }, 150);
+
+  const formData = new FormData();
+  formData.append("image", fileInput.files[0]);
+  try {
+    const res  = await fetch("/api/upload", { method: "POST", credentials: "include", body: formData });
+    const data = await res.json().catch(() => ({}));
+    clearInterval(ticker);
+    if (!res.ok) throw new Error(data.error || "Upload failed");
+    if (progress) progress.style.width = "100%";
+    setTimeout(() => { if (progressWrap) progressWrap.style.display = "none"; }, 500);
+    setImageValue(inputId, data.url);
+    showToast("Image uploaded", "success");
+  } catch (err) {
+    clearInterval(ticker);
+    if (progressWrap) progressWrap.style.display = "none";
+    showToast("Upload failed: " + err.message, "error");
+  }
+}
+
+function handleUrlInput(inputId, value) {
+  setImageValue(inputId, value.trim());
+}
+
+/* ── GALLERY COMPONENT ─────────────────────────────────────────── */
+
+let _galleryImages = [];
+let _galleryContainerId = "";
+
+function initGallery(containerId, initialImages = []) {
+  _galleryContainerId = containerId;
+  _galleryImages = Array.isArray(initialImages) ? initialImages.filter(Boolean) : [];
+  renderGallery();
+}
+
+function renderGallery() {
+  const container = document.getElementById(_galleryContainerId);
+  if (!container) return;
+  if (!_galleryImages.length) {
+    container.innerHTML = `<p class="gallery-empty">No gallery images yet</p>`;
+    return;
+  }
+  container.innerHTML = _galleryImages.map((url, i) => `
+    <div class="gallery-item">
+      <img src="${url}" alt="Gallery ${i + 1}" onerror="this.style.display='none'">
+      <div class="gallery-item-footer">
+        <span class="gallery-item-url" title="${url}">${url.length > 48 ? url.slice(0, 48) + "…" : url}</span>
+        <button type="button" class="gallery-item-remove" onclick="removeGalleryImage(${i})">&#10005;</button>
+      </div>
+    </div>`).join("");
+}
+
+function removeGalleryImage(index) {
+  _galleryImages.splice(index, 1);
+  renderGallery();
+}
+
+function addGalleryFromUrl(url) {
+  url = (url || "").trim();
+  if (!url) { showToast("Please enter an image URL", "error"); return; }
+  if (_galleryImages.includes(url)) { showToast("Image already in gallery", "info"); return; }
+  _galleryImages.push(url);
+  renderGallery();
+}
+
+async function addGalleryFromFile(fileInput) {
   if (!fileInput.files || !fileInput.files[0]) return;
   const formData = new FormData();
   formData.append("image", fileInput.files[0]);
   try {
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+    const res  = await fetch("/api/upload", { method: "POST", credentials: "include", body: formData });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Upload failed");
-    imgSetValue(uid, data.url);
-    showToast("Image uploaded", "success");
+    _galleryImages.push(data.url);
+    renderGallery();
+    fileInput.value = "";
+    showToast("Image added to gallery", "success");
   } catch (err) {
     showToast("Upload failed: " + err.message, "error");
   }
+}
+
+function getGalleryImages() {
+  return [..._galleryImages];
 }
 
 /* ── INIT ──────────────────────────────────────────────────────── */

@@ -191,7 +191,7 @@
     document.getElementById("f_read_time").value   = b.read_time || "";
     document.getElementById("f_excerpt").value     = b.excerpt || "";
     document.getElementById("f_content").value     = b.content || "";
-    makeImageInput("blogImageContainer", "f_image_url", b.image_url || "");
+    createImageInput({ containerId: "blogImageContainer", inputId: "f_image_url", initialValue: b.image_url || "" });
     if (b.published_at) {
       const d = new Date(b.published_at);
       if (!isNaN(d)) document.getElementById("f_published_at").value = d.toISOString().slice(0, 10);
@@ -206,7 +206,7 @@
       .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_author").value = "Zusammen Tours";
     document.getElementById("f_published_at").value = new Date().toISOString().slice(0, 10);
-    makeImageInput("blogImageContainer", "f_image_url");
+    createImageInput({ containerId: "blogImageContainer", inputId: "f_image_url" });
   }
 
   async function saveBlog() {
@@ -221,7 +221,7 @@
       read_time:    document.getElementById("f_read_time").value.trim() || null,
       excerpt:      document.getElementById("f_excerpt").value.trim() || null,
       content:      document.getElementById("f_content").value.trim() || null,
-      image_url:    document.getElementById("f_image_url")?.value.trim() || null,
+      image_url:    getImageValue("f_image_url") || null,
       published_at: document.getElementById("f_published_at").value || new Date().toISOString(),
     };
 

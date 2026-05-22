@@ -987,8 +987,6 @@
     <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
-      const FALLBACK_IMG = "../assets/gallery/etosha-national-park-namibia-wild-life-safari-at-waterhole.jpg";
-
       function getTourImages(tour) {
         const images = [];
         if (tour.image_url || tour.img) images.push(tour.image_url || tour.img);
@@ -1008,18 +1006,25 @@
 
       function buildTourGallery(tour) {
         const images = getTourImages(tour);
-        const mainImg = document.getElementById("mainImg");
-        if (mainImg) {
-          mainImg.src = images[0] || FALLBACK_IMG;
-          mainImg.alt = tour.title;
-          mainImg.onerror = function() { this.src = FALLBACK_IMG; };
+        const mainImgEl = document.getElementById("mainImg");
+        const mainImgWrap = mainImgEl ? mainImgEl.closest(".detail-main-img") : null;
+        if (mainImgEl) {
+          if (images[0]) {
+            mainImgEl.src = images[0];
+            mainImgEl.alt = tour.title;
+            mainImgEl.setAttribute("referrerpolicy", "no-referrer");
+            mainImgEl.setAttribute("crossorigin", "anonymous");
+            mainImgEl.onerror = function() { if (mainImgWrap) mainImgWrap.style.display = "none"; };
+          } else {
+            if (mainImgWrap) mainImgWrap.style.display = "none";
+          }
         }
         const thumbsRow = document.getElementById("thumbsRow");
         if (thumbsRow) {
           thumbsRow.innerHTML = images.map((img, i) => `
             <div class="detail-thumb ${i === 0 ? "active" : ""}"
                  onclick="switchMainImg('${img.replace(/'/g, "\\'")}', this)">
-              <img src="${img}" alt="Tour photo ${i + 1}"
+              <img src="${img}" alt="Tour photo ${i + 1}" referrerpolicy="no-referrer" crossorigin="anonymous"
                    onerror="this.parentElement.style.display='none'">
             </div>`).join("");
         }

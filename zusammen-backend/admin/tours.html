@@ -194,15 +194,15 @@
       </div>
       <div class="form-group">
         <label>Gallery Images (additional photos)</label>
-        <div class="gallery-items" id="galleryItems"></div>
-        <div id="galleryPickerWrap" style="display:none;margin-bottom:12px">
-          <div id="galleryPickerContainer"></div>
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <button type="button" class="btn btn-primary btn-sm" onclick="confirmAddGalleryItem()">Add to Gallery</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelGalleryPicker()">Cancel</button>
-          </div>
+        <div class="gallery-add-row">
+          <input type="text" id="galleryUrlInput" placeholder="Paste image URL…" />
+          <button type="button" class="btn btn-ghost btn-sm" onclick="galleryAddUrl()">+ Add URL</button>
+          <label class="btn btn-ghost btn-sm gallery-upload-label">
+            Upload Photo
+            <input type="file" accept="image/*" style="display:none" onchange="addGalleryFromFile(this)">
+          </label>
         </div>
-        <button type="button" class="btn btn-ghost btn-sm" onclick="showGalleryPicker()">+ Add Image</button>
+        <div id="galleryContainer" class="gallery-items"></div>
       </div>
     </div>
   </div>
@@ -284,11 +284,8 @@
     document.getElementById("f_includes").value         = (t.includes || []).join("\n");
     document.getElementById("f_excludes").value         = (t.excludes || []).join("\n");
     document.getElementById("f_highlights").value       = (t.highlights || []).join("\n");
-    makeImageInput("mainImageContainer", "f_image_url", t.image_url || "");
-    document.getElementById("galleryItems").innerHTML = "";
-    const gallery = Array.isArray(t.gallery_images) ? t.gallery_images : [];
-    gallery.forEach(url => { if (url) addGalleryItem(url); });
-    document.getElementById("galleryPickerWrap").style.display = "none";
+    createImageInput({ containerId: "mainImageContainer", inputId: "f_image_url", initialValue: t.image_url || "" });
+    initGallery("galleryContainer", Array.isArray(t.gallery_images) ? t.gallery_images : []);
     openPanel("panelOverlay", "tourPanel");
   }
 
@@ -300,9 +297,8 @@
      "f_description","f_destinations","f_includes","f_excludes","f_highlights"]
       .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_category").value = "";
-    makeImageInput("mainImageContainer", "f_image_url");
-    document.getElementById("galleryItems").innerHTML = "";
-    document.getElementById("galleryPickerWrap").style.display = "none";
+    createImageInput({ containerId: "mainImageContainer", inputId: "f_image_url" });
+    initGallery("galleryContainer", []);
   }
 
   function lines(id) {
@@ -337,7 +333,7 @@
       includes:        lines("f_includes"),
       excludes:        lines("f_excludes"),
       highlights:      lines("f_highlights"),
-      image_url:       document.getElementById("f_image_url")?.value.trim() || null,
+      image_url:       getImageValue("f_image_url") || null,
       gallery_images:  getGalleryImages(),
     };
 
@@ -382,39 +378,12 @@
     }
   }
 
-  /* ── Gallery helpers ─────────────────────────────────────────── */
-  function showGalleryPicker() {
-    const wrap = document.getElementById("galleryPickerWrap");
-    wrap.style.display = "";
-    makeImageInput("galleryPickerContainer", "galleryPickerHidden");
-  }
-
-  function cancelGalleryPicker() {
-    document.getElementById("galleryPickerWrap").style.display = "none";
-  }
-
-  function confirmAddGalleryItem() {
-    const url = document.getElementById("galleryPickerHidden")?.value?.trim();
-    if (!url) { showToast("Please select or enter an image first", "error"); return; }
-    addGalleryItem(url);
-    cancelGalleryPicker();
-  }
-
-  function addGalleryItem(url) {
-    const list = document.getElementById("galleryItems");
-    const item = document.createElement("div");
-    item.className = "gallery-item";
-    item.innerHTML = `
-      <img src="${url}" alt="Gallery" onerror="this.style.display='none'">
-      <input type="text" class="gallery-item-url" readonly value="${url.replace(/"/g, '&quot;')}">
-      <button type="button" class="gallery-item-remove" onclick="this.closest('.gallery-item').remove()">✕ Remove</button>`;
-    list.appendChild(item);
-  }
-
-  function getGalleryImages() {
-    return [...document.querySelectorAll(".gallery-item-url")]
-      .map(el => el.value.trim())
-      .filter(Boolean);
+  /* ── Gallery URL helper ──────────────────────────────────────── */
+  function galleryAddUrl() {
+    const input = document.getElementById("galleryUrlInput");
+    if (!input) return;
+    addGalleryFromUrl(input.value);
+    input.value = "";
   }
 
   checkAuth().then(ok => { if (ok) loadTours(); });

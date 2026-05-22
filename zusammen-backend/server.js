@@ -65,6 +65,13 @@ app.use(
   }),
 );
 
+/* ── CROSS-ORIGIN HEADERS ─────────────────────────────────────── */
+app.use((_req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  next();
+});
+
 /* ── REQUEST LOGGER ───────────────────────────────────────────── */
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);

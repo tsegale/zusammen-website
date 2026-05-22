@@ -812,12 +812,15 @@ function updateToursSlider() {
 }
 
 function buildTourCard(t) {
+  const imgSrc = t.img || t.image_url || null;
+  const imgHtml = imgSrc
+    ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">`
+    : "";
   return `
     <div class="slide-slot">
       <div class="tour-card" data-id="${t.id}">
         <div class="tour-img">
-          <img src="${t.img}" alt="${t.title}" loading="lazy"
-               onerror="this.style.display='none';this.parentElement.style.background='#e0e7ef';this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#aaa;font-size:13px;font-family:var(--font-head)\'>Image coming soon</div>'">
+          ${imgHtml}
           <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
           <span class="tour-cat">${t.category}</span>
           <button class="tour-wishlist" onclick="event.stopPropagation();toggleWishlist(this)" title="Save">
@@ -867,12 +870,14 @@ function buildBlogs() {
   const displayed = BLOGS.slice(0, 3);
   grid.innerHTML = displayed
     .map(
-      (b) => `
+      (b) => {
+        const bImg = b.img || b.image_url || null;
+        return `
     <div class="blog-card">
-      <div class="blog-img">
-        <img src="${b.img}" alt="${b.title}" loading="lazy">
+      ${bImg ? `<div class="blog-img">
+        <img src="${bImg}" alt="${b.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.parentElement.style.display='none'">
         <span class="blog-tag-badge">${b.tag}</span>
-      </div>
+      </div>` : ""}
       <div class="blog-body">
         <div class="blog-meta">
           <span><i class="fas fa-user"></i> ${b.author}</span>
@@ -884,8 +889,8 @@ function buildBlogs() {
         <a href="pages/blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
-  `,
-    )
+  `;
+      })
     .join("");
 }
 
