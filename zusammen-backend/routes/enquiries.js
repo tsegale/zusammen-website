@@ -258,8 +258,8 @@ router.get("/", adminOnly, (req, res) => {
   }
 });
 
-/* ── PUT /api/enquiries/:id/status — admin ────────────────── */
-router.put("/:id/status", adminOnly, (req, res) => {
+/* ── PUT /api/enquiries/:id — admin ───────────────────────── */
+router.put("/:id", adminOnly, (req, res) => {
   try {
     const { status } = req.body;
     const valid = ["new", "in-progress", "replied", "closed"];
@@ -276,6 +276,20 @@ router.put("/:id/status", adminOnly, (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to update enquiry status" });
+  }
+});
+
+/* ── DELETE /api/enquiries/:id — admin (hard delete) ─────── */
+router.delete("/:id", adminOnly, (req, res) => {
+  try {
+    const existing = db.prepare("SELECT id FROM enquiries WHERE id = ?").get(req.params.id);
+    if (!existing) return res.status(404).json({ error: "Enquiry not found" });
+
+    db.prepare("DELETE FROM enquiries WHERE id = ?").run(req.params.id);
+    res.json({ message: "Enquiry deleted", id: Number(req.params.id) });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete enquiry" });
   }
 });
 

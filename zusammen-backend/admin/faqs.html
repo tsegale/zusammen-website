@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQs — Zusammen Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
@@ -16,16 +17,16 @@
   </div>
   <nav class="sidebar-nav">
     <span class="section-label">Main Menu</span>
-    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
-    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
-    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
-    <a href="/admin/faqs.html" class="active"><span class="icon">❓</span> FAQs</a>
-    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+    <a href="/admin/index.html"><i class="fas fa-chart-bar icon"></i> Dashboard</a>
+    <a href="/admin/tours.html"><i class="fas fa-route icon"></i> Tours</a>
+    <a href="/admin/blogs.html"><i class="fas fa-pen-nib icon"></i> Blogs</a>
+    <a href="/admin/faqs.html" class="active"><i class="fas fa-circle-question icon"></i> FAQs</a>
+    <a href="/admin/enquiries.html"><i class="fas fa-envelope icon"></i> Enquiries</a>
   </nav>
   <div class="sidebar-divider"></div>
   <div class="sidebar-nav sidebar-bottom">
-    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
-    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><i class="fas fa-globe icon"></i> View Website</a>
+    <a href="#" onclick="logout();return false;"><i class="fas fa-right-from-bracket icon"></i> Logout</a>
   </div>
 </aside>
 
@@ -114,7 +115,7 @@
   function renderFaqs(list) {
     const tbody = document.getElementById("faqsBody");
     if (!list.length) {
-      tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">❓</div><p>No FAQs yet.</p></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon"><i class="fas fa-circle-question"></i></div><p>No FAQs yet.</p></div></td></tr>`;
       return;
     }
     tbody.innerHTML = list.map((f, idx) => `
@@ -124,12 +125,13 @@
         <td>${getActiveBadge(f.active)}</td>
         <td>
           <div class="td-actions" style="flex-wrap:wrap">
-            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${f.id})">✏</button>
-            <button class="btn btn-ghost btn-sm btn-icon" title="Move Up" onclick="moveUp(${idx})" ${idx === 0 ? "disabled" : ""}>↑</button>
-            <button class="btn btn-ghost btn-sm btn-icon" title="Move Down" onclick="moveDown(${idx})" ${idx === list.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${f.id})"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Move Up" onclick="moveUp(${idx})" ${idx === 0 ? "disabled" : ""}><i class="fas fa-arrow-up"></i></button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Move Down" onclick="moveDown(${idx})" ${idx === list.length - 1 ? "disabled" : ""}><i class="fas fa-arrow-down"></i></button>
             <button class="btn btn-sm ${f.active ? "btn-danger" : "btn-accent"}" onclick="toggleFaq(${f.id}, ${f.active})">
               ${f.active ? "Off" : "On"}
             </button>
+            <button class="btn btn-ghost btn-sm btn-icon btn-icon-danger" title="Delete permanently" onclick="deleteFaq(${f.id})"><i class="fas fa-trash-can"></i></button>
           </div>
         </td>
       </tr>
@@ -227,6 +229,10 @@
     } catch (err) {
       showToast("Error: " + err.message, "error");
     }
+  }
+
+  async function deleteFaq(id) {
+    await confirmDelete("FAQ", `/api/faqs/${id}`, loadFaqs);
   }
 
   checkAuth().then(ok => { if (ok) loadFaqs(); });

@@ -174,7 +174,7 @@ router.put("/:id", adminOnly, (req, res) => {
   }
 });
 
-/* ── DELETE /api/blogs/:id — admin (soft delete) ─────────────── */
+/* ── DELETE /api/blogs/:id — admin (hard delete) ─────────────── */
 router.delete("/:id", adminOnly, (req, res) => {
   try {
     const existing = db
@@ -183,11 +183,11 @@ router.delete("/:id", adminOnly, (req, res) => {
 
     if (!existing) return res.status(404).json({ error: "Blog not found" });
 
-    db.prepare("UPDATE blogs SET active = 0 WHERE id = ?").run(req.params.id);
-    res.json({ message: "Blog deactivated successfully", id: Number(req.params.id) });
+    db.prepare("DELETE FROM blogs WHERE id = ?").run(req.params.id);
+    res.json({ message: "Blog deleted", id: Number(req.params.id) });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to deactivate blog" });
+    res.status(500).json({ error: "Failed to delete blog" });
   }
 });
 

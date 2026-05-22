@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tours — Zusammen Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
@@ -16,16 +17,16 @@
   </div>
   <nav class="sidebar-nav">
     <span class="section-label">Main Menu</span>
-    <a href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
-    <a href="/admin/tours.html" class="active"><span class="icon">🗺</span> Tours</a>
-    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
-    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
-    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+    <a href="/admin/index.html"><i class="fas fa-chart-bar icon"></i> Dashboard</a>
+    <a href="/admin/tours.html" class="active"><i class="fas fa-route icon"></i> Tours</a>
+    <a href="/admin/blogs.html"><i class="fas fa-pen-nib icon"></i> Blogs</a>
+    <a href="/admin/faqs.html"><i class="fas fa-circle-question icon"></i> FAQs</a>
+    <a href="/admin/enquiries.html"><i class="fas fa-envelope icon"></i> Enquiries</a>
   </nav>
   <div class="sidebar-divider"></div>
   <div class="sidebar-nav sidebar-bottom">
-    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
-    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><i class="fas fa-globe icon"></i> View Website</a>
+    <a href="#" onclick="logout();return false;"><i class="fas fa-right-from-bracket icon"></i> Logout</a>
   </div>
 </aside>
 
@@ -230,7 +231,7 @@
   function renderTours(list) {
     const tbody = document.getElementById("toursBody");
     if (!list.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🗺</div><p>No tours yet. Add your first tour!</p></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon"><i class="fas fa-route"></i></div><p>No tours yet. Add your first tour!</p></div></td></tr>`;
       return;
     }
     tbody.innerHTML = list.map(t => `
@@ -243,10 +244,11 @@
         <td>${getActiveBadge(t.active)}</td>
         <td>
           <div class="td-actions">
-            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${t.id})">✏</button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditPanel(${t.id})"><i class="fas fa-pen"></i></button>
             <button class="btn btn-sm ${t.active ? 'btn-danger' : 'btn-accent'}" onclick="toggleTour(${t.id}, ${t.active})">
               ${t.active ? "Deactivate" : "Activate"}
             </button>
+            <button class="btn btn-ghost btn-sm btn-icon btn-icon-danger" title="Delete permanently" onclick="deleteTour(${t.id})"><i class="fas fa-trash-can"></i></button>
           </div>
         </td>
       </tr>
@@ -376,6 +378,10 @@
     } catch (err) {
       showToast("Error: " + err.message, "error");
     }
+  }
+
+  async function deleteTour(id) {
+    await confirmDelete("tour", `/api/tours/${id}`, loadTours);
   }
 
   /* ── Gallery URL helper ──────────────────────────────────────── */

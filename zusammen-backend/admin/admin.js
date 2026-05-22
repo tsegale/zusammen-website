@@ -318,5 +318,18 @@ function getGalleryImages() {
   return [..._galleryImages];
 }
 
+/* ── DELETE HELPER ─────────────────────────────────────────────── */
+
+async function confirmDelete(label, url, onSuccess) {
+  if (!confirm(`Permanently delete this ${label}?\n\nThis cannot be undone.`)) return;
+  try {
+    await apiFetch(url, { method: "DELETE" });
+    showToast(`${label.charAt(0).toUpperCase() + label.slice(1)} deleted`, "success");
+    if (typeof onSuccess === "function") onSuccess();
+  } catch (err) {
+    showToast("Delete failed: " + err.message, "error");
+  }
+}
+
 /* ── INIT ──────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", initSidebar);

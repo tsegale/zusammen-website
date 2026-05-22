@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — Zusammen Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
@@ -16,16 +17,16 @@
   </div>
   <nav class="sidebar-nav">
     <span class="section-label">Main Menu</span>
-    <a href="/admin/index.html" class="active"><span class="icon">📊</span> Dashboard</a>
-    <a href="/admin/tours.html"><span class="icon">🗺</span> Tours</a>
-    <a href="/admin/blogs.html"><span class="icon">✏️</span> Blogs</a>
-    <a href="/admin/faqs.html"><span class="icon">❓</span> FAQs</a>
-    <a href="/admin/enquiries.html"><span class="icon">✉️</span> Enquiries</a>
+    <a href="/admin/index.html" class="active"><i class="fas fa-chart-bar icon"></i> Dashboard</a>
+    <a href="/admin/tours.html"><i class="fas fa-route icon"></i> Tours</a>
+    <a href="/admin/blogs.html"><i class="fas fa-pen-nib icon"></i> Blogs</a>
+    <a href="/admin/faqs.html"><i class="fas fa-circle-question icon"></i> FAQs</a>
+    <a href="/admin/enquiries.html"><i class="fas fa-envelope icon"></i> Enquiries</a>
   </nav>
   <div class="sidebar-divider"></div>
   <div class="sidebar-nav sidebar-bottom">
-    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><span class="icon">🌐</span> View Website</a>
-    <a href="#" onclick="logout();return false;"><span class="icon">🚪</span> Logout</a>
+    <a href="https://zusammentravels.com" target="_blank" rel="noopener"><i class="fas fa-globe icon"></i> View Website</a>
+    <a href="#" onclick="logout();return false;"><i class="fas fa-right-from-bracket icon"></i> Logout</a>
   </div>
 </aside>
 
@@ -43,19 +44,19 @@
   <!-- Stat Cards -->
   <div class="stats-grid" id="statsGrid">
     <div class="stat-card blue">
-      <div class="stat-icon">🗺</div>
+      <div class="stat-icon"><i class="fas fa-route"></i></div>
       <div class="stat-info"><h3 id="statTours">—</h3><p>Active Tours</p></div>
     </div>
     <div class="stat-card green">
-      <div class="stat-icon">✏️</div>
+      <div class="stat-icon"><i class="fas fa-pen-nib"></i></div>
       <div class="stat-info"><h3 id="statBlogs">—</h3><p>Published Blogs</p></div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">❓</div>
+      <div class="stat-icon"><i class="fas fa-circle-question"></i></div>
       <div class="stat-info"><h3 id="statFaqs">—</h3><p>Active FAQs</p></div>
     </div>
     <div class="stat-card red">
-      <div class="stat-icon">✉️</div>
+      <div class="stat-icon"><i class="fas fa-envelope"></i></div>
       <div class="stat-info"><h3 id="statNew">—</h3><p>New Enquiries</p></div>
     </div>
   </div>

@@ -191,6 +191,8 @@ tbody tr:hover td { background: #FAFBFD; }
 .btn-ghost:hover   { background: var(--bg); border-color: var(--primary); }
 .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
 .btn-icon { padding: 5px 8px; }
+.btn-icon-danger { color: #ef4444; }
+.btn-icon-danger:hover { background: #fef2f2; border-color: #ef4444; color: #dc2626; }
 .btn:disabled { opacity: .55; cursor: not-allowed; }
 
 /* ── FILTER BAR ────────────────────────────────────────────── */
@@ -339,8 +341,11 @@ select {
 
 /* ── EMPTY STATE ───────────────────────────────────────────── */
 .empty-state { text-align: center; padding: 52px 24px; color: var(--muted); }
-.empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state .empty-icon { font-size: 36px; margin-bottom: 12px; }
 .empty-state p { font-size: 15px; }
+
+/* ── SIDEBAR ICON ALIGNMENT ────────────────────────────────── */
+.icon { width: 18px; text-align: center; flex-shrink: 0; font-size: 14px; }
 
 /* ── MISC ──────────────────────────────────────────────────── */
 .text-muted { color: var(--muted); }

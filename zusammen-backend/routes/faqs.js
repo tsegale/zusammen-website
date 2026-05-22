@@ -95,7 +95,7 @@ router.put("/:id", adminOnly, (req, res) => {
   }
 });
 
-/* ── DELETE /api/faqs/:id — admin (soft delete) ──────────────── */
+/* ── DELETE /api/faqs/:id — admin (hard delete) ──────────────── */
 router.delete("/:id", adminOnly, (req, res) => {
   try {
     const existing = db
@@ -104,11 +104,11 @@ router.delete("/:id", adminOnly, (req, res) => {
 
     if (!existing) return res.status(404).json({ error: "FAQ not found" });
 
-    db.prepare("UPDATE faqs SET active = 0 WHERE id = ?").run(req.params.id);
-    res.json({ message: "FAQ deactivated successfully", id: Number(req.params.id) });
+    db.prepare("DELETE FROM faqs WHERE id = ?").run(req.params.id);
+    res.json({ message: "FAQ deleted", id: Number(req.params.id) });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to deactivate FAQ" });
+    res.status(500).json({ error: "Failed to delete FAQ" });
   }
 });
 

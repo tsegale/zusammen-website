@@ -255,17 +255,17 @@ router.put("/:id", adminOnly, (req, res) => {
   }
 });
 
-/* ── DELETE /api/tours/:id — admin (soft delete) ─────────────── */
+/* ── DELETE /api/tours/:id — admin (hard delete) ─────────────── */
 router.delete("/:id", adminOnly, (req, res) => {
   try {
     const existing = db.prepare("SELECT id FROM tours WHERE id = ?").get(req.params.id);
     if (!existing) return res.status(404).json({ error: "Tour not found" });
 
-    db.prepare("UPDATE tours SET active = 0 WHERE id = ?").run(req.params.id);
-    res.json({ message: "Tour deactivated successfully", id: Number(req.params.id) });
+    db.prepare("DELETE FROM tours WHERE id = ?").run(req.params.id);
+    res.json({ message: "Tour deleted", id: Number(req.params.id) });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to deactivate tour" });
+    res.status(500).json({ error: "Failed to delete tour" });
   }
 });
 
