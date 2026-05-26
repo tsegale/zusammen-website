@@ -4,7 +4,13 @@
    Exposes window.WPAPI so main.js and page scripts can use it.
    ============================================================ */
 
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = (
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+)
+  ? "http://localhost:3000/api"
+  : window.location.origin + "/api";
+
 window.API_BASE = API_BASE;
 
 /* ── fetchTours ──────────────────────────────────────────── */
@@ -149,5 +155,5 @@ window.WPAPI = {
   showSkeletons,
 };
 
-console.log("✅ api.js loaded — Zusammen Tours backend connected");
+console.log("✅ api.js loaded — API_BASE:", API_BASE);
 console.log("window.WPAPI set:", !!window.WPAPI);

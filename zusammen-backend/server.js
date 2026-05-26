@@ -19,25 +19,25 @@ const PORT = process.env.PORT || 3000;
 /* ── CORS ─────────────────────────────────────────────────────── */
 const corsOptions = {
   origin: function (origin, callback) {
+    // Same-origin requests have no origin header — always allow
     if (!origin) return callback(null, true);
+
     const allowed = [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
-      "http://localhost:5500",
-      "http://127.0.0.1:5500",
-      "http://localhost:5501",
-      "http://127.0.0.1:5501",
-      "http://localhost:5502",
-      "http://127.0.0.1:5502",
-      "http://localhost",
-      "http://127.0.0.1",
-      "https://zusammentravels.com",
-      "https://www.zusammentravels.com",
       process.env.FRONTEND_URL,
     ].filter(Boolean);
-    if (allowed.includes(origin)) return callback(null, true);
-    console.warn("CORS blocked origin:", origin);
-    callback(new Error("CORS: origin not allowed - " + origin));
+
+    if (
+      allowed.includes(origin) ||
+      origin.includes("ngrok") ||
+      origin.includes("loca.lt")
+    ) {
+      callback(null, true);
+    } else {
+      console.warn("CORS blocked:", origin);
+      callback(new Error("CORS not allowed: " + origin));
+    }
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -76,6 +76,24 @@ app.use((_req, res, next) => {
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   next();
+});
+
+/* ── FRONTEND STATIC FILES ────────────────────────────────────── */
+// Serve the entire frontend folder (css, js, assets, pages, index.html)
+app.use(express.static(path.join(__dirname, ".."), {
+  index: "index.html",
+  extensions: ["html"],
+}));
+
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(__dirname, "../index.html"));
+});
+
+app.get("/pages/:page", (req, res) => {
+  const filePath = path.join(__dirname, "../pages", req.params.page);
+  res.sendFile(filePath, (err) => {
+    if (err) res.status(404).json({ error: "Page not found" });
+  });
 });
 
 /* ── ADMIN STATIC FILES ───────────────────────────────────────── */
@@ -315,9 +333,7 @@ app.get("/api/debug", (_req, res) => {
   });
 });
 
-/* ── FRONTEND STATIC FILES ────────────────────────────────────── */
 app.use("/assets/uploads", express.static(uploadsDir));
-app.use(express.static(path.join(__dirname, "..")));
 
 /* ── 404 ──────────────────────────────────────────────────────── */
 app.use((_req, res) => res.status(404).json({ error: "Route not found" }));
