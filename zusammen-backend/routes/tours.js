@@ -60,6 +60,15 @@ function mapForFrontend(row) {
     galleryImages:  safeParseJSON(row.gallery_images),
     availableDates: row.available_dates    || null,
     active:         row.active,
+    introduction:   row.introduction       || '',
+    activities:     safeParseJSON(row.activities),
+    itinerary:      safeParseJSON(row.itinerary),
+    pickupAddress:  row.pickup_address     || '',
+    dropoffAddress: row.dropoff_address    || '',
+    city:           row.city               || '',
+    region:         row.region             || '',
+    zip:            row.zip                || '',
+    country:        row.country            || '',
   };
 }
 
@@ -143,6 +152,17 @@ router.post("/", adminOnly, (req, res) => {
       image_url,
       gallery_images = [],
       active = 1,
+      introduction = '',
+      activities = [],
+      itinerary = [],
+      pickup_address,
+      pickupAddress,
+      dropoff_address,
+      dropoffAddress,
+      city = '',
+      region = '',
+      zip = '',
+      country = '',
     } = req.body;
 
     if (!title || !location || !category || !price || !days || !nights) {
@@ -157,6 +177,10 @@ router.post("/", adminOnly, (req, res) => {
     const excludesStr      = Array.isArray(excludes)       ? JSON.stringify(excludes)       : (excludes       || "[]");
     const highlightsStr    = Array.isArray(highlights)     ? JSON.stringify(highlights)     : (highlights     || "[]");
     const galleryImagesStr = Array.isArray(gallery_images) ? JSON.stringify(gallery_images) : (gallery_images || "[]");
+    const activitiesStr    = Array.isArray(activities)     ? JSON.stringify(activities)     : (activities     || "[]");
+    const itineraryStr     = Array.isArray(itinerary)      ? JSON.stringify(itinerary)      : (itinerary      || "[]");
+    const pickupAddr  = pickup_address  || pickupAddress  || '';
+    const dropoffAddr = dropoff_address || dropoffAddress || '';
 
     const result = db
       .prepare(
@@ -164,12 +188,16 @@ router.post("/", adminOnly, (req, res) => {
           title, slug, location, category, rating, reviews,
           price, old_price, days, nights, guests, min_age,
           min_people, max_people, description, destinations,
-          includes, excludes, highlights, available_dates, image_url, gallery_images, active
+          includes, excludes, highlights, available_dates, image_url, gallery_images, active,
+          introduction, activities, itinerary, pickup_address, dropoff_address,
+          city, region, zip, country
         ) VALUES (
           @title, @slug, @location, @category, @rating, @reviews,
           @price, @old_price, @days, @nights, @guests, @min_age,
           @min_people, @max_people, @description, @destinations,
-          @includes, @excludes, @highlights, @available_dates, @image_url, @gallery_images, @active
+          @includes, @excludes, @highlights, @available_dates, @image_url, @gallery_images, @active,
+          @introduction, @activities, @itinerary, @pickup_address, @dropoff_address,
+          @city, @region, @zip, @country
         )`
       )
       .run({
@@ -189,6 +217,15 @@ router.post("/", adminOnly, (req, res) => {
         image_url:       image_url       ?? null,
         gallery_images:  galleryImagesStr,
         active:          Number(active),
+        introduction:    introduction    || '',
+        activities:      activitiesStr,
+        itinerary:       itineraryStr,
+        pickup_address:  pickupAddr,
+        dropoff_address: dropoffAddr,
+        city:    city    || '',
+        region:  region  || '',
+        zip:     zip     || '',
+        country: country || '',
       });
 
     const created = db.prepare("SELECT * FROM tours WHERE id = ?").get(result.lastInsertRowid);
@@ -213,13 +250,20 @@ router.put("/:id", adminOnly, (req, res) => {
       "title", "location", "category", "rating", "reviews", "price",
       "old_price", "days", "nights", "guests", "min_age", "min_people",
       "max_people", "description", "destinations", "available_dates",
-      "image_url", "active",
+      "image_url", "active", "introduction",
+      "city", "region", "zip", "country", "pickup_address", "dropoff_address",
     ];
 
     const updates = {};
     for (const f of fields) {
       if (req.body[f] !== undefined) updates[f] = req.body[f];
     }
+
+    // Accept camelCase aliases for location fields
+    if (req.body.pickupAddress !== undefined && updates.pickup_address === undefined)
+      updates.pickup_address = req.body.pickupAddress;
+    if (req.body.dropoffAddress !== undefined && updates.dropoff_address === undefined)
+      updates.dropoff_address = req.body.dropoffAddress;
 
     if (req.body.includes !== undefined)
       updates.includes = Array.isArray(req.body.includes)
@@ -237,6 +281,14 @@ router.put("/:id", adminOnly, (req, res) => {
       updates.gallery_images = Array.isArray(req.body.gallery_images)
         ? JSON.stringify(req.body.gallery_images)
         : req.body.gallery_images;
+    if (req.body.activities !== undefined)
+      updates.activities = Array.isArray(req.body.activities)
+        ? JSON.stringify(req.body.activities)
+        : req.body.activities;
+    if (req.body.itinerary !== undefined)
+      updates.itinerary = Array.isArray(req.body.itinerary)
+        ? JSON.stringify(req.body.itinerary)
+        : req.body.itinerary;
 
     if (updates.title) updates.slug = toSlug(updates.title);
 

@@ -210,7 +210,9 @@ textarea {
 }
 .nav-item {
   position: relative;
+  padding-bottom: 2px;
 }
+
 .nav-item > a {
   display: flex;
   align-items: center;
@@ -221,46 +223,48 @@ textarea {
   color: var(--dark);
   border-radius: var(--radius-sm);
   font-family: var(--font-head);
-  transition: var(--transition);
+  transition: color 0.2s;
   white-space: nowrap;
 }
+.nav-item > a:hover { color: var(--accent); }
 .nav-item > a i.fa-chevron-down {
   font-size: 10px;
   transition: transform 0.2s;
 }
-.nav-item:hover > a {
-  color: var(--accent);
-}
 .nav-item:hover > a i.fa-chevron-down {
   transform: rotate(180deg);
 }
+
+/* padding-top creates an invisible hover bridge so the cursor
+   moving down through the gap stays inside the hover zone    */
 .nav-dropdown {
   display: none;
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
+  padding-top: 8px;
+  min-width: 210px;
+  z-index: 500;
+}
+
+/* Visual box lives inside the padding bridge */
+.nav-dropdown-inner {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  min-width: 200px;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  z-index: 200;
   animation: dropFade 0.15s ease;
 }
+
 @keyframes dropFade {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.nav-item:hover .nav-dropdown {
-  display: block;
-}
+
+.nav-item:hover .nav-dropdown { display: block; }
+.nav-dropdown.open { display: block; }
+
 .nav-dropdown a {
   display: block;
   padding: 11px 18px;
@@ -271,9 +275,7 @@ textarea {
   font-family: var(--font-head);
   transition: var(--transition);
 }
-.nav-dropdown a:last-child {
-  border-bottom: none;
-}
+.nav-dropdown a:last-child { border-bottom: none; }
 .nav-dropdown a:hover {
   color: var(--accent);
   background: var(--bg);
@@ -561,7 +563,7 @@ section {
 }
 .search-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
   gap: 14px;
   align-items: end;
 }
@@ -584,7 +586,9 @@ section {
   gap: 9px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 11px 13px;
+  padding: 0 13px;
+  height: 50px;
+  box-sizing: border-box;
   transition: var(--transition);
   position: relative;
   background: var(--white);
@@ -744,7 +748,8 @@ section {
   color: var(--white);
 }
 .search-submit-btn {
-  padding: 13px 26px;
+  padding: 0 28px;
+  height: 50px;
   background: var(--accent);
   color: var(--white);
   border: none;

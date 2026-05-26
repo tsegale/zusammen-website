@@ -428,9 +428,9 @@
           <span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
         <div class="topbar-right">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-tripadvisor"></i></a>
+          <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+          <a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
         </div>
       </div>
     </div>
@@ -455,19 +455,23 @@
             <div class="nav-item">
               <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
               <div class="nav-dropdown">
+                <div class="nav-dropdown-inner">
                 <a href="tours.html">Tour Grid</a
                 ><a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a
                 ><a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+                </div>
               </div>
             </div>
             <div class="nav-item">
               <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
               <div class="nav-dropdown">
+                <div class="nav-dropdown-inner">
                 <a href="about.html">About Us</a><a href="faq.html">FAQ</a
                 ><a href="testimonials.html">Testimonials</a
                 ><a href="gallery.html">Gallery</a
                 ><a href="privacy.html">Privacy Policy</a
                 ><a href="terms.html">Terms &amp; Conditions</a>
+                </div>
               </div>
             </div>
             <div class="nav-item"><a href="blog-grid.html">Blogs</a></div>
@@ -575,6 +579,12 @@
               >
                 Overview
               </div>
+              <div class="detail-tab" onclick="switchTab('activities', this)">
+                Activities
+              </div>
+              <div class="detail-tab" onclick="switchTab('itinerary', this)">
+                Itinerary
+              </div>
               <div class="detail-tab" onclick="switchTab('includes', this)">
                 Includes &amp; Excludes
               </div>
@@ -601,6 +611,21 @@
                 >Highlights
               </h5>
               <div class="highlights-list" id="detailHighlights"></div>
+            </div>
+
+            <div class="detail-panel" id="panel-activities">
+              <h5 style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--dark);margin-bottom:16px">
+                <i class="fas fa-hiking" style="color:var(--accent);margin-right:8px"></i>Activities
+              </h5>
+              <div id="detailActivities"></div>
+            </div>
+
+            <div class="detail-panel" id="panel-itinerary">
+              <h5 style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--dark);margin-bottom:20px">
+                <i class="fas fa-map-marked-alt" style="color:var(--accent);margin-right:8px"></i>Itinerary
+              </h5>
+              <p id="tourIntroduction" style="font-size:14.5px;color:var(--text-light);line-height:1.8;margin-bottom:24px"></p>
+              <div id="detailItinerary"></div>
             </div>
 
             <div class="detail-panel" id="panel-includes">
@@ -909,9 +934,9 @@
               </div>
               <p>Luxury safari experiences across Namibia and Africa.</p>
               <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a
-                ><a href="#"><i class="fab fa-instagram"></i></a
-                ><a href="#"><i class="fab fa-tripadvisor"></i></a>
+                <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a
+                ><a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a
+                ><a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
               </div>
             </div>
             <div class="footer-col">
@@ -1144,8 +1169,12 @@
         set('bookPeople',       'Min ' + tour.minPeople + ', Max ' + tour.maxPeople);
         set('bookMinAge',       tour.minAge + ' years');
         set('bookPrice',        fmtPrice(tour.price));
-        set('locPickup',        tour.destinations?.split('→')[0]?.trim()       || tour.location);
-        set('locDropoff',       tour.destinations?.split('→').slice(-1)[0]?.trim() || tour.location);
+        set('locPickup',  tour.pickupAddress  || tour.destinations?.split('→')[0]?.trim() || tour.location);
+        set('locDropoff', tour.dropoffAddress || tour.destinations?.split('→').slice(-1)[0]?.trim() || tour.location);
+        set('locCity',    tour.city    || '');
+        set('locRegion',  tour.region  || '');
+        set('locZip',     tour.zip     || '');
+        set('locCountry', tour.country || '');
 
         const starsEl = document.getElementById('detailStars');
         if (starsEl) starsEl.innerHTML = '★'.repeat(tour.rating || 5) + '☆'.repeat(5 - (tour.rating || 5));
@@ -1175,7 +1204,58 @@
             `<div class="exc-item"><i class="fas fa-times"></i><span>${e}</span></div>`).join('');
 
         updatePriceBreakdown();
+
+        // Introduction
+        const introEl = document.getElementById('tourIntroduction');
+        if (introEl && tour.introduction) introEl.textContent = tour.introduction;
+
+        // Activities
+        const activitiesEl = document.getElementById('detailActivities');
+        if (activitiesEl) {
+          const acts = tour.activities || [];
+          if (acts.length) {
+            activitiesEl.innerHTML = acts.map(a => `
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+                <div style="width:32px;height:32px;border-radius:50%;background:#fff3e0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i class="fas fa-check" style="color:var(--accent);font-size:12px"></i>
+                </div>
+                <span style="font-size:14.5px;color:var(--text);line-height:1.6;padding-top:6px">${a}</span>
+              </div>`).join('');
+          } else {
+            activitiesEl.innerHTML = '<p style="color:var(--text-light);font-size:14px">No activities listed.</p>';
+          }
+        }
+
+        // Itinerary accordion
+        const itinEl = document.getElementById('detailItinerary');
+        if (itinEl) {
+          const days = tour.itinerary || [];
+          if (days.length) {
+            itinEl.innerHTML = days.map((d, i) => `
+              <div class="itin-item" style="border:1.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden">
+                <div class="itin-header" onclick="toggleItinDay(this)"
+                     style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;cursor:pointer;background:var(--white);transition:background 0.2s;user-select:none">
+                  <span style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--dark)">${d.heading || 'Day ' + (i+1)}</span>
+                  <i class="fas fa-plus" style="color:var(--accent);font-size:14px;transition:transform 0.25s;flex-shrink:0"></i>
+                </div>
+                <div class="itin-body" style="display:none;padding:0 18px 18px;font-size:14px;color:var(--text-light);line-height:1.8;border-top:1px solid var(--border)">
+                  <p style="padding-top:14px">${d.content || ''}</p>
+                </div>
+              </div>`).join('');
+          } else {
+            itinEl.innerHTML = '<p style="color:var(--text-light);font-size:14px">No itinerary added yet.</p>';
+          }
+        }
       }
+
+      window.toggleItinDay = function(header) {
+        const body = header.nextElementSibling;
+        const icon = header.querySelector('i');
+        const isOpen = body.style.display !== 'none';
+        body.style.display = isOpen ? 'none' : 'block';
+        if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(45deg)';
+        header.style.background = isOpen ? 'var(--white)' : 'var(--bg)';
+      };
 
       // Form submit — sends to backend via WPAPI
       document

@@ -105,12 +105,18 @@ function requireAdmin(req, res, next) {
 }
 
 function parseTour(t) {
+  function safeJson(v) {
+    if (!v) return [];
+    try { return JSON.parse(v); } catch { return []; }
+  }
   return {
     ...t,
-    includes:       JSON.parse(t.includes       || "[]"),
-    excludes:       JSON.parse(t.excludes       || "[]"),
-    highlights:     JSON.parse(t.highlights     || "[]"),
-    gallery_images: JSON.parse(t.gallery_images || "[]"),
+    includes:       safeJson(t.includes),
+    excludes:       safeJson(t.excludes),
+    highlights:     safeJson(t.highlights),
+    gallery_images: safeJson(t.gallery_images),
+    activities:     safeJson(t.activities),
+    itinerary:      safeJson(t.itinerary),
     active:         Boolean(t.active),
   };
 }

@@ -95,7 +95,8 @@
       "Bash(Select-Object -ExpandProperty Content)",
       "PowerShell(Start-Sleep -Seconds 2; try { \\(Invoke-WebRequest -Uri \"http://localhost:3000/api/debug\" -UseBasicParsing\\).Content } catch { $_.Exception.Message })",
       "PowerShell(try { \\(Invoke-WebRequest -Uri \"http://localhost:3000/api/tours\" -UseBasicParsing\\).Content | ConvertFrom-Json | Select-Object -First 1 } catch { $_.Exception.Message })",
-      "PowerShell(try { \\(Invoke-WebRequest -Uri \"http://localhost:3000/api/health\" -UseBasicParsing\\).Content } catch { $_.Exception.Message })"
+      "PowerShell(try { \\(Invoke-WebRequest -Uri \"http://localhost:3000/api/health\" -UseBasicParsing\\).Content } catch { $_.Exception.Message })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\jammyy\\\\Desktop\\\\Zusammen\\\\zusammen-backend\" | Where-Object { $_.Name -ne \"node_modules\" } | Select-Object Name, PSIsContainer)"
     ]
   }
 }

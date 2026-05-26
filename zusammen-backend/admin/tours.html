@@ -188,6 +188,68 @@
     </div>
 
     <div class="panel-section">
+      <div class="panel-section-label">Introduction</div>
+      <div class="form-group">
+        <label>Tour Introduction</label>
+        <textarea id="introduction" name="introduction" rows="4"
+          placeholder="Opening paragraph describing the tour..."></textarea>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Activities</div>
+      <div class="form-group">
+        <label>Activities</label>
+        <p style="font-size:12px;color:#6b7280;margin-bottom:8px">One activity per line</p>
+        <textarea id="activities_text" rows="8"
+          placeholder="Scenic flight over Namib Desert&#10;Red dunes of Sossusvlei&#10;Game drives..."></textarea>
+        <p style="font-size:11px;color:#aaa;margin-top:4px">Each line becomes one activity item</p>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Itinerary</div>
+      <div class="form-group">
+        <label>Itinerary Days</label>
+        <div id="itineraryBuilder"></div>
+        <button type="button" onclick="addItineraryDay()"
+          style="margin-top:10px;background:#1F3A6D;color:white;border:none;border-radius:8px;padding:10px 16px;cursor:pointer;font-size:13px;font-weight:600">
+          + Add Day
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-label">Location</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>Pickup Address</label>
+          <input type="text" id="pickup_address" placeholder="e.g. Hosea Kutako International Airport">
+        </div>
+        <div class="form-group">
+          <label>Drop-off Address</label>
+          <input type="text" id="dropoff_address" placeholder="e.g. Hosea Kutako International Airport">
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="city" placeholder="e.g. Windhoek">
+        </div>
+        <div class="form-group">
+          <label>Region</label>
+          <input type="text" id="region" placeholder="e.g. Khomas Region">
+        </div>
+        <div class="form-group">
+          <label>ZIP Code</label>
+          <input type="text" id="zip" placeholder="e.g. 10005">
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" id="country" placeholder="e.g. Namibia">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
       <div class="panel-section-label">Media</div>
       <div class="form-group">
         <label>Main Image</label>
@@ -286,6 +348,17 @@
     document.getElementById("f_includes").value         = (t.includes || []).join("\n");
     document.getElementById("f_excludes").value         = (t.excludes || []).join("\n");
     document.getElementById("f_highlights").value       = (t.highlights || []).join("\n");
+    document.getElementById("introduction").value       = t.introduction || '';
+    const _acts = Array.isArray(t.activities) ? t.activities : (typeof t.activities === 'string' ? JSON.parse(t.activities || '[]') : []);
+    const _itin = Array.isArray(t.itinerary)  ? t.itinerary  : (typeof t.itinerary  === 'string' ? JSON.parse(t.itinerary  || '[]') : []);
+    document.getElementById("activities_text").value    = _acts.join('\n');
+    document.getElementById("pickup_address").value     = t.pickup_address || t.pickupAddress || '';
+    document.getElementById("dropoff_address").value    = t.dropoff_address || t.dropoffAddress || '';
+    document.getElementById("city").value               = t.city || '';
+    document.getElementById("region").value             = t.region || '';
+    document.getElementById("zip").value                = t.zip || '';
+    document.getElementById("country").value            = t.country || '';
+    initItinerary(_itin);
     createImageInput({ containerId: "mainImageContainer", inputId: "f_image_url", initialValue: t.image_url || "" });
     initGallery("galleryContainer", Array.isArray(t.gallery_images) ? t.gallery_images : []);
     openPanel("panelOverlay", "tourPanel");
@@ -296,9 +369,12 @@
   function clearForm() {
     ["f_title","f_location","f_price","f_old_price","f_days","f_nights",
      "f_guests","f_min_age","f_min_people","f_max_people","f_available_dates",
-     "f_description","f_destinations","f_includes","f_excludes","f_highlights"]
+     "f_description","f_destinations","f_includes","f_excludes","f_highlights",
+     "introduction","activities_text","pickup_address","dropoff_address",
+     "city","region","zip","country"]
       .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_category").value = "";
+    initItinerary([]);
     createImageInput({ containerId: "mainImageContainer", inputId: "f_image_url" });
     initGallery("galleryContainer", []);
   }
@@ -337,6 +413,15 @@
       highlights:      lines("f_highlights"),
       image_url:       getImageValue("f_image_url") || null,
       gallery_images:  getGalleryImages(),
+      introduction:    document.getElementById('introduction').value,
+      activities:      document.getElementById('activities_text').value.split('\n').map(s => s.trim()).filter(Boolean),
+      itinerary:       getItinerary(),
+      pickup_address:  document.getElementById('pickup_address').value,
+      dropoff_address: document.getElementById('dropoff_address').value,
+      city:            document.getElementById('city').value,
+      region:          document.getElementById('region').value,
+      zip:             document.getElementById('zip').value,
+      country:         document.getElementById('country').value,
     };
 
     console.log('Submitting tour data:', body);
@@ -384,7 +469,65 @@
     await confirmDelete("tour", `/api/tours/${id}`, loadTours);
   }
 
-  /* ── Gallery URL helper ──────────────────────────────────────── */
+  /* ── Itinerary Builder ───────────────────────────────────────── */
+  let itineraryDays = [];
+
+  function addItineraryDay(day = null) {
+    const index = itineraryDays.length;
+    const dayNum = index + 1;
+    const heading = day?.heading || `Day ${dayNum} – `;
+    const content = day?.content || '';
+    itineraryDays.push({ day: dayNum, heading, content });
+    const container = document.getElementById('itineraryBuilder');
+    const el = document.createElement('div');
+    el.id = `itin-day-${index}`;
+    el.style.cssText = `border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:12px;background:#f9fafb`;
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-weight:700;color:#1F3A6D;font-size:14px">Day ${dayNum}</span>
+        <button type="button" onclick="removeItineraryDay(${index})"
+          style="background:#ef4444;color:white;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">
+          Remove
+        </button>
+      </div>
+      <input type="text" id="itin-heading-${index}"
+             placeholder="Day ${dayNum} – Heading" value="${heading.replace(/"/g, '&quot;')}"
+             oninput="updateItineraryDay(${index},'heading',this.value)"
+             style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:8px;box-sizing:border-box;outline:none">
+      <textarea id="itin-content-${index}"
+             placeholder="Describe what happens on this day..."
+             oninput="updateItineraryDay(${index},'content',this.value)"
+             style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;resize:vertical;min-height:80px;box-sizing:border-box;outline:none"
+      >${content}</textarea>`;
+    container.appendChild(el);
+  }
+
+  function removeItineraryDay(index) {
+    const el = document.getElementById(`itin-day-${index}`);
+    if (el) el.remove();
+    itineraryDays[index] = null;
+  }
+
+  function updateItineraryDay(index, field, value) {
+    if (itineraryDays[index]) itineraryDays[index][field] = value;
+  }
+
+  function getItinerary() {
+    return itineraryDays.filter(Boolean).map((d, i) => ({
+      day: i + 1,
+      heading: document.getElementById(`itin-heading-${itineraryDays.indexOf(d)}`)?.value || d.heading,
+      content: document.getElementById(`itin-content-${itineraryDays.indexOf(d)}`)?.value || d.content
+    }));
+  }
+
+  function initItinerary(existing = []) {
+    itineraryDays = [];
+    const builder = document.getElementById('itineraryBuilder');
+    if (builder) builder.innerHTML = '';
+    existing.forEach(day => addItineraryDay(day));
+  }
+
+  /* ── Gallery URL helper ───────────────────────────────────────── */
   function galleryAddUrl() {
     const input = document.getElementById("galleryUrlInput");
     if (!input) return;

@@ -318,10 +318,10 @@
           <span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
         <div class="topbar-right">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
           <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-tripadvisor"></i></a>
+          <a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
         </div>
       </div>
     </div>
@@ -346,6 +346,7 @@
             <div class="nav-item">
               <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
               <div class="nav-dropdown">
+                <div class="nav-dropdown-inner">
                 <a href="tours.html">Tour Grid</a>
                 <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
                 <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
@@ -353,17 +354,20 @@
                 <a href="tours.html?cat=Self-Drive+Safaris"
                   >Self-Drive Safaris</a
                 >
+                </div>
               </div>
             </div>
             <div class="nav-item">
               <a href="about.html">Pages <i class="fas fa-chevron-down"></i></a>
               <div class="nav-dropdown">
+                <div class="nav-dropdown-inner">
                 <a href="about.html">About Us</a>
                 <a href="faq.html">FAQ</a>
                 <a href="testimonials.html">Testimonials</a>
                 <a href="gallery.html">Gallery</a>
                 <a href="privacy.html">Privacy Policy</a>
                 <a href="terms.html">Terms &amp; Conditions</a>
+                </div>
               </div>
             </div>
             <div class="nav-item">
@@ -371,7 +375,9 @@
                 >Blogs <i class="fas fa-chevron-down"></i
               ></a>
               <div class="nav-dropdown">
+                <div class="nav-dropdown-inner">
                 <a href="blog-grid.html">Blog Grid</a>
+                </div>
               </div>
             </div>
             <div class="nav-item"><a href="contact.html">Contact Us</a></div>
@@ -789,10 +795,10 @@
                 African countries.
               </p>
               <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                <a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
               </div>
             </div>
             <div class="footer-col">
@@ -1300,9 +1306,8 @@ function renderTours(tours) {
             </div>
           </div>
           <button class="send-request-btn"
-                  onclick="event.stopPropagation();
-                  window.location='tour-detail.html?id=${t.id}'">
-            <i class="fas fa-eye"></i> VIEW TOUR
+                  onclick="event.stopPropagation();window.location='tour-detail.html?id=${t.id}'">
+            <i class="fas fa-compass"></i> View Tour
           </button>
         </div>
       </div>`;

@@ -539,6 +539,30 @@ function initHeader() {
     mNav.classList.remove("open");
     document.body.style.overflow = "";
   });
+
+  // Nav dropdown toggle (click-based, works on all devices)
+  document.querySelectorAll('.nav-item > a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const dropdown = this.parentElement.querySelector('.nav-dropdown');
+      if (!dropdown) return;
+      e.preventDefault();
+      document.querySelectorAll('.nav-dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('open');
+      });
+      dropdown.classList.toggle('open');
+      const chevron = this.querySelector('.fa-chevron-down');
+      if (chevron) {
+        chevron.style.transform = dropdown.classList.contains('open')
+          ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    });
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-item')) {
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+    }
+  });
 }
 
 /* ===== SEARCH BOX ===== */
@@ -847,8 +871,8 @@ function buildTourCard(t) {
               <span><i class="fas fa-users"></i> ${t.guests}</span>
             </div>
           </div>
-          <button class="send-request-btn" onclick="event.stopPropagation();openEnquiry(${t.id})">
-            <i class="fas fa-paper-plane"></i> SEND REQUEST NOW
+          <button class="send-request-btn" onclick="event.stopPropagation();window.location='pages/tour-detail.html?id=${t.id}'">
+            <i class="fas fa-compass"></i> View Tour
           </button>
         </div>
       </div>
