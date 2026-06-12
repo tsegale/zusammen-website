@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="../assets/logo/zusammen-logo.png" />
     <link rel="apple-touch-icon" href="../assets/logo/zusammen-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tour Grid – Zusammen Tours and Travel Agency</title>
+    <title>Our Collection - Zusammen Tours and Travel Agency</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap"
@@ -203,6 +203,7 @@
         align-items: center;
         gap: 9px;
         cursor: pointer;
+        padding: 8px 0;
       }
       .filter-check-item input[type="checkbox"] {
         width: 16px;
@@ -211,7 +212,7 @@
         cursor: pointer;
       }
       .filter-check-item span {
-        font-size: 13.5px;
+        font-size: 14px;
         color: var(--text);
       }
       .filter-check-item:hover span {
@@ -307,6 +308,39 @@
           grid-template-columns: 1fr;
         }
       }
+      @media (max-width: 600px) {
+        .tours-results-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .mobile-filter-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-head);
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      @media (max-width: 900px) {
+        .mobile-filter-btn {
+          display: flex;
+        }
+        .filters-sidebar {
+          display: none;
+        }
+        .filters-sidebar.open {
+          display: block;
+        }
+      }
     </style>
   </head>
   <body>
@@ -318,10 +352,12 @@
           <span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
         <div class="topbar-right">
-          <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
+          <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@ZusammenTravels-i1j" aria-label="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+          <a href="https://x.com/TravelsZusammen" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.linkedin.com/company/zusammen-tours-and-travel-agency/" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.tripadvisor.co.za/Attraction_Review-g293821-d27952450-Reviews-Zusammen_Tours_and_Travel_Agency-Windhoek_Khomas_Region.html" aria-label="TripAdvisor" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
         </div>
       </div>
     </div>
@@ -347,12 +383,15 @@
               <a href="tours.html">Tours <i class="fas fa-chevron-down"></i></a>
               <div class="nav-dropdown">
                 <div class="nav-dropdown-inner">
-                <a href="tours.html">Tour Grid</a>
+                <a href="tours.html">Our Collection</a>
                 <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
                 <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
                 <a href="tours.html?cat=Family+Safaris">Family Safaris</a>
                 <a href="tours.html?cat=Self-Drive+Safaris"
                   >Self-Drive Safaris</a
+                >
+                <a href="tours.html?cat=Cross+Border+Safaris"
+                  >Cross Border Safaris</a
                 >
                 </div>
               </div>
@@ -394,6 +433,16 @@
       </div>
     </header>
 
+    <!-- MOBILE CONTACT STRIP -->
+    <div class="mobile-contact-strip">
+      <a href="tel:+264812455852">
+        <i class="fas fa-phone"></i> +264 81 245 5852
+      </a>
+      <a href="https://wa.me/264812455852" target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+
     <!-- MOBILE NAV -->
     <nav class="mobile-nav" id="mobileNav">
       <div class="mobile-nav-header">
@@ -408,8 +457,12 @@
       </div>
       <a href="../index.html">Home</a>
       <div class="mobile-section-label">Tours</div>
-      <a href="tours.html">Tour Grid</a>
+      <a href="tours.html">Our Collection</a>
       <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
+      <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
+      <a href="tours.html?cat=Family+Safaris">Family Safaris</a>
+      <a href="tours.html?cat=Self-Drive+Safaris">Self-Drive Safaris</a>
+      <a href="tours.html?cat=Cross+Border+Safaris">Cross Border Safaris</a>
       <div class="mobile-section-label">Pages</div>
       <a href="about.html">About Us</a>
       <a href="faq.html">FAQ</a>
@@ -436,11 +489,11 @@
         background-position: center;
       "
     >
-      <h1>Tour Grid</h1>
+      <h1>Our Collection</h1>
       <div class="breadcrumb">
         <a href="../index.html"><i class="fas fa-home"></i></a>
         <i class="fas fa-chevron-right"></i>
-        <span>Tour Grid</span>
+        <span>Our Collection</span>
       </div>
     </div>
 
@@ -752,6 +805,9 @@
 
           <!-- Tours Grid -->
           <div class="tours-right">
+            <button class="mobile-filter-btn" onclick="toggleFilters()" style="display:none;">
+              <i class="fas fa-sliders-h"></i> Filters
+            </button>
             <div class="tours-toolbar">
               <div class="found-count">
                 <span id="foundCount">6</span> Tours Found
@@ -795,19 +851,19 @@
                 African countries.
               </p>
               <div class="footer-social">
-                <a href="https://facebook.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="https://tripadvisor.com/zusammentours" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
+                <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@ZusammenTravels-i1j" aria-label="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                <a href="https://x.com/TravelsZusammen" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/company/zusammen-tours-and-travel-agency/" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.tripadvisor.co.za/Attraction_Review-g293821-d27952450-Reviews-Zusammen_Tours_and_Travel_Agency-Windhoek_Khomas_Region.html" aria-label="TripAdvisor" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
               </div>
             </div>
             <div class="footer-col">
               <h4>Tour Types</h4>
               <ul>
                 <li>
-                  <a href="tours.html?cat=All-Inclusive+Safaris"
-                    >All-Inclusive Safaris</a
-                  >
+                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
                 </li>
                 <li>
                   <a href="tours.html?cat=Fly-In+Safaris">Fly-In Safaris</a>
@@ -816,11 +872,18 @@
                   <a href="tours.html?cat=Family+Safaris">Family Safaris</a>
                 </li>
                 <li>
-                  <a href="tours.html?cat=Luxury+Safaris">Luxury Safaris</a>
-                </li>
-                <li>
                   <a href="tours.html?cat=Self-Drive+Safaris"
                     >Self-Drive Safaris</a
+                  >
+                </li>
+                <li>
+                  <a href="tours.html?cat=Cross+Border+Safaris"
+                    >Cross Border Safaris</a
+                  >
+                </li>
+                <li>
+                  <a href="tours.html?cat=Beyond+Namibia+Safaris"
+                    >Beyond Namibia Safaris</a
                   >
                 </li>
               </ul>
@@ -992,13 +1055,12 @@
 const API_BASE_TOURS = window.API_BASE || 'http://localhost:3000/api';
 
 const TOUR_TYPES = [
-  { name:'Across Borders Safaris',    icon:'fa-globe-africa' },
-  { name:'All-Inclusive Safaris',     icon:'fa-star' },
-  { name:'Beyond Namibia Safaris',    icon:'fa-map-marked-alt' },
-  { name:'Family Safaris',            icon:'fa-users' },
-  { name:'Fly-In Safaris',            icon:'fa-plane' },
   { name:'Luxury Safaris',            icon:'fa-crown' },
-  { name:'Self-Drive Safaris',        icon:'fa-car' }
+  { name:'Fly-In Safaris',            icon:'fa-plane' },
+  { name:'Family Safaris',            icon:'fa-users' },
+  { name:'Self-Drive Safaris',        icon:'fa-car' },
+  { name:'Cross Border Safaris',      icon:'fa-globe-africa' },
+  { name:'Beyond Namibia Safaris',    icon:'fa-map-marked-alt' }
 ];
 
 /* ── State ───────────────────────────────────────────── */
@@ -1048,10 +1110,9 @@ async function loadToursPage() {
   const _minEl = document.getElementById('priceMin');
   const _maxEl = document.getElementById('priceMax');
   if (_minEl) { _minEl.value = 0; _minEl.min = 0; }
-  if (_maxEl && ALL_TOURS_DATA.length) {
-    const _maxP = Math.ceil(Math.max(...ALL_TOURS_DATA.map(t => Number(t.price)||0)) * 1.1);
-    _maxEl.value = _maxP || 9999999;
-    _maxEl.max   = _maxEl.value;
+  if (_maxEl) {
+    _maxEl.value = 2000000;
+    _maxEl.max = 2000000;
   }
 
   // Build page UI once data is ready
@@ -1149,7 +1210,7 @@ function applyFilters() {
     );
   }
 
-  // Search box (top bar — destInput)
+  // Search box (top bar - destInput)
   const destVal = document.getElementById('destInput')
                            ?.value?.toLowerCase().trim() || '';
   if (destVal) {
@@ -1271,9 +1332,9 @@ function renderTours(tours) {
         <div class="tour-body">
           <div class="tour-rating">
             <span class="stars">
-              ${'★'.repeat(Number(t.rating)||5)}
+              ${'★'.repeat(Number(t.rating)||4)}${'☆'.repeat(5-(Number(t.rating)||4))}
             </span>
-            <span>${Number(t.rating)||5}.0</span>
+            <span>${Number(t.rating)||4}.0</span>
             <span class="count">
               (${t.reviews||0} Reviews)
             </span>
@@ -1333,7 +1394,7 @@ window.resetFilters = function() {
 
 /* ── 8. Bind all filter event listeners ──────────────── */
 function bindFilterEvents() {
-  // Sidebar search — live filter as you type
+  // Sidebar search - live filter as you type
   document.getElementById('filterSearch')
     ?.addEventListener('input', () =>
       setTimeout(applyFilters, 200));
@@ -1361,7 +1422,13 @@ function bindFilterEvents() {
     ?.addEventListener('click', applyFilters);
 }
 
-/* ── 9. Start ─────────────────────────────────────────── */
+/* ── 9. Mobile filters toggle ────────────────────────── */
+window.toggleFilters = function() {
+  const sidebar = document.querySelector('.filters-sidebar');
+  if (sidebar) sidebar.classList.toggle('open');
+};
+
+/* ── 10. Start ────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', loadToursPage);
     </script>
   </body>

@@ -61,7 +61,7 @@ const TOURS = [
     minAge: 6,
     img: "assets/gallery/okavango-delta-botswana-wetland-safari-mokoro-excursion.jpg",
     description:
-      "Fly directly into the heart of the Okavango Delta — one of Africa's last great wilderness areas — and discover a world of mokoro rides, elephant encounters and extraordinary birdlife.",
+      "Fly directly into the heart of the Okavango Delta, one of Africa's last great wilderness areas, and discover a world of mokoro rides, elephant encounters and extraordinary birdlife.",
     destinations: "Maun → Okavango Delta → Chobe NP → Kasane",
     includes: [
       "All charter flights within itinerary",
@@ -90,7 +90,7 @@ const TOURS = [
     id: 3,
     title: "Rwanda Gorilla & Kigali Cultural",
     location: "Rwanda",
-    category: "All-Inclusive Safaris",
+    category: "Beyond Namibia Safaris",
     rating: 5,
     reviews: 18,
     price: 120000,
@@ -130,8 +130,8 @@ const TOURS = [
     id: 4,
     title: "Zimbabwe Victoria Falls Adventure",
     location: "Zimbabwe",
-    category: "Cross Border Luxury Safaris",
-    rating: 5,
+    category: "Cross Border Safaris",
+    rating: 4,
     reviews: 11,
     price: 98000,
     oldPrice: null,
@@ -181,7 +181,7 @@ const TOURS = [
     minAge: 6,
     img: "assets/gallery/maasai-mara-kenya-safari-wildlife.jpg",
     description:
-      "Witness one of nature's greatest spectacles — the Great Wildebeest Migration — in the Maasai Mara, and explore Nairobi's vibrant culture and Amboseli's Kilimanjaro views.",
+      "Witness one of nature's greatest spectacles, the Great Wildebeest Migration, in the Maasai Mara, and explore Nairobi's vibrant culture and Amboseli's Kilimanjaro views.",
     destinations: "Nairobi → Amboseli NP → Maasai Mara",
     includes: [
       "Safari lodge accommodation",
@@ -211,7 +211,7 @@ const TOURS = [
     title: "Tanzania Serengeti & Zanzibar Combo",
     location: "Tanzania",
     category: "Self-Drive Safaris",
-    rating: 5,
+    rating: 4,
     reviews: 19,
     price: 135000,
     oldPrice: null,
@@ -221,7 +221,7 @@ const TOURS = [
     minAge: 6,
     img: "assets/gallery/serengeti-national-park-tanzania-safari-wildlife.jpg",
     description:
-      "Combine the raw wilderness of the Serengeti with the turquoise beaches of Zanzibar for the ultimate African adventure — safari by day, spice island relaxation by night.",
+      "Combine the raw wilderness of the Serengeti with the turquoise beaches of Zanzibar for the ultimate African adventure: safari by day, spice island relaxation by night.",
     destinations: "Arusha → Serengeti → Ngorongoro → Zanzibar",
     includes: [
       "Safari tented camp accommodation",
@@ -253,7 +253,7 @@ const REVIEWS = [
     name: "Sarah Thompson",
     country: "United Kingdom",
     rating: 5,
-    text: "Zusammen Tours completely exceeded our expectations. Our Namibia fly-in safari was flawlessly organised — from the luxury lodges to the expert guides. Every detail was taken care of, leaving us free to simply soak in the incredible landscapes. We will absolutely be booking with them again!",
+    text: "Zusammen Tours completely exceeded our expectations. Our Namibia fly-in safari was flawlessly organised, from the luxury lodges to the expert guides. Every detail was taken care of, leaving us free to simply soak in the incredible landscapes. We will absolutely be booking with them again!",
     img: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&q=80",
     tour: "Namibia Desert & Etosha Safari",
   },
@@ -269,7 +269,7 @@ const REVIEWS = [
     name: "Michael & Priya Naidoo",
     country: "Canada",
     rating: 5,
-    text: "From our first enquiry to our final transfer home, Zusammen Tours was professional, warm and incredibly knowledgeable about Africa. Our Okavango Delta fly-in safari was beyond anything we could have imagined — pure wilderness, exceptional lodges and unforgettable game sightings.",
+    text: "From our first enquiry to our final transfer home, Zusammen Tours was professional, warm and incredibly knowledgeable about Africa. Our Okavango Delta fly-in safari was beyond anything we could have imagined: pure wilderness, exceptional lodges and unforgettable game sightings.",
     img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80",
     tour: "Botswana Okavango Fly-In Safari",
   },
@@ -277,7 +277,7 @@ const REVIEWS = [
     name: "Anna Johansson",
     country: "Sweden",
     rating: 5,
-    text: "I travelled solo to Zimbabwe and Zambia — and Zusammen Tours made me feel safe and completely at ease from start to finish. Seeing Victoria Falls for the first time was breathtaking. The guides were knowledgeable, friendly and made the trip truly special for me.",
+    text: "I travelled solo to Zimbabwe and Zambia, and Zusammen Tours made me feel safe and completely at ease from start to finish. Seeing Victoria Falls for the first time was breathtaking. The guides were knowledgeable, friendly and made the trip truly special for me.",
     img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&q=80",
     tour: "Zimbabwe Victoria Falls Adventure",
   },
@@ -285,7 +285,7 @@ const REVIEWS = [
     name: "David & Carol Hayes",
     country: "United States",
     rating: 5,
-    text: "We brought our whole family — including three teenagers — on the Kenya safari and it was absolutely the trip of a lifetime. Witnessing the Great Migration was a moment none of us will ever forget. Zusammen Tours planned every detail perfectly and the kids are already asking when we can go back!",
+    text: "We brought our whole family, including three teenagers, on the Kenya safari and it was absolutely the trip of a lifetime. Witnessing the Great Migration was a moment none of us will ever forget. Zusammen Tours planned every detail perfectly and the kids are already asking when we can go back!",
     img: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=80&q=80",
     tour: "Kenya Maasai Mara Great Migration",
   },
@@ -293,14 +293,7 @@ const REVIEWS = [
 
 const CATEGORIES = [
   {
-    name: "All-Inclusive Safaris",
-    icon: "fa-star",
-    count: "5 Tours",
-    img: "assets/gallery/etosha-national-park-namibia-wildlife-safari-at-waterhole.jpg",
-    desc: "Everything included — accommodation, meals, game drives and transfers.",
-  },
-  {
-    name: "Cross Border Luxury Safaris",
+    name: "Cross Border Safaris",
     icon: "fa-globe-africa",
     count: "3 Tours",
     img: "assets/gallery/chobe-national-park-botswana-wildlife-safari.jpg",
@@ -334,6 +327,13 @@ const CATEGORIES = [
     img: "assets/gallery/sossusvlei-namibia-red-sand-dunes-and-deadvlei-clay-pan-at-sunrise.jpg",
     desc: "Explore at your own pace with expert route planning and support.",
   },
+  {
+    name: "Beyond Namibia Safaris",
+    icon: "fa-map-marked-alt",
+    count: "5 Tours",
+    img: "assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg",
+    desc: "Discover Africa's other top destinations, from Kenya to Rwanda and beyond.",
+  },
 ];
 
 const BLOGS = [
@@ -353,7 +353,7 @@ const BLOGS = [
     title: "Unusual Accommodation Experiences in Africa: Beyond the Ordinary",
     tag: "Accommodation",
     excerpt:
-      "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars — Africa offers accommodation experiences that become part of your travel story.",
+      "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars, Africa offers accommodation experiences that become part of your travel story.",
     img: "assets/blogs/Unusual Accommodation Experiences in Africa.jpg",
     date: "08 Feb 2026",
     author: "Zusammen Tours",
@@ -364,7 +364,7 @@ const BLOGS = [
     title: "Travelling Solo in Africa: Empowerment, Adventure and Connection",
     tag: "Solo Travel",
     excerpt:
-      "There's something uniquely liberating about travelling alone across Africa's diverse nations — from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
+      "There's something uniquely liberating about travelling alone across Africa's diverse nations, from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
     img: "assets/blogs/Travelling Solo in Africa.jpg",
     date: "22 Feb 2026",
     author: "Zusammen Tours",
@@ -387,7 +387,7 @@ const BLOGS = [
     title: "Top Romantic Destinations in Africa for Couples",
     tag: "Romance",
     excerpt:
-      "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar — Africa is extraordinarily romantic for couples.",
+      "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar, Africa is extraordinarily romantic for couples.",
     img: "assets/blogs/Top Romantic Destinations in Africa for Couples.jpg",
     date: "12 Mar 2026",
     author: "Zusammen Tours",
@@ -399,7 +399,7 @@ const BLOGS = [
       "Africa Beyond the Famous: Underrated Spots Every Traveller Should Explore",
     tag: "Destinations",
     excerpt:
-      "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover — from Damaraland's rock engravings to Zambia's intimate Lower Zambezi.",
+      "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover, from Damaraland's rock engravings to Zambia's intimate Lower Zambezi.",
     img: "assets/blogs/Africa Beyond the Famous Underrated Spots Every Traveller S....jpg",
     date: "25 Mar 2026",
     author: "Zusammen Tours",
@@ -434,7 +434,7 @@ const FAQS = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We accept credit and debit cards, bank transfers and secure online payments. For larger trips, instalment plans may also be available — please speak to our team for details.",
+    a: "We accept credit and debit cards, bank transfers and secure online payments. For larger trips, instalment plans may also be available. Please speak to our team for details.",
   },
   {
     q: "Are your tours suitable for families, children or people with special needs?",
@@ -696,6 +696,33 @@ function initCategoryModal() {
 }
 
 /* ===== TOURS SLIDER ===== */
+let SLIDER_TOURS = TOURS;
+
+function mixToursByCountry(tours) {
+  // Group tours by location/country
+  const byCountry = {};
+  tours.forEach((t) => {
+    const loc = t.location || "Other";
+    if (!byCountry[loc]) byCountry[loc] = [];
+    byCountry[loc].push(t);
+  });
+
+  // Round-robin pick from each country
+  const mixed = [];
+  const countries = Object.keys(byCountry);
+  let maxLen = Math.max(...countries.map((c) => byCountry[c].length));
+
+  for (let i = 0; i < maxLen; i++) {
+    countries.forEach((country) => {
+      if (byCountry[country][i]) {
+        mixed.push(byCountry[country][i]);
+      }
+    });
+  }
+
+  return mixed;
+}
+
 function getVisibleTours() {
   if (window.innerWidth < 600) return 1;
   if (window.innerWidth < 900) return 2;
@@ -703,7 +730,7 @@ function getVisibleTours() {
 }
 
 function getTotalPages() {
-  return Math.ceil(TOURS.length / getVisibleTours());
+  return Math.ceil(SLIDER_TOURS.length / getVisibleTours());
 }
 
 function buildToursSlider() {
@@ -711,7 +738,9 @@ function buildToursSlider() {
   const slider = document.getElementById("toursSlider");
   if (!slider || !wrap) return;
 
-  slider.innerHTML = TOURS.map((t) => buildTourCard(t)).join("");
+  SLIDER_TOURS = mixToursByCountry(TOURS).slice(0, 9);
+
+  slider.innerHTML = SLIDER_TOURS.map((t) => buildTourCard(t)).join("");
 
   // Wait for browser to paint before measuring offsetWidth
   requestAnimationFrame(() => {
@@ -797,7 +826,7 @@ function sizeSlider() {
   });
 
   // Total track width = number of cards × slot width
-  slider.style.width = slotWidth * TOURS.length + "px";
+  slider.style.width = slotWidth * SLIDER_TOURS.length + "px";
 
   // Re-enable transition
   requestAnimationFrame(() => {
@@ -836,6 +865,7 @@ function updateToursSlider() {
 }
 
 function buildTourCard(t) {
+  const rating = t.rating || 4;
   const imgSrc = t.img || t.image_url || null;
   const imgHtml = imgSrc
     ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">`
@@ -853,8 +883,8 @@ function buildTourCard(t) {
         </div>
         <div class="tour-body">
           <div class="tour-rating">
-            <span class="stars">${"★".repeat(t.rating)}</span>
-            <span>${t.rating}.0</span>
+            <span class="stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</span>
+            <span>${rating}.0</span>
             <span class="count">(${t.reviews} Reviews)</span>
           </div>
           <h5>${t.title}</h5>
@@ -1147,6 +1177,47 @@ function buildLodges() {
     .join("");
 }
 
+/* ===== STATS COUNTER ===== */
+function initStatsCounter() {
+  const statNums = document.querySelectorAll(".stat-number");
+  if (!statNums.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (
+          entry.isIntersecting &&
+          !entry.target.classList.contains("counted")
+        ) {
+          entry.target.classList.add("counted");
+          animateCount(entry.target);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  statNums.forEach((el) => observer.observe(el));
+}
+
+function animateCount(el) {
+  const target = parseInt(el.dataset.target || el.textContent);
+  const duration = 2000;
+  const step = target / (duration / 16);
+  let current = 0;
+  const suffix = el.dataset.suffix || "";
+  const prefix = el.dataset.prefix || "";
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = prefix + Math.floor(current) + suffix;
+  }, 16);
+}
+
 /* ===== CONTACT FORM ===== */
 function initContactForm() {
   const form = $("#contactForm");
@@ -1173,7 +1244,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const apiTours = await WPAPI.fetchTours();
     if (apiTours && apiTours.length) {
       TOURS.length = 0;
-      TOURS.push(...apiTours.slice(0, 6));
+      TOURS.push(...apiTours);
     }
   }
 
@@ -1185,6 +1256,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   buildLodges();
   initEnquiryForm();
   initContactForm();
+  initStatsCounter();
 });
 
 /* expose for other pages */

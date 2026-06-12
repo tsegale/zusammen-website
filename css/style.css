@@ -556,7 +556,7 @@ section {
 .search-box {
   background: var(--white);
   border-radius: 14px;
-  padding: 28px 30px;
+  padding: 24px 28px;
   max-width: 960px;
   margin: 0 auto;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
@@ -564,30 +564,34 @@ section {
 .search-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr auto;
-  gap: 14px;
+  gap: 12px;
   align-items: end;
 }
 .sf {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
+  min-width: 0;
 }
 .sf label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.8px;
   color: var(--dark);
   font-family: var(--font-head);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .sf .field-wrap {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 0 13px;
-  height: 50px;
+  padding: 0 12px;
+  height: 48px;
   box-sizing: border-box;
   transition: var(--transition);
   position: relative;
@@ -748,18 +752,19 @@ section {
   color: var(--white);
 }
 .search-submit-btn {
-  padding: 0 28px;
-  height: 50px;
+  height: 48px;
+  padding: 0 24px;
   background: var(--accent);
   color: var(--white);
   border: none;
   border-radius: var(--radius-sm);
   font-family: var(--font-head);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
 }
@@ -996,7 +1001,35 @@ section {
 
 /* HOW IT WORKS */
 .how-section {
-  background: var(--white);
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+  position: relative;
+  overflow: hidden;
+}
+.how-section::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(247, 148, 29, 0.06);
+  pointer-events: none;
+}
+.how-section::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(31, 58, 109, 0.05);
+  pointer-events: none;
+}
+.how-section .container {
+  position: relative;
+  z-index: 1;
 }
 .steps-grid {
   display: grid;
@@ -1013,6 +1046,7 @@ section {
 }
 .step-card:hover {
   border-color: var(--accent);
+  border-left: 3px solid var(--accent);
   box-shadow: 0 8px 32px rgba(247, 148, 29, 0.12);
   transform: translateY(-4px);
 }
@@ -1057,6 +1091,56 @@ section {
   font-size: 14px;
   color: var(--text-light);
   line-height: 1.7;
+}
+
+/* STATS BANNER */
+.stats-banner {
+  background: linear-gradient(135deg, #0b1a2c, #1f3a6d);
+  padding: 60px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-b {
+  text-align: center;
+  padding: 20px;
+}
+.stat-b + .stat-b {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+.stat-b i {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 10px;
+}
+.stat-number {
+  font-family: var(--font-head);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 500px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stat-number {
+    font-size: 30px;
+  }
 }
 
 /* ================================================================
@@ -1798,8 +1882,8 @@ section {
   padding: 0 24px;
 }
 .partner-logo img {
-  height: 44px;
-  max-width: 140px;
+  height: 52px;
+  max-width: 160px;
   object-fit: contain;
   filter: brightness(0) invert(1);
   opacity: 0.55;
@@ -2295,6 +2379,9 @@ footer {
   .search-grid {
     grid-template-columns: 1fr 1fr;
   }
+  .search-submit-btn {
+    grid-column: span 2;
+  }
   .site-nav,
   .header-btns {
     display: none;
@@ -2344,7 +2431,31 @@ footer {
   }
 }
 
+/* MOBILE CONTACT STRIP */
+.mobile-contact-strip {
+  display: none;
+  background: var(--primary);
+  padding: 8px 16px;
+  justify-content: center;
+  gap: 24px;
+}
+.mobile-contact-strip a {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-head);
+}
+.mobile-contact-strip a i {
+  color: var(--accent);
+}
+
 @media (max-width: 600px) {
+  .mobile-contact-strip {
+    display: flex;
+  }
   .topbar {
     display: none;
   }

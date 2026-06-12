@@ -82,7 +82,7 @@ async function submitEnquiry(formEl, tourName) {
 
     const body = {
       first_name: first_name || "Guest",
-      last_name: last_name || "—",
+      last_name: last_name || "",
       email: fd.get("email") || "",
       phone: fd.get("phone") || "",
       tour_name: tourName || fd.get("tour") || "",

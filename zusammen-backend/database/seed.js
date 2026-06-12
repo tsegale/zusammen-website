@@ -89,7 +89,7 @@ async function main() {
       min_people: 2,
       max_people: 8,
       description:
-        "Fly directly into the heart of the Okavango Delta — one of Africa's last great wilderness areas — and discover a world of mokoro rides, elephant encounters and extraordinary birdlife.",
+        "Fly directly into the heart of the Okavango Delta, one of Africa's last great wilderness areas, and discover a world of mokoro rides, elephant encounters and extraordinary birdlife.",
       destinations: "Maun → Okavango Delta → Chobe NP → Kasane",
       includes: JSON.stringify([
         "All charter flights within itinerary",
@@ -117,7 +117,7 @@ async function main() {
     {
       title: "Rwanda Gorilla & Kigali Cultural",
       location: "Rwanda",
-      category: "All-Inclusive Safaris",
+      category: "Beyond Namibia Safaris",
       rating: 5,
       reviews: 18,
       price: 120000,
@@ -157,8 +157,8 @@ async function main() {
     {
       title: "Zimbabwe Victoria Falls Adventure",
       location: "Zimbabwe",
-      category: "Cross Border Luxury Safaris",
-      rating: 5,
+      category: "Cross Border Safaris",
+      rating: 4,
       reviews: 11,
       price: 98000,
       old_price: null,
@@ -209,7 +209,7 @@ async function main() {
       min_people: 2,
       max_people: 16,
       description:
-        "Witness one of nature's greatest spectacles — the Great Wildebeest Migration — in the Maasai Mara, and explore Nairobi's vibrant culture and Amboseli's Kilimanjaro views.",
+        "Witness one of nature's greatest spectacles, the Great Wildebeest Migration, in the Maasai Mara, and explore Nairobi's vibrant culture and Amboseli's Kilimanjaro views.",
       destinations: "Nairobi → Amboseli NP → Maasai Mara",
       includes: JSON.stringify([
         "Safari lodge accommodation",
@@ -237,7 +237,7 @@ async function main() {
       title: "Tanzania Serengeti & Zanzibar Combo",
       location: "Tanzania",
       category: "Self-Drive Safaris",
-      rating: 5,
+      rating: 4,
       reviews: 19,
       price: 135000,
       old_price: null,
@@ -248,7 +248,7 @@ async function main() {
       min_people: 2,
       max_people: 8,
       description:
-        "Combine the raw wilderness of the Serengeti with the turquoise beaches of Zanzibar for the ultimate African adventure — safari by day, spice island relaxation by night.",
+        "Combine the raw wilderness of the Serengeti with the turquoise beaches of Zanzibar for the ultimate African adventure: safari by day, spice island relaxation by night.",
       destinations: "Arusha → Serengeti → Ngorongoro → Zanzibar",
       includes: JSON.stringify([
         "Safari tented camp accommodation",
@@ -301,13 +301,13 @@ async function main() {
 <p>At Zusammen Tours, our team has firsthand experience with every destination we sell. We know which lodges are genuinely worth the price, which roads are impassable in the rainy season, and which game areas offer the best wildlife sightings in any given month. No algorithm can replicate that depth of local knowledge.</p>
 
 <h3>Access to Exclusive Rates and Rooms</h3>
-<p>We have long-standing relationships with lodges and camps across Namibia, Botswana, Kenya, Rwanda, Tanzania, Uganda, Zambia and Zimbabwe. This means we often access rooms and rates that are not available on public booking platforms — especially during peak migration season when the best camps sell out months in advance.</p>
+<p>We have long-standing relationships with lodges and camps across Namibia, Botswana, Kenya, Rwanda, Tanzania, Uganda, Zambia and Zimbabwe. This means we often access rooms and rates that are not available on public booking platforms, especially during peak migration season when the best camps sell out months in advance.</p>
 
 <h3>One Point of Contact for Everything</h3>
-<p>Rather than juggling multiple booking platforms, airlines, insurance providers and activity operators, you have a single dedicated travel specialist handling everything. If a flight is delayed, a lodge floods, or a border crossing closes — we sort it. You just enjoy the trip.</p>
+<p>Rather than juggling multiple booking platforms, airlines, insurance providers and activity operators, you have a single dedicated travel specialist handling everything. If a flight is delayed, a lodge floods, or a border crossing closes, we sort it. You just enjoy the trip.</p>
 
 <h3>24/7 Support on the Ground</h3>
-<p>Things do occasionally go wrong when you travel in Africa. When they do, having a real person who knows your itinerary and can make calls on your behalf is invaluable. We provide emergency support throughout your trip — something no app can match.</p>
+<p>Things do occasionally go wrong when you travel in Africa. When they do, having a real person who knows your itinerary and can make calls on your behalf is invaluable. We provide emergency support throughout your trip, something no app can match.</p>
 
 <p>In short: book online for city breaks. For a once-in-a-lifetime African safari, trust the people who live and breathe Africa every day.</p>`,
       image_url:
@@ -320,11 +320,11 @@ async function main() {
       title: "Unusual Accommodation Experiences in Africa: Beyond the Ordinary",
       tag: "Accommodation",
       excerpt:
-        "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars — Africa offers accommodation experiences that become part of your travel story.",
-      content: `<p>From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars — Africa offers accommodation experiences that become part of your travel story. Forget the standard hotel room. In Africa, where you sleep is as memorable as where you go.</p>
+        "From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars, Africa offers accommodation experiences that become part of your travel story.",
+      content: `<p>From treetop lodges in the Okavango to desert geodesic domes under Namibia's stars, Africa offers accommodation experiences that become part of your travel story. Forget the standard hotel room. In Africa, where you sleep is as memorable as where you go.</p>
 
 <h3>Sleep Under the Milky Way in the Namib Desert</h3>
-<p>Namibia has some of the darkest skies on earth. Geodesic dome camps near Sossusvlei offer transparent ceilings so you can fall asleep watching the Milky Way arc overhead. No light pollution, no noise — just stars and silence stretching to the horizon.</p>
+<p>Namibia has some of the darkest skies on earth. Geodesic dome camps near Sossusvlei offer transparent ceilings so you can fall asleep watching the Milky Way arc overhead. No light pollution, no noise, just stars and silence stretching to the horizon.</p>
 
 <h3>Treetop Lodges in the Okavango</h3>
 <p>Several camps in the Okavango Delta offer treehouse-style accommodation built high in the branches of ancient ebony and fig trees. Wake up to the sound of hippos below and fish eagles calling across the floodplains. In the Okavango, your lodge is part of the ecosystem.</p>
@@ -343,18 +343,18 @@ async function main() {
         "Travelling Solo in Africa: Empowerment, Adventure and Connection",
       tag: "Solo Travel",
       excerpt:
-        "There's something uniquely liberating about travelling alone across Africa's diverse nations — from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
-      content: `<p>There's something uniquely liberating about travelling alone across Africa's diverse nations — from Namibia's vast deserts to Zimbabwe's spectacular waterfalls. Solo travel in Africa is growing fast, and for good reason: the continent rewards independent spirits with extraordinary experiences and genuine human connection.</p>
+        "There's something uniquely liberating about travelling alone across Africa's diverse nations, from Namibia's vast deserts to Zimbabwe's spectacular waterfalls.",
+      content: `<p>There's something uniquely liberating about travelling alone across Africa's diverse nations, from Namibia's vast deserts to Zimbabwe's spectacular waterfalls. Solo travel in Africa is growing fast, and for good reason: the continent rewards independent spirits with extraordinary experiences and genuine human connection.</p>
 
 <h3>Why Africa Is Perfect for Solo Travellers</h3>
 <p>Africa's safari culture is naturally communal. When you join a small-group safari, you instantly share incredible moments with like-minded travellers from around the world. The shared experience of watching a lion hunt or a herd of elephants crossing a river creates instant bonds that can last a lifetime.</p>
 
 <h3>The Safest Destinations for Solo Travel</h3>
-<p>Namibia consistently ranks among Africa's safest countries for solo travellers, with excellent roads, a stable government, and a welcoming population. Rwanda is another top pick — its reformed security infrastructure, clean cities and community-based tourism make it ideal for solo visitors.</p>
+<p>Namibia consistently ranks among Africa's safest countries for solo travellers, with excellent roads, a stable government, and a welcoming population. Rwanda is another top pick: its reformed security infrastructure, clean cities and community-based tourism make it ideal for solo visitors.</p>
 
 <h3>Tips for Solo Travellers</h3>
 <ul>
-  <li>Always book reputable, licensed operators — never accept last-minute deals from strangers</li>
+  <li>Always book reputable, licensed operators, and never accept last-minute deals from strangers</li>
   <li>Share your itinerary with someone at home before you depart</li>
   <li>Purchase comprehensive travel insurance that covers emergency evacuation</li>
   <li>Use a travel agency (like us) that provides a 24/7 emergency contact number</li>
@@ -372,16 +372,16 @@ async function main() {
       tag: "Travel Tips",
       excerpt:
         "Africa is a dream destination, but first-time visitors can sometimes make mistakes that impact their trip. Here's what to watch out for and how to avoid it.",
-      content: `<p>Africa is a dream destination, but first-time visitors can sometimes make mistakes that impact their trip. Here's what to watch out for — and how a little preparation can make the difference between a good holiday and a life-changing one.</p>
+      content: `<p>Africa is a dream destination, but first-time visitors can sometimes make mistakes that impact their trip. Here's what to watch out for, and how a little preparation can make the difference between a good holiday and a life-changing one.</p>
 
 <h3>1. Booking Too Late</h3>
-<p>The best lodges in Africa — particularly in the Okavango Delta, Maasai Mara and Rwanda's gorilla zones — book out six to twelve months in advance, especially for peak migration season (July–October). If you're dreaming of a specific destination, start planning now.</p>
+<p>The best lodges in Africa, particularly in the Okavango Delta, Maasai Mara and Rwanda's gorilla zones, book out six to twelve months in advance, especially for peak migration season (July to October). If you're dreaming of a specific destination, start planning now.</p>
 
 <h3>2. Ignoring Travel Insurance</h3>
-<p>Medical evacuation from a remote safari camp can cost tens of thousands of dollars. Travel insurance that covers emergency evacuation is not optional in Africa — it is essential. Make sure your policy covers the specific activities on your itinerary.</p>
+<p>Medical evacuation from a remote safari camp can cost tens of thousands of dollars. Travel insurance that covers emergency evacuation is not optional in Africa: it is essential. Make sure your policy covers the specific activities on your itinerary.</p>
 
 <h3>3. Packing the Wrong Clothes</h3>
-<p>Avoid bright colours, white clothing or camouflage (illegal in some African countries). Safari wear should be neutral — khaki, olive, beige. Evenings in the bush can be surprisingly cold even in summer, so pack layers.</p>
+<p>Avoid bright colours, white clothing or camouflage (illegal in some African countries). Safari wear should be neutral: khaki, olive, beige. Evenings in the bush can be surprisingly cold even in summer, so pack layers.</p>
 
 <h3>4. Skipping Health Preparations</h3>
 <p>Visit a travel health clinic at least six weeks before departure. Malaria prophylaxis, yellow fever vaccination and updated routine vaccines are all important depending on your destinations.</p>
@@ -396,14 +396,14 @@ async function main() {
       title: "Top Romantic Destinations in Africa for Couples",
       tag: "Romance",
       excerpt:
-        "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar — Africa is extraordinarily romantic for couples.",
-      content: `<p>From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar — Africa is extraordinarily romantic for couples. Whether you're celebrating a honeymoon, anniversary, or simply want a trip that feels like nothing else on earth, these destinations deliver.</p>
+        "From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar, Africa is extraordinarily romantic for couples.",
+      content: `<p>From golden desert dunes in Namibia to gorilla trekking in Rwanda and the sparkling shores of Zanzibar, Africa is extraordinarily romantic for couples. Whether you're celebrating a honeymoon, anniversary, or simply want a trip that feels like nothing else on earth, these destinations deliver.</p>
 
 <h3>Namibia: Drama, Silence and Stars</h3>
 <p>Namibia's landscapes are cinematic and intimate at the same time. Imagine watching the sun rise over Sossusvlei's red dunes from your private plunge pool, or lying on your backs counting shooting stars in the Namib Desert with no light pollution for hundreds of kilometres.</p>
 
 <h3>Rwanda: Adventure and Emotion</h3>
-<p>Coming face-to-face with a mountain gorilla family is one of the most emotionally profound experiences on earth — and sharing it with your partner creates a bond that is hard to describe. Combine gorilla trekking with a stay at one of Rwanda's extraordinary boutique lodges for the ultimate romantic escape.</p>
+<p>Coming face-to-face with a mountain gorilla family is one of the most emotionally profound experiences on earth, and sharing it with your partner creates a bond that is hard to describe. Combine gorilla trekking with a stay at one of Rwanda's extraordinary boutique lodges for the ultimate romantic escape.</p>
 
 <h3>Zanzibar: Beach Paradise</h3>
 <p>Zanzibar's powdery white sand, turquoise Indian Ocean waters, and spice-scented Stone Town make it Africa's most romantic beach destination. Combine it with a Serengeti safari for the perfect blend of adventure and relaxation.</p>
@@ -423,11 +423,11 @@ async function main() {
         "Africa Beyond the Famous: Underrated Spots Every Traveller Should Explore",
       tag: "Destinations",
       excerpt:
-        "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover — from Damaraland's rock engravings to Zambia's intimate Lower Zambezi.",
-      content: `<p>Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover. Africa's most famous destinations are famous for good reason — but the continent is vast, and its lesser-known corners often offer equally extraordinary experiences with far fewer crowds.</p>
+        "Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover, from Damaraland's rock engravings to Zambia's intimate Lower Zambezi.",
+      content: `<p>Beyond Victoria Falls, the Serengeti and the Namib lie hidden gems that few travellers discover. Africa's most famous destinations are famous for good reason, but the continent is vast, and its lesser-known corners often offer equally extraordinary experiences with far fewer crowds.</p>
 
 <h3>Damaraland, Namibia</h3>
-<p>This remote, rocky wilderness in northwestern Namibia is home to desert-adapted elephants, ancient San rock engravings at Twyfelfontein, and some of the most dramatic landscapes on the continent. Far fewer tourists make it here than to Sossusvlei or Etosha — making it feel truly discovered.</p>
+<p>This remote, rocky wilderness in northwestern Namibia is home to desert-adapted elephants, ancient San rock engravings at Twyfelfontein, and some of the most dramatic landscapes on the continent. Far fewer tourists make it here than to Sossusvlei or Etosha, making it feel truly discovered.</p>
 
 <h3>Lower Zambezi, Zambia</h3>
 <p>While South Luangwa gets more attention, the Lower Zambezi National Park offers an equally thrilling safari with the added magic of river-based game viewing. Canoeing past pods of hippos and herds of elephants drinking at the bank is the quintessential Zambian experience.</p>
@@ -436,7 +436,7 @@ async function main() {
 <p>Most Rwanda itineraries focus on gorillas, but Nyungwe's ancient montane rainforest is a world apart. Chimpanzee tracking, canopy walks above the forest, and extraordinary birding make it one of Africa's most underrated wildlife destinations.</p>
 
 <h3>Caprivi Strip, Namibia</h3>
-<p>This narrow corridor in northeastern Namibia, where four countries meet, offers game viewing that rivals the famous destinations — with elephant, buffalo and lion — and almost no other tourists.</p>
+<p>This narrow corridor in northeastern Namibia, where four countries meet, offers game viewing that rivals the famous destinations, with elephant, buffalo and lion, and almost no other tourists.</p>
 
 <p>Ask us about building an itinerary that goes beyond the famous. Africa's hidden gems are waiting for the travellers bold enough to find them.</p>`,
       image_url:
@@ -489,7 +489,7 @@ async function main() {
     {
       question: "What is your child pricing policy?",
       answer:
-        "Children aged 3–12 travel at 60% of the adult rate, making our safaris genuinely family-friendly. Children under 3 travel free of charge (subject to lodge policies). Please note that some tours have minimum age requirements — these are clearly stated on each tour page and are set for safety reasons. Children aged 13 and above are charged at the full adult rate.",
+        "Children aged 3–12 travel at 60% of the adult rate, making our safaris genuinely family-friendly. Children under 3 travel free of charge (subject to lodge policies). Please note that some tours have minimum age requirements; these are clearly stated on each tour page and are set for safety reasons. Children aged 13 and above are charged at the full adult rate.",
       sort_order: 5,
     },
     {
@@ -507,21 +507,21 @@ async function main() {
     {
       question: "What payment methods do you accept?",
       answer:
-        "We accept credit and debit cards, bank transfers and secure online payments. For larger trips, instalment plans may also be available — a deposit of 30% secures your booking, with the balance due 60 days before departure. Please speak to our team for details tailored to your booking.",
+        "We accept credit and debit cards, bank transfers and secure online payments. For larger trips, instalment plans may also be available. A deposit of 30% secures your booking, with the balance due 60 days before departure. Please speak to our team for details tailored to your booking.",
       sort_order: 8,
     },
     {
       question:
         "Are your tours suitable for families, children or people with special needs?",
       answer:
-        "Yes! We have family-friendly packages specifically designed for all ages. Children aged 6 and above are welcome on most of our safaris. Accessibility varies by destination — some remote camps involve walking over uneven terrain, while others offer vehicle-based activities suitable for guests with mobility requirements. Please contact us for personalised assistance.",
+        "Yes! We have family-friendly packages specifically designed for all ages. Children aged 6 and above are welcome on most of our safaris. Accessibility varies by destination: some remote camps involve walking over uneven terrain, while others offer vehicle-based activities suitable for guests with mobility requirements. Please contact us for personalised assistance.",
       sort_order: 9,
     },
     {
       question:
         "How can I contact you if I need assistance before or during my trip?",
       answer:
-        "You can reach us via phone at +264 81 245 5852, by email at info@zusammentravels.com, or through the contact form on our website. For travellers currently on safari, we provide a dedicated 24/7 emergency support line so that help is always available when you need it — wherever you are in Africa.",
+        "You can reach us via phone at +264 81 245 5852, by email at info@zusammentravels.com, or through the contact form on our website. For travellers currently on safari, we provide a dedicated 24/7 emergency support line so that help is always available when you need it, wherever you are in Africa.",
       sort_order: 10,
     },
   ];
