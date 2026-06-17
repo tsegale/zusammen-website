@@ -242,9 +242,9 @@ textarea {
   position: absolute;
   top: 100%;
   left: 0;
-  padding-top: 8px;
+  padding-top: 10px;
   min-width: 210px;
-  z-index: 500;
+  z-index: 9999;
 }
 
 /* Visual box lives inside the padding bridge */
@@ -266,7 +266,9 @@ textarea {
 .nav-dropdown.open { display: block; }
 
 .nav-dropdown a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   padding: 11px 18px;
   font-size: 13.5px;
   font-weight: 600;
@@ -294,6 +296,7 @@ textarea {
   align-items: center;
   gap: 7px;
   padding: 10px 22px;
+  min-height: 44px;
   border-radius: var(--radius-sm);
   font-family: var(--font-head);
   font-size: 14px;
@@ -563,26 +566,30 @@ section {
 }
 .search-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
   gap: 12px;
   align-items: end;
 }
 .sf {
   display: flex;
   flex-direction: column;
-  gap: 6px;
   min-width: 0;
 }
 .sf label {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.7px;
   color: var(--dark);
   font-family: var(--font-head);
+  margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
+  height: 16px;
+  display: flex;
+  align-items: center;
 }
 .sf .field-wrap {
   display: flex;
@@ -754,6 +761,7 @@ section {
 .search-submit-btn {
   height: 48px;
   padding: 0 24px;
+  align-self: flex-end;
   background: var(--accent);
   color: var(--white);
   border: none;
@@ -2435,9 +2443,9 @@ footer {
 .mobile-contact-strip {
   display: none;
   background: var(--primary);
-  padding: 8px 16px;
+  padding: 9px 16px;
   justify-content: center;
-  gap: 24px;
+  gap: 28px;
 }
 .mobile-contact-strip a {
   color: rgba(255, 255, 255, 0.85);
@@ -2452,6 +2460,11 @@ footer {
   color: var(--accent);
 }
 
+@media (max-width: 768px) {
+  .mobile-contact-strip {
+    display: flex;
+  }
+}
 @media (max-width: 600px) {
   .mobile-contact-strip {
     display: flex;
@@ -2534,4 +2547,50 @@ footer {
 .blogs-section,
 .lodges-section {
   overflow: hidden;
+}
+
+/* FILTER CHECKBOXES — standardised styling */
+.filter-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  font-family: var(--font-body);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.filter-check-item:last-child { border-bottom: none; }
+.filter-check-item:hover { color: var(--accent); }
+.filter-check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ITINERARY ACCORDION — mobile touch */
+.itin-header {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.itin-header:active { background: var(--bg) !important; }
+
+/* SOCIAL ICON LINKS — minimum touch target */
+.social-icon-link {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TOUR CARD send-request-btn — minimum touch target */
+.tour-card .send-request-btn,
+.send-request-btn {
+  min-height: 44px;
 }

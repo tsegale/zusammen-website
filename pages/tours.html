@@ -313,33 +313,50 @@
           grid-template-columns: 1fr;
         }
       }
-      .mobile-filter-btn {
+      .mobile-filter-toggle {
+        display: none;
         width: 100%;
         padding: 12px;
         background: var(--primary);
-        color: var(--white);
+        color: white;
         border: none;
         border-radius: var(--radius-sm);
         font-family: var(--font-head);
         font-weight: 700;
         font-size: 14px;
         cursor: pointer;
-        display: none;
+        margin-bottom: 12px;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        margin-bottom: 16px;
       }
-      @media (max-width: 900px) {
-        .mobile-filter-btn {
-          display: flex;
-        }
-        .filters-sidebar {
-          display: none;
-        }
-        .filters-sidebar.open {
-          display: block;
-        }
+      @media (max-width: 768px) {
+        .mobile-filter-toggle { display: flex; }
+        .tours-layout { grid-template-columns: 1fr; }
+        .filters-sidebar { display: none; }
+        .filters-sidebar.open { display: block; }
+      }
+      .filter-check-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--dark);
+        font-family: var(--font-body);
+        cursor: pointer;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .filter-check-item:last-child { border-bottom: none; }
+      .filter-check-item:hover { color: var(--accent); }
+      .filter-check-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+        cursor: pointer;
+        flex-shrink: 0;
       }
     </style>
   </head>
@@ -352,12 +369,9 @@
           <span><i class="fas fa-envelope"></i> info@zusammentravels.com</span>
         </div>
         <div class="topbar-right">
-          <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@ZusammenTravels-i1j" aria-label="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
-          <a href="https://x.com/TravelsZusammen" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i></a>
-          <a href="https://www.linkedin.com/company/zusammen-tours-and-travel-agency/" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://www.tripadvisor.co.za/Attraction_Review-g293821-d27952450-Reviews-Zusammen_Tours_and_Travel_Agency-Windhoek_Khomas_Region.html" aria-label="TripAdvisor" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
+          <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tripadvisor.co.za/Attraction_Review-g293821-d27952450-Reviews-Zusammen_Tours_and_Travel_Agency-Windhoek_Khomas_Region.html" aria-label="TripAdvisor" target="_blank" rel="noopener noreferrer"><i class="fab fa-tripadvisor"></i></a>
         </div>
       </div>
     </div>
@@ -678,15 +692,15 @@
               <div class="filter-group">
                 <label>Price Range (N$)</label>
                 <div class="price-range-labels">
-                  <span id="priceMinLabel">N$150,000</span>
+                  <span id="priceMinLabel">N$0</span>
                   <span id="priceMaxLabel">N$2,000,000</span>
                 </div>
                 <div class="price-range-inputs">
                   <input
                     type="number"
                     id="priceMin"
-                    value="150000"
-                    min="150000"
+                    value="0"
+                    min="0"
                     max="2000000"
                     step="10000"
                     placeholder="Min"
@@ -805,8 +819,8 @@
 
           <!-- Tours Grid -->
           <div class="tours-right">
-            <button class="mobile-filter-btn" onclick="toggleFilters()" style="display:none;">
-              <i class="fas fa-sliders-h"></i> Filters
+            <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+              <i class="fas fa-sliders-h"></i> Show Filters
             </button>
             <div class="tours-toolbar">
               <div class="found-count">
@@ -851,12 +865,11 @@
                 African countries.
               </p>
               <div class="footer-social">
-                <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.youtube.com/@ZusammenTravels-i1j" aria-label="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
-                <a href="https://x.com/TravelsZusammen" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://www.linkedin.com/company/zusammen-tours-and-travel-agency/" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.tripadvisor.co.za/Attraction_Review-g293821-d27952450-Reviews-Zusammen_Tours_and_Travel_Agency-Windhoek_Khomas_Region.html" aria-label="TripAdvisor" target="_blank" rel="noopener"><i class="fab fa-tripadvisor"></i></a>
+                <a href="https://www.facebook.com/zusammentours" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/zusammentours" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@ZusammenTravels-i1j" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+                <a href="https://x.com/TravelsZusammen" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/company/zusammen-tours-and-travel-agency/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
               </div>
             </div>
             <div class="footer-col">
@@ -1051,6 +1064,18 @@
     <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
+/* ── Mobile filter toggle ───────────────────────────── */
+window.toggleMobileFilters = function() {
+  const sidebar = document.querySelector('.filters-sidebar');
+  const btn = document.querySelector('.mobile-filter-toggle');
+  if (!sidebar) return;
+  sidebar.classList.toggle('open');
+  const isOpen = sidebar.classList.contains('open');
+  if (btn) btn.innerHTML = isOpen
+    ? '<i class="fas fa-times"></i> Hide Filters'
+    : '<i class="fas fa-sliders-h"></i> Show Filters';
+};
+
 /* ── Config ─────────────────────────────────────────── */
 const API_BASE_TOURS = window.API_BASE || 'http://localhost:3000/api';
 
@@ -1224,7 +1249,7 @@ function applyFilters() {
   const priceMin = parseInt(
     document.getElementById('priceMin')?.value || 0);
   const priceMax = parseInt(
-    document.getElementById('priceMax')?.value || 9999999);
+    document.getElementById('priceMax')?.value || 2000000);
   tours = tours.filter(t =>
     Number(t.price) >= priceMin && Number(t.price) <= priceMax
   );

@@ -92,7 +92,7 @@ const TOURS = [
     location: "Rwanda",
     category: "Beyond Namibia Safaris",
     rating: 5,
-    reviews: 18,
+    reviews: 17,
     price: 120000,
     oldPrice: 135000,
     days: 6,
@@ -563,6 +563,20 @@ function initHeader() {
       document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
     }
   });
+
+  // Re-apply dropdown hover listeners after any page JS runs (safety net for tour-detail)
+  setTimeout(() => {
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        const dd = item.querySelector('.nav-dropdown');
+        if (dd) dd.style.display = 'block';
+      });
+      item.addEventListener('mouseleave', () => {
+        const dd = item.querySelector('.nav-dropdown');
+        if (dd) dd.style.display = '';
+      });
+    });
+  }, 100);
 }
 
 /* ===== SEARCH BOX ===== */
