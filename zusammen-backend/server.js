@@ -23,15 +23,12 @@ const corsOptions = {
     if (!origin) return callback(null, true);
 
     const allowed = [
-      'https://zusammentours.com',
-      'https://www.zusammentours.com',
-      'https://zusammentravels.com', 
-      'https://www.zusammentravels.com',
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      process.env.FRONTEND_URL
-      
-    ].filter(Boolean);
+  'https://zusammentravels.com',
+  'https://www.zusammentravels.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
     if (
       allowed.includes(origin) ||
