@@ -11,17 +11,29 @@ function adminOnly(req, res, next) {
   next();
 }
 
+
 function createTransporter() {
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: parseInt(process.env.SMTP_PORT) || 587,
-    secure: false,
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT),
+    secure: parseInt(process.env.SMTP_PORT) === 465,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+  }
   });
 }
+
+createTransporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ Email config error:', error.message);
+  } else {
+    console.log('✅ Email server ready — SMTP connected');
+  }
+});
 
 /* ── EMAIL: business notification ─────────────────────────── */
 function buildBusinessEmail(e) {
