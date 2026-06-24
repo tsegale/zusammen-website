@@ -27,13 +27,19 @@ function createTransporter() {
   });
 }
 
-createTransporter.verify((error, success) => {
+const transporter = createTransporter();
+
+transporter.verify((error, success) => {
   if (error) {
     console.error('❌ Email config error:', error.message);
   } else {
     console.log('✅ Email server ready — SMTP connected');
   }
 });
+
+module.exports = { transporter, createTransporter };
+
+
 
 /* ── EMAIL: business notification ─────────────────────────── */
 function buildBusinessEmail(e) {
@@ -304,5 +310,7 @@ router.delete("/:id", adminOnly, (req, res) => {
     res.status(500).json({ error: "Failed to delete enquiry" });
   }
 });
+
+
 
 module.exports = router;
