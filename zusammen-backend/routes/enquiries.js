@@ -5,7 +5,7 @@ const db = require("../database/db");
 
 /* ── HELPERS ──────────────────────────────────────────────── */
 function adminOnly(req, res, next) {
-  if (req.headers["x-admin-key"] !== process.env.ADMIN_KEY) {
+  if (!req.session || !req.session.admin) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   next();
@@ -36,9 +36,6 @@ transporter.verify((error, success) => {
     console.log('✅ Email server ready — SMTP connected');
   }
 });
-
-module.exports = { transporter, createTransporter };
-
 
 
 /* ── EMAIL: business notification ─────────────────────────── */

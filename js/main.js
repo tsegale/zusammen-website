@@ -1099,24 +1099,31 @@ function initEnquiryForm() {
   modal?.addEventListener("click", (e) => {
     if (e.target === modal) closeEnquiry();
   });
-  form.addEventListener("submit", (e) => {
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = form.querySelector('[type="submit"]');
+    const originalText = btn.textContent;
     btn.textContent = "Sending...";
     btn.disabled = true;
-    setTimeout(() => {
-      const content = form
-        .closest(".enquiry-box")
-        .querySelector(".enquiry-content");
-      const success = form
-        .closest(".enquiry-box")
-        .querySelector(".form-success");
+
+    const tourName = $("#enquiryTourInput")?.value || "";
+    const result = await window.WPAPI.submitEnquiry(form, tourName);
+
+    if (result.success) {
+      const content = form.closest(".enquiry-box").querySelector(".enquiry-content");
+      const success = form.closest(".enquiry-box").querySelector(".form-success");
       if (content) content.style.display = "none";
       if (success) success.style.display = "block";
       setTimeout(closeEnquiry, 3000);
-    }, 1200);
+    } else {
+      showToast("Could not send enquiry: " + (result.error || "unknown error"), "error");
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 }
+
 
 /* ===== LODGES ===== */
 const LODGES = [
@@ -1236,14 +1243,24 @@ function animateCount(el) {
 function initContactForm() {
   const form = $("#contactForm");
   if (!form) return;
-  form.addEventListener("submit", (e) => {
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = form.querySelector('[type="submit"]');
+    const originalText = btn.innerHTML;
     btn.textContent = "Sending...";
     btn.disabled = true;
-    setTimeout(() => {
-      form.innerHTML = `<div class="form-success"><i class="fas fa-check-circle"></i><h4>Message Sent!</h4><p>Thank you for reaching out. We'll be in touch within 24 hours.</p></div>`;
-    }, 1200);
+
+    const result = await window.WPAPI.submitEnquiry(form, form.querySelector('[name="subject"]')?.value || "General Enquiry");
+
+    if (result.success) {
+      showToast("Your message has been sent. We'll be in touch soon!", "success");
+      form.reset();
+    } else {
+      showToast("Could not send message: " + (result.error || "unknown error"), "error");
+    }
+    btn.innerHTML = originalText;
+    btn.disabled = false;
   });
 }
 

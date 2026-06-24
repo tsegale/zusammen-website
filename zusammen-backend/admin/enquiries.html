@@ -268,7 +268,7 @@
       // Update local cache
       const e = allEnquiries.find(x => x.id === currentEnquiryId);
       if (e) e.status = status;
-      showToast("Status updated to "" + status + """, "success");
+      showToast("Status updated to " + status + ", success");
       closeModal("modalOverlay");
       renderEnquiries();
     } catch (err) {

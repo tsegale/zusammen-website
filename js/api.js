@@ -75,22 +75,28 @@ async function submitEnquiry(formEl, tourName) {
   try {
     const fd = new FormData(formEl);
 
-    const fullName = (fd.get("name") || "").trim();
-    const spaceIdx = fullName.indexOf(" ");
-    const first_name = spaceIdx > -1 ? fullName.slice(0, spaceIdx) : fullName;
-    const last_name = spaceIdx > -1 ? fullName.slice(spaceIdx + 1).trim() : "";
+    let first_name = (fd.get("firstName") || "").trim();
+    let last_name  = (fd.get("lastName")  || "").trim();
+
+    // Fallback: if firstName/lastName don't exist, try a single "name" field
+    if (!first_name && !last_name) {
+      const fullName = (fd.get("name") || "").trim();
+      const spaceIdx = fullName.indexOf(" ");
+      first_name = spaceIdx > -1 ? fullName.slice(0, spaceIdx) : fullName;
+      last_name  = spaceIdx > -1 ? fullName.slice(spaceIdx + 1).trim() : "";
+    }
 
     const body = {
-      first_name: first_name || "Guest",
-      last_name: last_name || "",
-      email: fd.get("email") || "",
-      phone: fd.get("phone") || "",
-      tour_name: tourName || fd.get("tour") || "",
+      first_name:  first_name || "Guest",
+      last_name:   last_name  || "",
+      email:       fd.get("email") || "",
+      phone:       fd.get("phone") || "",
+      tour_name:   tourName || fd.get("tour") || fd.get("subject") || "",
       travel_from: fd.get("travelFrom") || "",
-      travel_to: fd.get("travelTo") || "",
-      adults: Number(fd.get("adults")) || 1,
-      children: Number(fd.get("children")) || 0,
-      message: fd.get("message") || "",
+      travel_to:   fd.get("travelTo")   || "",
+      adults:      Number(fd.get("adults"))   || 1,
+      children:    Number(fd.get("children")) || 0,
+      message:     fd.get("message") || "",
     };
 
     const res = await fetch(`${API_BASE}/enquiries`, {
