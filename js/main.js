@@ -648,7 +648,7 @@ function initSearch() {
     }
     showToast(`Searching for tours in "${dest}"...`);
     setTimeout(() => {
-      window.location.href = "pages/tours.html?q=" + encodeURIComponent(dest);
+      window.location.href = "pages/tours?q=" + encodeURIComponent(dest);
     }, 800);
   });
 }
@@ -659,7 +659,7 @@ function buildCategories() {
   if (!grid) return;
   grid.innerHTML = CATEGORIES.map(
     (c, i) => `
-    <a href="pages/tours.html?cat=${encodeURIComponent(c.name)}" class="cat-card">
+    <a href="pages/tours?cat=${encodeURIComponent(c.name)}" class="cat-card">
       <img src="${c.img}" alt="${c.name}" loading="lazy">
       <div class="cat-overlay">
         <div class="cat-icon"><i class="fas ${c.icon}"></i></div>
@@ -681,7 +681,7 @@ function initCategoryModal() {
   if (list) {
     list.innerHTML = CATEGORIES.map(
       (c) => `
-      <a href="pages/tours.html?cat=${encodeURIComponent(c.name)}" class="cat-list-item">
+      <a href="pages/tours?cat=${encodeURIComponent(c.name)}" class="cat-list-item">
         <div class="cat-list-icon"><i class="fas ${c.icon}"></i></div>
         <div>
           <h6>${c.name}</h6>
@@ -915,7 +915,7 @@ function buildTourCard(t) {
               <span><i class="fas fa-users"></i> ${t.guests}</span>
             </div>
           </div>
-          <button class="send-request-btn" onclick="event.stopPropagation();window.location='pages/tour-detail.html?id=${t.id}'">
+          <button class="send-request-btn" onclick="event.stopPropagation();window.location='pages/tour-detail?id=${t.id}'">
             <i class="fas fa-compass"></i> View Tour
           </button>
         </div>
@@ -954,7 +954,7 @@ function buildBlogs() {
         </div>
         <h5>${b.title}</h5>
         <p>${b.excerpt}</p>
-        <a href="pages/blog-detail.html?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        <a href="pages/blog-detail?id=${b.id}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   `;

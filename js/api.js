@@ -49,7 +49,7 @@ async function fetchBlogs() {
         : "",
       author: b.author || "Zusammen Tours",
       readTime: b.read_time || "5 min read",
-      detailUrl: "pages/blog-detail.html?id=" + b.id,
+      detailUrl: "pages/blog-detail?id=" + b.id,
     }));
   } catch (err) {
     console.warn("⚠️ fetchBlogs failed - using fallback:", err.message);
