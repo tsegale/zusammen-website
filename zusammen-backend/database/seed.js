@@ -9,6 +9,18 @@ function toSlug(str) {
 
 async function main() {
   await db.initDb();
+
+  const tourCount = db.prepare("SELECT COUNT(*) AS n FROM tours").get().n;
+  if (tourCount > 6 && !process.env.FORCE_SEED) {
+    console.error(`\nABORT: ${tourCount} tours found in database.`);
+    console.error("Refusing to wipe a populated database.");
+    console.error("To override: FORCE_SEED=true node database/seed.js\n");
+    process.exit(1);
+  }
+  if (tourCount > 6) {
+    console.warn(`WARNING: FORCE_SEED=true — deleting ${tourCount} existing tours.\n`);
+  }
+
   console.log("Seeding database...");
 
   db.exec(`
