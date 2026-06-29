@@ -492,12 +492,43 @@ const PARTNERS = [
   },
 ];
 
+// DB blog ID → local image asset (paths relative to index.html at root)
+const HOME_BLOG_IMG = {
+   9: 'assets/blogs/Best Travel Destinations in Africa Month by Month.jpg',
+  10: 'assets/blogs/Africa Beyond the Famous Underrated Spots Every Traveller Should Explore.jpg',
+  11: 'assets/blogs/Adventure Travel Best Destinations for Thrill Seekers in Africa.jpg',
+  12: 'assets/blogs/Why Booking Through a Travel Agency Still Matters in 2026.jpg',
+  13: 'assets/blogs/Cultural Travel in Africa.jpg',
+  14: 'assets/blogs/Digital Nomad Hotspots in Africa for 2026.jpg',
+  15: 'assets/blogs/Discover Botswana.jpg',
+  16: 'assets/blogs/Discover Kenya.jpg',
+  17: 'assets/blogs/Discover Namibia.jpg',
+  18: 'assets/blogs/Discover Rwanda.jpg',
+  19: 'assets/blogs/Discover South Africa.jpg',
+  20: 'assets/blogs/Discover Tanzania.jpg',
+  21: 'assets/blogs/Discover Uganda.jpg',
+  22: 'assets/blogs/Discover Zambia.jpg',
+  23: 'assets/blogs/Discover Zimbabwe.jpg',
+  24: 'assets/blogs/Family-Friendly Destinations in Southern and Eastern Africa That Kids Will Love.jpg',
+  25: 'assets/blogs/Festivals and Events You Cant Miss in Southern and Eastern Africa.jpg',
+  26: 'assets/blogs/Foodie Adventures in Africa.jpg',
+  27: 'assets/blogs/How to Travel Africa on a Budget Without Missing the Best Experiences.jpg',
+  28: 'assets/blogs/Our Handpicked Lodges.jpg',
+  29: 'assets/blogs/Packing Like a Pro.jpg',
+  30: 'assets/blogs/The Rise of Sustainable Travel in Africa.jpg',
+  31: 'assets/blogs/Top Romantic Destinations in Africa for Couples.jpg',
+  32: 'assets/blogs/Travel Mistakes to Avoid in Africa.jpg',
+  33: 'assets/blogs/Travelling Solo in Africa.jpg',
+  34: 'assets/blogs/Unusual Accommodation Experiences in Africa.jpg',
+};
+
 /* ===== STATE ===== */
 let adultCount = 1,
   childCount = 0;
 let currentTourPage = 0; // slider index
 let currentTestiSlide = 0;
 let testiInterval, toursSliderInterval;
+let LIVE_HOME_BLOGS = null;
 
 /* ===== UTILITIES ===== */
 const fmt = (n) => "N$" + n.toLocaleString("en-ZA");
@@ -940,11 +971,11 @@ window.toggleWishlist = function (btn) {
 function buildBlogs() {
   const grid = $("#blogsGrid");
   if (!grid) return;
-  const displayed = BLOGS.slice(0, 3);
+  const displayed = (LIVE_HOME_BLOGS || BLOGS).slice(0, 3);
   grid.innerHTML = displayed
     .map(
       (b) => {
-        const bImg = b.img || b.image_url || null;
+        const bImg = HOME_BLOG_IMG[b.id] || b.img || null;
         return `
     <div class="blog-card">
       ${bImg ? `<div class="blog-img">
@@ -1276,10 +1307,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   initCategoryModal();
 
   if (window.WPAPI) {
-    const apiTours = await WPAPI.fetchTours();
+    const [apiTours, apiBlogs] = await Promise.all([
+      WPAPI.fetchTours(),
+      WPAPI.fetchBlogs(),
+    ]);
     if (apiTours && apiTours.length) {
       TOURS.length = 0;
       TOURS.push(...apiTours);
+    }
+    if (apiBlogs && apiBlogs.length) {
+      LIVE_HOME_BLOGS = apiBlogs;
     }
   }
 
