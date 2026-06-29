@@ -1185,8 +1185,7 @@ function buildTypePills() {
   if (!wrap) return;
   wrap.innerHTML = TOUR_TYPES.map(t => {
     const count = ALL_TOURS_DATA.filter(tour =>
-      tour.category?.toLowerCase()
-           .includes(t.name.split(' ')[0].toLowerCase())
+      tour.category?.toLowerCase() === t.name.toLowerCase()
     ).length;
     return `
       <div class="type-pill"
@@ -1269,8 +1268,7 @@ function applyFilters() {
   // Active type pill
   if (activeType) {
     tours = tours.filter(t =>
-      t.category?.toLowerCase()
-       .includes(activeType.split(' ')[0].toLowerCase())
+      t.category?.toLowerCase() === activeType.toLowerCase()
     );
   }
 
@@ -1281,8 +1279,7 @@ function applyFilters() {
   if (typeChecked.length) {
     tours = tours.filter(t =>
       typeChecked.some(tc =>
-        t.category?.toLowerCase()
-         .includes(tc.split(' ')[0].toLowerCase())
+        t.category?.toLowerCase() === tc.toLowerCase()
       )
     );
   }
