@@ -658,17 +658,22 @@ function buildCategories() {
   const grid = $("#catGrid");
   if (!grid) return;
   grid.innerHTML = CATEGORIES.map(
-    (c, i) => `
+    (c) => {
+      const n = TOURS.filter(t =>
+        t.category?.toLowerCase() === c.name.toLowerCase()
+      ).length;
+      return `
     <a href="pages/tours?cat=${encodeURIComponent(c.name)}" class="cat-card">
       <img src="${c.img}" alt="${c.name}" loading="lazy">
       <div class="cat-overlay">
         <div class="cat-icon"><i class="fas ${c.icon}"></i></div>
         <h5>${c.name}</h5>
-        <span>${c.count}</span>
+        <span>${n} ${n === 1 ? 'Tour' : 'Tours'}</span>
       </div>
       <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
     </a>
-  `,
+  `;
+    }
   ).join("");
 }
 
@@ -1268,7 +1273,6 @@ function initContactForm() {
 document.addEventListener("DOMContentLoaded", async () => {
   initHeader();
   initSearch();
-  buildCategories();
   initCategoryModal();
 
   if (window.WPAPI) {
@@ -1279,6 +1283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  buildCategories();
   buildToursSlider();
   buildBlogs();
   buildTestimonials();
