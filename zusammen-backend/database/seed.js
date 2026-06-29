@@ -129,7 +129,7 @@ async function main() {
     {
       title: "Rwanda Gorilla & Kigali Cultural",
       location: "Rwanda",
-      category: "Beyond Namibia Safaris",
+      category: "Cross-Border",
       rating: 5,
       reviews: 18,
       price: 120000,
@@ -169,7 +169,7 @@ async function main() {
     {
       title: "Zimbabwe Victoria Falls Adventure",
       location: "Zimbabwe",
-      category: "Cross Border Safaris",
+      category: "Cross-Border",
       rating: 4,
       reviews: 11,
       price: 98000,
@@ -248,7 +248,7 @@ async function main() {
     {
       title: "Tanzania Serengeti & Zanzibar Combo",
       location: "Tanzania",
-      category: "Self-Drive Safaris",
+      category: "Self-Drive",
       rating: 4,
       reviews: 19,
       price: 135000,

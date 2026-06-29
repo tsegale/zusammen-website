@@ -90,7 +90,7 @@ const TOURS = [
     id: 3,
     title: "Rwanda Gorilla & Kigali Cultural",
     location: "Rwanda",
-    category: "Beyond Namibia Safaris",
+    category: "Cross-Border",
     rating: 5,
     reviews: 17,
     price: 120000,
@@ -130,7 +130,7 @@ const TOURS = [
     id: 4,
     title: "Zimbabwe Victoria Falls Adventure",
     location: "Zimbabwe",
-    category: "Cross Border Safaris",
+    category: "Cross-Border",
     rating: 4,
     reviews: 11,
     price: 98000,
@@ -210,7 +210,7 @@ const TOURS = [
     id: 6,
     title: "Tanzania Serengeti & Zanzibar Combo",
     location: "Tanzania",
-    category: "Self-Drive Safaris",
+    category: "Self-Drive",
     rating: 4,
     reviews: 19,
     price: 135000,
@@ -293,7 +293,7 @@ const REVIEWS = [
 
 const CATEGORIES = [
   {
-    name: "Cross Border Safaris",
+    name: "Cross-Border",
     icon: "fa-globe-africa",
     count: "3 Tours",
     img: "assets/gallery/chobe-national-park-botswana-wildlife-safari.jpg",
@@ -321,18 +321,18 @@ const CATEGORIES = [
     desc: "Premier lodges, private game reserves and bespoke service throughout.",
   },
   {
-    name: "Self-Drive Safaris",
+    name: "Self-Drive",
     icon: "fa-car",
     count: "3 Tours",
     img: "assets/gallery/sossusvlei-namibia-red-sand-dunes-and-deadvlei-clay-pan-at-sunrise.jpg",
     desc: "Explore at your own pace with expert route planning and support.",
   },
   {
-    name: "Beyond Namibia Safaris",
-    icon: "fa-map-marked-alt",
-    count: "5 Tours",
-    img: "assets/gallery/volcanoes-national-park-rwanda-gorilla-trekking.jpg",
-    desc: "Discover Africa's other top destinations, from Kenya to Rwanda and beyond.",
+    name: "Group Travel",
+    icon: "fa-bus",
+    count: "0 Tours",
+    img: "assets/gallery/maasai-mara-kenya-safari-wildlife.jpg",
+    desc: "Shared group departures with like-minded travellers across Africa.",
   },
 ];
 
