@@ -1051,7 +1051,7 @@ function buildPartners() {
     .map(
       (p) => `
     <div class="partner-logo">
-      <img src="${p.file}" alt="${p.name}" style="height:44px;max-width:140px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.55;transition:all .25s;cursor:pointer" onmouseover="this.style.opacity=1;this.style.filter='none'" onmouseout="this.style.opacity=0.55;this.style.filter='brightness(0) invert(1)'">
+      <img src="${p.file}" alt="${p.name}" style="height:96px;max-width:260px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.55;transition:all .25s;cursor:pointer" onmouseover="this.style.opacity=1;this.style.filter='none'" onmouseout="this.style.opacity=0.55;this.style.filter='brightness(0) invert(1)'">
     </div>
   `,
     )
