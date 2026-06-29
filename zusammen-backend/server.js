@@ -25,6 +25,7 @@ const corsOptions = {
     const allowed = [
   'https://zusammentravels.com',
   'https://www.zusammentravels.com',
+  'https://zusammen-api.spybitech.com.na',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   process.env.FRONTEND_URL
