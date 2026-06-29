@@ -850,7 +850,7 @@
                       <div>
                         <span class="guest-label">Children</span>
                         <div class="guest-sublabel">
-                          (3–12 Yrs · 60% off adult rate)
+                          (3–12 Yrs · 60% of adult rate)
                         </div>
                       </div>
                       <div class="counter" style="gap: 14px">
@@ -1151,14 +1151,14 @@
       function updatePriceBreakdown() {
         if (!currentTour) return;
         const adultTotal = currentTour.price * bookAdults;
-        const childRate = Math.round(currentTour.price * 0.4);
+        const childRate = Math.round(currentTour.price * 0.6);
         const childTotal = childRate * bookChildren;
         const grand = adultTotal + childTotal;
         const pb = document.getElementById("priceBreakdown");
         if (!pb) return;
         pb.innerHTML = `
     <div class="price-line"><span>Adults (${bookAdults} × ${fmtPrice(currentTour.price)})</span><span>${fmtPrice(adultTotal)}</span></div>
-    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${fmtPrice(childRate)}) <span class="child-note">60% off</span></span><span>${fmtPrice(childTotal)}</span></div>` : ""}
+    ${bookChildren > 0 ? `<div class="price-line"><span>Children (${bookChildren} × ${fmtPrice(childRate)}) <span class="child-note">40% off</span></span><span>${fmtPrice(childTotal)}</span></div>` : ""}
     <div class="price-line total"><span>Total Estimate</span><span>${fmtPrice(grand)}</span></div>
   `;
       }
