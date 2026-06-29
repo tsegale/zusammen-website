@@ -128,7 +128,8 @@ class DbWrapper {
 
 /* ── INIT ─────────────────────────────────────────────────────── */
 async function initDb() {
-  const initSqlJs = require("sql.js");
+  // const initSqlJs = require("sql.js");
+  const initSqlJs = require("sql.js/dist/sql-asm.js");
   const SQL = await initSqlJs();
 
   if (fs.existsSync(dbPath)) {
