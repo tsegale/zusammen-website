@@ -623,6 +623,48 @@
 
       const BLOGS_API_BASE = window.API_BASE || 'http://localhost:3000/api';
 
+      // Direct DB blog ID → local image asset (26 blogs, 26 files, 1:1)
+      const DB_BLOG_IMG = {
+         9: '../assets/blogs/Best Travel Destinations in Africa Month by Month.jpg',
+        10: '../assets/blogs/Africa Beyond the Famous Underrated Spots Every Traveller Should Explore.jpg',
+        11: '../assets/blogs/Adventure Travel Best Destinations for Thrill Seekers in Africa.jpg',
+        12: '../assets/blogs/Why Booking Through a Travel Agency Still Matters in 2026.jpg',
+        13: '../assets/blogs/Cultural Travel in Africa.jpg',
+        14: '../assets/blogs/Digital Nomad Hotspots in Africa for 2026.jpg',
+        15: '../assets/blogs/Discover Botswana.jpg',
+        16: '../assets/blogs/Discover Kenya.jpg',
+        17: '../assets/blogs/Discover Namibia.jpg',
+        18: '../assets/blogs/Discover Rwanda.jpg',
+        19: '../assets/blogs/Discover South Africa.jpg',
+        20: '../assets/blogs/Discover Tanzania.jpg',
+        21: '../assets/blogs/Discover Uganda.jpg',
+        22: '../assets/blogs/Discover Zambia.jpg',
+        23: '../assets/blogs/Discover Zimbabwe.jpg',
+        24: '../assets/blogs/Family-Friendly Destinations in Southern and Eastern Africa That Kids Will Love.jpg',
+        25: '../assets/blogs/Festivals and Events You Cant Miss in Southern and Eastern Africa.jpg',
+        26: '../assets/blogs/Foodie Adventures in Africa.jpg',
+        27: '../assets/blogs/How to Travel Africa on a Budget Without Missing the Best Experiences.jpg',
+        28: '../assets/blogs/Our Handpicked Lodges.jpg',
+        29: '../assets/blogs/Packing Like a Pro.jpg',
+        30: '../assets/blogs/The Rise of Sustainable Travel in Africa.jpg',
+        31: '../assets/blogs/Top Romantic Destinations in Africa for Couples.jpg',
+        32: '../assets/blogs/Travel Mistakes to Avoid in Africa.jpg',
+        33: '../assets/blogs/Travelling Solo in Africa.jpg',
+        34: '../assets/blogs/Unusual Accommodation Experiences in Africa.jpg',
+      };
+
+      function resolveImgUrl(rawUrl, id) {
+        // Local repo asset — always available, always prefer it
+        if (DB_BLOG_IMG[id]) return DB_BLOG_IMG[id];
+        // Uploaded file on API server
+        if (rawUrl && rawUrl.startsWith('/assets/uploads/')) {
+          return BLOGS_API_BASE.replace(/\/api$/, '') + rawUrl;
+        }
+        // External URL (skip Google Drive view links — not embeddable)
+        if (rawUrl && !rawUrl.includes('drive.google.com')) return rawUrl;
+        return null;
+      }
+
       let currentBlogPage     = 1;
       let currentFilteredBlogs = [];
       const BLOGS_PER_PAGE    = 9;
@@ -724,7 +766,7 @@
               title:    b.title,
               tag:      b.tag      || 'Travel',
               excerpt:  b.excerpt  || '',
-              img:      b.image_url || b.img || '',
+              img:      resolveImgUrl(b.image_url, b.id),
               date:     b.published_at
                           ? new Date(b.published_at).toLocaleDateString('en-GB', {
                               day: 'numeric', month: 'short', year: 'numeric'
