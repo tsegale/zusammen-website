@@ -91,7 +91,7 @@ const TOURS = [
     title: "Rwanda Gorilla & Kigali Cultural",
     location: "Rwanda",
     category: "Cross-Border",
-    rating: 5,
+    rating: 4,
     reviews: 17,
     price: 120000,
     oldPrice: 135000,
@@ -889,7 +889,7 @@ function buildTourCard(t) {
       <div class="tour-card" data-id="${t.id}">
         <div class="tour-img">
           ${imgHtml}
-          <span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>
+          ${t.rating >= 5 ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
           <span class="tour-cat">${t.category}</span>
           <button class="tour-wishlist" onclick="event.stopPropagation();toggleWishlist(this)" title="Save">
             <i class="fas fa-heart"></i>

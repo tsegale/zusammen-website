@@ -1363,9 +1363,7 @@ function renderTours(tours) {
            onclick="window.location='tour-detail?id=${t.id}'">
         <div class="tour-img">
           ${imgHtml}
-          <span class="tour-badge">
-            <i class="fas fa-star"></i> Top Rated
-          </span>
+          ${Number(t.rating) >= 5 ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
           <span class="tour-cat">${t.category}</span>
         </div>
         <div class="tour-body">

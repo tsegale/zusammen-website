@@ -130,7 +130,7 @@ async function main() {
       title: "Rwanda Gorilla & Kigali Cultural",
       location: "Rwanda",
       category: "Cross-Border",
-      rating: 5,
+      rating: 4,
       reviews: 18,
       price: 120000,
       old_price: 135000,
