@@ -716,7 +716,7 @@
       async function initBlogGrid() {
         let blogs = [];
         try {
-          const res = await fetch(BLOGS_API_BASE + '/blogs');
+          const res = await fetch(BLOGS_API_BASE + '/blogs?limit=200');
           if (res.ok) {
             const data = await res.json();
             blogs = data.map(b => ({

@@ -30,7 +30,7 @@ async function fetchTours() {
 /* ── fetchBlogs ──────────────────────────────────────────── */
 async function fetchBlogs() {
   try {
-    const res = await fetch(API_BASE + "/blogs");
+    const res = await fetch(API_BASE + "/blogs?limit=200");
     if (!res.ok) throw new Error("API " + res.status);
     const blogs = await res.json();
     return blogs.map((b) => ({
