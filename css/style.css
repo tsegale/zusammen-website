@@ -1880,7 +1880,7 @@ section {
   align-items: center;
   gap: 48px;
   padding: 20px 0;
-  animation: partnerScroll 50s linear infinite;
+  animation: partnerScroll 30s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
