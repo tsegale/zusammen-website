@@ -1879,7 +1879,7 @@ section {
   display: inline-flex;
   align-items: center;
   padding: 20px 0;
-  animation: partnerScroll 12s linear infinite;
+  animation: partnerScroll 30s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
