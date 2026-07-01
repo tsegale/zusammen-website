@@ -42,6 +42,12 @@
         display: flex;
         gap: 10px;
         margin-top: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .detail-thumbs::-webkit-scrollbar {
+        display: none;
       }
       .detail-thumb {
         width: 80px;
@@ -74,6 +80,8 @@
         font-size: 28px;
         font-weight: 800;
         color: var(--dark);
+        flex: 1;
+        min-width: 0;
       }
       .detail-meta-row {
         display: flex;
@@ -336,6 +344,17 @@
         color: var(--secondary);
         font-weight: 600;
       }
+      .price-line span:first-child {
+        flex: 1;
+        min-width: 0;
+        word-break: break-word;
+        line-height: 1.4;
+      }
+      .price-line span:last-child {
+        white-space: nowrap;
+        flex-shrink: 0;
+        text-align: right;
+      }
       .book-details-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -404,9 +423,16 @@
         font-size: 11px;
       }
 
+      .why-book-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
       @media (max-width: 900px) {
         .detail-layout {
           grid-template-columns: 1fr;
+          gap: 28px;
         }
         .booking-card {
           position: static;
@@ -424,6 +450,15 @@
         }
         .book-details-row {
           grid-template-columns: 1fr;
+        }
+        .booking-body {
+          padding: 16px;
+        }
+        .why-book-grid {
+          grid-template-columns: 1fr;
+        }
+        .detail-title-row h1 {
+          font-size: 22px;
         }
       }
     </style>
@@ -751,9 +786,7 @@
                 ></i
                 >Why Book With Us
               </h5>
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"
-              >
+              <div class="why-book-grid">
                 <div class="about-feat">
                   <div class="feat-icon"><i class="fas fa-award"></i></div>
                   <div class="feat-text">
