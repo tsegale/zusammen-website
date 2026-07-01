@@ -1876,15 +1876,16 @@ section {
   overflow: hidden;
 }
 .partners-track {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 48px;
   padding: 20px 0;
   animation: partnerScroll 12s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transform: translateZ(0);
+}
+.partners-track:hover {
+  animation-play-state: paused;
 }
 .partner-logo {
   flex-shrink: 0;
@@ -1911,8 +1912,7 @@ section {
     transform: translateX(0);
   }
   100% {
-    /* -24px corrects for the flex gap (48px / 2) between the two copies */
-    transform: translateX(calc(-50% - 24px));
+    transform: translateX(-50%);
   }
 }
 
