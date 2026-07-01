@@ -451,45 +451,43 @@ const FAQS = [
 ];
 
 const PARTNERS = [
-  { name: "andBeyond", file: "assets/partners/andBeyond Logo.png" },
-  { name: "Angama", file: "assets/partners/angama-logo-white.png" },
-  { name: "Chiawa Safaris", file: "assets/partners/Chiawa Safaris.png" },
-  { name: "Chiwani Camps", file: "assets/partners/Chiwani Camps.webp" },
-  { name: "City Lodge Hotels", file: "assets/partners/City Lodge Hotels.png" },
-  { name: "Hilton Hotels", file: "assets/partners/Hilton Hotel & Resorts.png" },
-  {
-    name: "More Family Collection",
-    file: "assets/partners/more family collection.png",
-  },
-  {
-    name: "Natural Selection",
-    file: "assets/partners/Natural Selection Logo.png",
-  },
-  { name: "Ondili", file: "assets/partners/ondili-logo.png" },
-  { name: "One&Only", file: "assets/partners/one and only.png" },
-  { name: "Ongava", file: "assets/partners/Ongava.png" },
-  {
-    name: "Onguma Lodge",
-    file: "assets/partners/Onguma Lodge Etosha National Park.png",
-  },
-  {
-    name: "Wilderness Air",
-    file: "assets/partners/botswana wilderness air.png",
-  },
-  { name: "Red Carnation", file: "assets/partners/Red Carnation Logo.png" },
-  { name: "Time + Tide", file: "assets/partners/Time Tide.png" },
-  {
-    name: "Virgin Limited Edition",
-    file: "assets/partners/Virgin Limited Edition.png",
-  },
-  {
-    name: "Wilderness",
-    file: "assets/partners/Wilderness-Logo-400x284-1.png",
-  },
-  {
-    name: "Zambezi Crescent",
-    file: "assets/partners/Zambezi Crescent Collection.png",
-  },
+  { name: "AXA Travel Insurance",    file: "assets/partners/192-1926037_transparent-axa-logo-png-axa-travel-insurance-logo.png" },
+  { name: "Accor",                   file: "assets/partners/accor.png" },
+  { name: "Airbot",                  file: "assets/partners/airbot-logo.jpg.png" },
+  { name: "Airlink",                 file: "assets/partners/Airlink-Logo.png" },
+  { name: "Air Tanzania",            file: "assets/partners/air-tanzania-logo-png_seeklogo-315429.png" },
+  { name: "andBeyond",               file: "assets/partners/andBeyond Logo.png" },
+  { name: "Angama",                  file: "assets/partners/angama-logo-white.png" },
+  { name: "AZ",                      file: "assets/partners/AZ_Logo_Twitter_438x220px.png" },
+  { name: "Botswana Wilderness Air", file: "assets/partners/botswana wilderness air.png" },
+  { name: "Chiawa Safaris",          file: "assets/partners/Chiawa Safaris.png" },
+  { name: "Chiwani Camps",           file: "assets/partners/Chiwani Camps.webp" },
+  { name: "City Lodge Hotels",       file: "assets/partners/City Lodge Hotels.png" },
+  { name: "Ethiopian Airlines",      file: "assets/partners/ethiopian-airlines-logo-png-transparent.png" },
+  { name: "GCC",                     file: "assets/partners/GCC-logo-website-grey.png" },
+  { name: "Hilton Hotels & Resorts", file: "assets/partners/Hilton Hotel & Resorts.png" },
+  { name: "Kenya Airways",           file: "assets/partners/Kenya_Airways-Logo.wine.png" },
+  { name: "Lufthansa",               file: "assets/partners/Lufthansa-Logo.png" },
+  { name: "Minor Hotels",            file: "assets/partners/MINOR.png" },
+  { name: "More Family Collection",  file: "assets/partners/more family collection.png" },
+  { name: "Natural Selection",       file: "assets/partners/Natural Selection Logo.png" },
+  { name: "Ondili",                  file: "assets/partners/ondili-logo.png" },
+  { name: "One&Only",                file: "assets/partners/one and only.png" },
+  { name: "Ongava",                  file: "assets/partners/Ongava.png" },
+  { name: "Onguma Lodge",            file: "assets/partners/Onguma Lodge Etosha National Park.png" },
+  { name: "Qatar Airways",           file: "assets/partners/Qatar-Airways-Logo.png" },
+  { name: "Radisson Blu",            file: "assets/partners/Radisson-Blu.webp" },
+  { name: "Red Carnation Hotels",    file: "assets/partners/Red Carnation Logo.png" },
+  { name: "Retreat",                 file: "assets/partners/RETREAT.png" },
+  { name: "RwandAir",               file: "assets/partners/RwandAir-Logo.wine.png" },
+  { name: "Singita",                 file: "assets/partners/SINGITA.png" },
+  { name: "South African Airways",   file: "assets/partners/south-african-airways-logo-png-transparent.png" },
+  { name: "Time + Tide",             file: "assets/partners/Time Tide.png" },
+  { name: "Uganda Airlines",         file: "assets/partners/uganda-airlines-logo-png_seeklogo-357055.png" },
+  { name: "Virgin Limited Edition",  file: "assets/partners/Virgin Limited Edition.png" },
+  { name: "Wilderness",              file: "assets/partners/Wilderness-Logo-400x284-1.png" },
+  { name: "World Nomads",            file: "assets/partners/world-nomads-standard-travel_1.png" },
+  { name: "Zambezi Crescent",        file: "assets/partners/Zambezi Crescent Collection.png" },
 ];
 
 // DB blog ID → local image asset (paths relative to index.html at root)
@@ -1077,15 +1075,18 @@ function updateTesti() {
 function buildPartners() {
   const track = document.getElementById("partnersTrack");
   if (!track) return;
-  const items = [...PARTNERS, ...PARTNERS]; // double for seamless loop
+  const items = [...PARTNERS, ...PARTNERS]; // full double keeps -50% keyframe correct
   track.innerHTML = items
-    .map(
-      (p) => `
-    <div class="partner-logo">
-      <img src="${p.file}" alt="${p.name}" style="height:96px;max-width:260px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.55;transition:all .25s;cursor:pointer" onmouseover="this.style.opacity=1;this.style.filter='none'" onmouseout="this.style.opacity=0.55;this.style.filter='brightness(0) invert(1)'">
-    </div>
-  `,
-    )
+    .map((p) => {
+      const safeName = p.name.replace(/&/g, "&amp;");
+      return `<div class="partner-logo">
+      <img src="${p.file}" alt="${p.name}"
+           style="opacity:0.85;transition:opacity 0.25s;object-fit:contain"
+           onmouseover="this.style.opacity='1'"
+           onmouseout="this.style.opacity='0.85'"
+           onerror="this.outerHTML='<span style=\\'font-family:var(--font-head);font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)\\'>${safeName}</span>'">
+    </div>`;
+    })
     .join("");
 }
 

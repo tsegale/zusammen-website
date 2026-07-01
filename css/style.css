@@ -1879,13 +1879,18 @@ section {
   display: flex;
   align-items: center;
   gap: 48px;
-  padding: 24px 0;
-  animation: partnerScroll 28s linear infinite;
+  padding: 20px 0;
+  animation: partnerScroll 50s linear infinite;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .partners-track:hover {
   animation-play-state: paused;
 }
 .partner-logo {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1896,12 +1901,11 @@ section {
   height: 64px;
   max-width: 190px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.55;
-  transition: all 0.25s;
+  opacity: 0.85;
+  transition: opacity 0.25s;
+  display: block;
 }
 .partner-logo:hover img {
-  filter: none;
   opacity: 1;
 }
 @keyframes partnerScroll {
