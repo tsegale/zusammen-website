@@ -231,6 +231,9 @@
       }
 
       /* Sidebar booking card */
+      .detail-layout > div {
+        min-width: 0;
+      }
       .booking-card {
         background: var(--white);
         border: 1.5px solid var(--border);
@@ -239,6 +242,15 @@
         position: sticky;
         top: 90px;
         box-shadow: var(--shadow-lg);
+        width: 100%;
+      }
+      .guests-row > div:first-child {
+        flex: 1;
+        min-width: 0;
+      }
+      .guest-sublabel {
+        white-space: normal;
+        word-break: break-word;
       }
       .booking-card-header {
         background: var(--primary);
