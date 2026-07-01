@@ -1886,9 +1886,6 @@ section {
   backface-visibility: hidden;
   transform: translateZ(0);
 }
-.partners-track:hover {
-  animation-play-state: paused;
-}
 .partner-logo {
   flex-shrink: 0;
   display: flex;
@@ -1914,7 +1911,8 @@ section {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    /* -24px corrects for the flex gap (48px / 2) between the two copies */
+    transform: translateX(calc(-50% - 24px));
   }
 }
 
