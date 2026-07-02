@@ -1342,10 +1342,8 @@ function renderTours(tours) {
   const paginated = tours.slice(start, start + TOURS_PER_PAGE);
 
   grid.innerHTML = paginated.map(t => {
-    let imgSrc = t.img || t.image_url || null;
-    if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('/') && !imgSrc.startsWith('../')) {
-      imgSrc = '../' + imgSrc;
-    }
+    const rawImg = t.img || t.image_url || null;
+    const imgSrc = window.WPAPI ? window.WPAPI.resolveImagePath(rawImg, window.API_BASE) : rawImg;
     const imgHtml = imgSrc
       ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
       : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;

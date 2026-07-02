@@ -1117,9 +1117,21 @@
     <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
+      function resolveImg(url) {
+        if (!url) return null;
+        const base = window.API_BASE || 'http://localhost:3000/api';
+        if (window.WPAPI && window.WPAPI.resolveImagePath) {
+          return window.WPAPI.resolveImagePath(url, base);
+        }
+        if (url.startsWith('/assets/uploads/')) {
+          return base.replace(/\/api$/, '') + url;
+        }
+        return url;
+      }
+
       function getTourImages(tour) {
         const images = [];
-        if (tour.image_url || tour.img) images.push(tour.image_url || tour.img);
+        if (tour.image_url || tour.img) images.push(resolveImg(tour.image_url || tour.img));
         const gallery = tour.gallery_images || tour.galleryImages;
         if (gallery) {
           let parsed = [];
@@ -1129,7 +1141,7 @@
             try { parsed = JSON.parse(gallery); }
             catch { parsed = gallery.split(/,|\n/).map(s => s.trim()).filter(Boolean); }
           }
-          images.push(...parsed);
+          images.push(...parsed.map(resolveImg));
         }
         return images.filter(Boolean);
       }
@@ -1142,8 +1154,6 @@
           if (images[0]) {
             mainImgEl.src = images[0];
             mainImgEl.alt = tour.title;
-            mainImgEl.setAttribute("referrerpolicy", "no-referrer");
-            mainImgEl.setAttribute("crossorigin", "anonymous");
             mainImgEl.onerror = function() { if (mainImgWrap) mainImgWrap.style.display = "none"; };
           } else {
             if (mainImgWrap) mainImgWrap.style.display = "none";
@@ -1154,7 +1164,7 @@
           thumbsRow.innerHTML = images.map((img, i) => `
             <div class="detail-thumb ${i === 0 ? "active" : ""}"
                  onclick="switchMainImg('${img.replace(/'/g, "\\'")}', this)">
-              <img src="${img}" alt="Tour photo ${i + 1}" referrerpolicy="no-referrer" crossorigin="anonymous"
+              <img src="${img}" alt="Tour photo ${i + 1}"
                    onerror="this.parentElement.style.display='none'">
             </div>`).join("");
         }
