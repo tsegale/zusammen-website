@@ -1344,7 +1344,7 @@ function renderTours(tours) {
   grid.innerHTML = paginated.map(t => {
     const imgSrc = t.img || t.image_url || null;
     const imgHtml = imgSrc
-      ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
+      ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="tourImgFallback(this)">`
       : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;
     return `
       <div class="tour-card"

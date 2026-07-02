@@ -918,11 +918,28 @@ function updateToursSlider() {
     .forEach((d, i) => d.classList.toggle("active", i === currentTourPage));
 }
 
+// Try root-relative first (files on cPanel); on 404 fall back to API server (files uploaded via admin)
+function tourImgFallback(img) {
+  const src = img.getAttribute('src') || '';
+  const apiOrigin = (window.API_BASE || '').replace(/\/api$/, '');
+  if (src.startsWith('/assets/uploads/') && apiOrigin && !img.dataset.apiTried) {
+    img.dataset.apiTried = '1';
+    img.onerror = function() {
+      this.onerror = null;
+      this.parentElement.innerHTML = '<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>';
+    };
+    img.src = apiOrigin + src;
+  } else {
+    img.onerror = null;
+    img.parentElement.innerHTML = '<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>';
+  }
+}
+
 function buildTourCard(t) {
   const rating = t.rating || 4;
   const imgSrc = t.img || t.image_url || null;
   const imgHtml = imgSrc
-    ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
+    ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="tourImgFallback(this)">`
     : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;
   return `
     <div class="slide-slot">

@@ -1142,7 +1142,18 @@
           if (images[0]) {
             mainImgEl.src = images[0];
             mainImgEl.alt = tour.title;
-            mainImgEl.onerror = function() { if (mainImgWrap) mainImgWrap.style.display = "none"; };
+            mainImgEl.onerror = function() {
+              const src = this.getAttribute('src') || '';
+              const apiOrigin = (window.API_BASE || '').replace(/\/api$/, '');
+              if (src.startsWith('/assets/uploads/') && apiOrigin && !this.dataset.apiTried) {
+                this.dataset.apiTried = '1';
+                this.onerror = function() { this.onerror = null; if (mainImgWrap) mainImgWrap.style.display = 'none'; };
+                this.src = apiOrigin + src;
+              } else {
+                this.onerror = null;
+                if (mainImgWrap) mainImgWrap.style.display = 'none';
+              }
+            };
           } else {
             if (mainImgWrap) mainImgWrap.style.display = "none";
           }
@@ -1153,7 +1164,7 @@
             <div class="detail-thumb ${i === 0 ? "active" : ""}"
                  onclick="switchMainImg('${img.replace(/'/g, "\\'")}', this)">
               <img src="${img}" alt="Tour photo ${i + 1}"
-                   onerror="this.parentElement.style.display='none'">
+                   onerror="(function(el){var s=el.getAttribute('src')||'',a=(window.API_BASE||'').replace(/\\/api$/,'');if(s.startsWith('/assets/uploads/')&&a&&!el.dataset.f){el.dataset.f='1';el.onerror=function(){this.onerror=null;this.parentElement.style.display='none';};el.src=a+s;}else{el.onerror=null;el.parentElement.style.display='none';}})(this)">
             </div>`).join("");
         }
       }
