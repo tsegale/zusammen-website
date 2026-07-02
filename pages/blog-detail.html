@@ -926,18 +926,23 @@
 
         const contentEl = document.getElementById('blogContent');
         if (contentEl) {
+          let contentHtml = '';
           if (blog.content && blog.content.includes('<')) {
-            contentEl.innerHTML = blog.content;
+            contentHtml = blog.content;
           } else if (blog.content) {
-            contentEl.innerHTML = blog.content
+            contentHtml = blog.content
               .split('\n\n')
               .map(p => `<p>${p.trim()}</p>`)
               .filter(p => p !== '<p></p>')
               .join('');
           } else {
             const fallback = BLOG_CONTENT[id] || BLOG_CONTENT.default;
-            if (fallback) contentEl.innerHTML = fallback.body;
+            contentHtml = fallback ? fallback.body : '';
           }
+          if (window.WPAPI && window.WPAPI.fixContentImagePaths) {
+            contentHtml = window.WPAPI.fixContentImagePaths(contentHtml, BLOG_DETAIL_API_BASE);
+          }
+          contentEl.innerHTML = contentHtml;
         }
 
         // Sidebar recent posts + bottom related posts

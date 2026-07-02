@@ -1347,15 +1347,15 @@ function renderTours(tours) {
       imgSrc = '../' + imgSrc;
     }
     const imgHtml = imgSrc
-      ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">`
-      : "";
+      ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
+      : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;
     return `
       <div class="tour-card"
            style="cursor:pointer"
            onclick="window.location='tour-detail?id=${t.id}'">
         <div class="tour-img">
           ${imgHtml}
-          ${Number(t.rating) >= 5 ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
+          ${t.isTopRated ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
           <span class="tour-cat">${t.category}</span>
         </div>
         <div class="tour-body">

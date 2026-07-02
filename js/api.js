@@ -115,6 +115,30 @@ async function submitEnquiry(formEl, tourName) {
   }
 }
 
+/* ── resolveImagePath ────────────────────────────────────── */
+// Converts a raw image_url from the DB into a usable src.
+// Returns null for un-embeddable links (Google Drive view URLs).
+function resolveImagePath(rawUrl, apiBase) {
+  if (!rawUrl) return null;
+  if (rawUrl.startsWith('/assets/uploads/')) {
+    return (apiBase || API_BASE).replace(/\/api$/, '') + rawUrl;
+  }
+  if (rawUrl.includes('drive.google.com')) return null;
+  if (!rawUrl.startsWith('http') && !rawUrl.startsWith('/') && !rawUrl.startsWith('../')) {
+    return '../' + rawUrl;
+  }
+  return rawUrl;
+}
+
+/* ── fixContentImagePaths ────────────────────────────────── */
+// Rewrites /assets/uploads/ src attributes in blog content HTML
+// so they point to the API server instead of the static file host.
+function fixContentImagePaths(html, apiBase) {
+  if (!html) return html;
+  const origin = (apiBase || API_BASE).replace(/\/api$/, '');
+  return html.replace(/(<img[^>]+src=["'])\/assets\/uploads\//g, `$1${origin}/assets/uploads/`);
+}
+
 /* ── skeleton loader ─────────────────────────────────────── */
 function showSkeletons(id, count) {
   const el = document.getElementById(id);
@@ -159,6 +183,8 @@ window.WPAPI = {
   fetchFAQs,
   submitEnquiry,
   showSkeletons,
+  resolveImagePath,
+  fixContentImagePaths,
 };
 
 console.log("✅ api.js loaded — API_BASE:", API_BASE);

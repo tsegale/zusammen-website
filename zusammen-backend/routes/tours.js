@@ -69,6 +69,7 @@ function mapForFrontend(row) {
     region:         row.region             || '',
     zip:            row.zip                || '',
     country:        row.country            || '',
+    isTopRated:     row.is_top_rated === 1 || row.is_top_rated === true,
   };
 }
 
@@ -190,14 +191,14 @@ router.post("/", adminOnly, (req, res) => {
           min_people, max_people, description, destinations,
           includes, excludes, highlights, available_dates, image_url, gallery_images, active,
           introduction, activities, itinerary, pickup_address, dropoff_address,
-          city, region, zip, country
+          city, region, zip, country, is_top_rated
         ) VALUES (
           @title, @slug, @location, @category, @rating, @reviews,
           @price, @old_price, @days, @nights, @guests, @min_age,
           @min_people, @max_people, @description, @destinations,
           @includes, @excludes, @highlights, @available_dates, @image_url, @gallery_images, @active,
           @introduction, @activities, @itinerary, @pickup_address, @dropoff_address,
-          @city, @region, @zip, @country
+          @city, @region, @zip, @country, @is_top_rated
         )`
       )
       .run({
@@ -226,6 +227,7 @@ router.post("/", adminOnly, (req, res) => {
         region:  region  || '',
         zip:     zip     || '',
         country: country || '',
+        is_top_rated: req.body.is_top_rated != null ? Number(req.body.is_top_rated) : 0,
       });
 
     const created = db.prepare("SELECT * FROM tours WHERE id = ?").get(result.lastInsertRowid);
@@ -250,7 +252,7 @@ router.put("/:id", adminOnly, (req, res) => {
       "title", "location", "category", "rating", "reviews", "price",
       "old_price", "days", "nights", "guests", "min_age", "min_people",
       "max_people", "description", "destinations", "available_dates",
-      "image_url", "active", "introduction",
+      "image_url", "active", "introduction", "is_top_rated",
       "city", "region", "zip", "country", "pickup_address", "dropoff_address",
     ];
 

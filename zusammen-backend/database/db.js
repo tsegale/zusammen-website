@@ -228,7 +228,8 @@ async function initDb() {
     "ALTER TABLE tours ADD COLUMN city TEXT DEFAULT ''",
     "ALTER TABLE tours ADD COLUMN region TEXT DEFAULT ''",
     "ALTER TABLE tours ADD COLUMN zip TEXT DEFAULT ''",
-    "ALTER TABLE tours ADD COLUMN country TEXT DEFAULT ''"
+    "ALTER TABLE tours ADD COLUMN country TEXT DEFAULT ''",
+    "ALTER TABLE tours ADD COLUMN is_top_rated INTEGER DEFAULT 0"
   ];
   extraColumns.forEach(sql => {
     try { _sqlDb.exec(sql); } catch(e) { /* column exists */ }

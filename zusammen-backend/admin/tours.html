@@ -87,6 +87,13 @@
         <label>Title *</label>
         <input type="text" id="f_title" placeholder="e.g. Namibia Desert & Etosha Safari" required />
       </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:12px;padding:8px 0">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:14px;color:var(--dark);margin:0">
+          <input type="checkbox" id="f_is_top_rated" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer">
+          Mark as "Top Rated"
+          <span style="font-size:12px;font-weight:400;color:var(--text-light)">(shows the Top Rated badge on tour cards)</span>
+        </label>
+      </div>
       <div class="form-row cols-2">
         <div class="form-group">
           <label>Location *</label>
@@ -343,6 +350,7 @@
     document.getElementById("f_min_people").value       = t.min_people || "";
     document.getElementById("f_max_people").value       = t.max_people || "";
     document.getElementById("f_available_dates").value  = t.available_dates || "";
+    document.getElementById("f_is_top_rated").checked   = t.isTopRated || false;
     document.getElementById("f_description").value      = t.description || "";
     document.getElementById("f_destinations").value     = t.destinations || "";
     document.getElementById("f_includes").value         = (t.includes || []).join("\n");
@@ -374,6 +382,7 @@
      "city","region","zip","country"]
       .forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
     document.getElementById("f_category").value = "";
+    document.getElementById("f_is_top_rated").checked = false;
     initItinerary([]);
     createImageInput({ containerId: "mainImageContainer", inputId: "f_image_url" });
     initGallery("galleryContainer", []);
@@ -422,6 +431,7 @@
       region:          document.getElementById('region').value,
       zip:             document.getElementById('zip').value,
       country:         document.getElementById('country').value,
+      is_top_rated:    document.getElementById('f_is_top_rated').checked ? 1 : 0,
     };
 
     console.log('Submitting tour data:', body);

@@ -921,14 +921,14 @@ function buildTourCard(t) {
   const rating = t.rating || 4;
   const imgSrc = t.img || t.image_url || null;
   const imgHtml = imgSrc
-    ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.style.display='none'">`
-    : "";
+    ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
+    : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;
   return `
     <div class="slide-slot">
       <div class="tour-card" data-id="${t.id}">
         <div class="tour-img">
           ${imgHtml}
-          ${t.rating >= 5 ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
+          ${t.isTopRated ? '<span class="tour-badge"><i class="fas fa-star"></i> Top Rated</span>' : ''}
           <span class="tour-cat">${t.category}</span>
           <button class="tour-wishlist" onclick="event.stopPropagation();toggleWishlist(this)" title="Save">
             <i class="fas fa-heart"></i>
@@ -982,7 +982,7 @@ function buildBlogs() {
         return `
     <div class="blog-card">
       ${bImg ? `<div class="blog-img">
-        <img src="${bImg}" alt="${b.title}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.parentElement.style.display='none'">
+        <img src="${bImg}" alt="${b.title}" loading="lazy" onerror="this.parentElement.style.display='none'">
         <span class="blog-tag-badge">${b.tag}</span>
       </div>` : ""}
       <div class="blog-body">
