@@ -524,6 +524,7 @@ const HOME_BLOG_IMG = {
   33: 'assets/blogs/Travelling Solo in Africa.jpg',
   34: 'assets/blogs/Unusual Accommodation Experiences in Africa.jpg',
 };
+window.HOME_BLOG_IMG = HOME_BLOG_IMG;
 
 /* ===== STATE ===== */
 let adultCount = 1,
