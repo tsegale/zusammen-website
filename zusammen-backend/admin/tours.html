@@ -125,6 +125,14 @@
           <label>Old Price (optional)</label>
           <input type="number" id="f_old_price" placeholder="95000" min="0" />
         </div>
+        <div class="form-group">
+          <label>Rating (1–5)</label>
+          <input type="number" id="f_rating" placeholder="5" min="1" max="5" />
+        </div>
+        <div class="form-group">
+          <label>Number of Reviews</label>
+          <input type="number" id="f_reviews" placeholder="0" min="0" />
+        </div>
       </div>
     </div>
 
@@ -343,6 +351,8 @@
     document.getElementById("f_category").value         = t.category || "";
     document.getElementById("f_price").value            = t.price || "";
     document.getElementById("f_old_price").value        = t.old_price || "";
+    document.getElementById("f_rating").value           = t.rating || 5;
+    document.getElementById("f_reviews").value          = t.reviews || 0;
     document.getElementById("f_days").value             = t.days || "";
     document.getElementById("f_nights").value           = t.nights || "";
     document.getElementById("f_guests").value           = t.guests || "";
@@ -375,7 +385,7 @@
   function closeTourPanel() { closePanel("panelOverlay", "tourPanel"); }
 
   function clearForm() {
-    ["f_title","f_location","f_price","f_old_price","f_days","f_nights",
+    ["f_title","f_location","f_price","f_old_price","f_rating","f_reviews","f_days","f_nights",
      "f_guests","f_min_age","f_min_people","f_max_people","f_available_dates",
      "f_description","f_destinations","f_includes","f_excludes","f_highlights",
      "introduction","activities_text","pickup_address","dropoff_address",
@@ -409,6 +419,8 @@
     const body = {
       title, location, category, price,
       old_price:       parseFloat(document.getElementById("f_old_price").value) || null,
+      rating:          parseInt(document.getElementById("f_rating").value) || 5,
+      reviews:         parseInt(document.getElementById("f_reviews").value) || 0,
       days, nights,
       guests:          parseInt(document.getElementById("f_guests").value) || 12,
       min_age:         parseInt(document.getElementById("f_min_age").value) || 0,
