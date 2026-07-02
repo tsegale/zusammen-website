@@ -1275,7 +1275,7 @@
         set('detailTitle',      tour.title);
         set('detailLocation',   tour.location);
         set('detailCategory',   tour.category);
-        set('detailReviews',    tour.reviews || 0);
+        set('detailReviews',    Math.max(0, parseInt(tour.reviews) || 0));
         set('detailDesc',       tour.description);
         set('bookDest',         tour.destinations?.split('→')[0]?.trim() || tour.location);
         set('bookDates',        tour.availableDates);
@@ -1291,7 +1291,10 @@
         set('locCountry', tour.country || '');
 
         const starsEl = document.getElementById('detailStars');
-        if (starsEl) starsEl.innerHTML = '★'.repeat(tour.rating || 4) + '☆'.repeat(5 - (tour.rating || 4));
+        if (starsEl) {
+          const r = Math.min(5, Math.max(1, parseInt(tour.rating) || 4));
+          starsEl.innerHTML = '★'.repeat(r) + '☆'.repeat(5 - r);
+        }
 
         const enquiryInput = document.getElementById('enquiryTourInput');
         if (enquiryInput) enquiryInput.value = tour.title;

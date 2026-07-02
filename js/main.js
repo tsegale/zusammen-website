@@ -936,7 +936,8 @@ function tourImgFallback(img) {
 }
 
 function buildTourCard(t) {
-  const rating = t.rating || 4;
+  const rating  = Math.min(5, Math.max(1, parseInt(t.rating)  || 4));
+  const reviews = Math.max(0, parseInt(t.reviews) || 0);
   const imgSrc = t.img || t.image_url || null;
   const imgHtml = imgSrc
     ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="tourImgFallback(this)">`
@@ -956,7 +957,7 @@ function buildTourCard(t) {
           <div class="tour-rating">
             <span class="stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</span>
             <span>${rating}.0</span>
-            <span class="count">(${t.reviews} Reviews)</span>
+            <span class="count">(${reviews} Reviews)</span>
           </div>
           <h5>${t.title}</h5>
           <div class="tour-loc"><i class="fas fa-map-marker-alt"></i> ${t.location}</div>

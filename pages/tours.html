@@ -1357,13 +1357,7 @@ function renderTours(tours) {
         </div>
         <div class="tour-body">
           <div class="tour-rating">
-            <span class="stars">
-              ${'★'.repeat(Number(t.rating)||4)}${'☆'.repeat(5-(Number(t.rating)||4))}
-            </span>
-            <span>${Number(t.rating)||4}.0</span>
-            <span class="count">
-              (${t.reviews||0} Reviews)
-            </span>
+            ${(function(){const r=Math.min(5,Math.max(1,parseInt(t.rating)||4));const rv=Math.max(0,parseInt(t.reviews)||0);return `<span class="stars">${'★'.repeat(r)}${'☆'.repeat(5-r)}</span><span>${r}.0</span><span class="count">(${rv} Reviews)</span>`;})()}
           </div>
           <h5>${t.title}</h5>
           <div class="tour-loc">
