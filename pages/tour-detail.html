@@ -1134,6 +1134,29 @@
         return images.filter(Boolean);
       }
 
+      // Resolves an image src: tries root-relative first, falls back to API server on 404.
+      // Uses a stable named function so onerror is never replaced mid-session.
+      function resolveDetailImg(img, onFail) {
+        img.onerror = function() {
+          const src = this.getAttribute('src') || '';
+          const apiOrigin = (window.API_BASE || '').replace(/\/api$/, '');
+          if (src.startsWith('/assets/uploads/') && apiOrigin && !this.dataset.apiTried) {
+            this.dataset.apiTried = '1';
+            // Try API server — if that also fails, call onFail
+            this.onerror = function() {
+              this.onerror = null;
+              delete this.dataset.apiTried;
+              if (onFail) onFail();
+            };
+            this.src = apiOrigin + src;
+          } else {
+            this.onerror = null;
+            delete this.dataset.apiTried;
+            if (onFail) onFail();
+          }
+        };
+      }
+
       function buildTourGallery(tour) {
         const images = getTourImages(tour);
         const mainImgEl = document.getElementById("mainImg");
@@ -1142,18 +1165,9 @@
           if (images[0]) {
             mainImgEl.src = images[0];
             mainImgEl.alt = tour.title;
-            mainImgEl.onerror = function() {
-              const src = this.getAttribute('src') || '';
-              const apiOrigin = (window.API_BASE || '').replace(/\/api$/, '');
-              if (src.startsWith('/assets/uploads/') && apiOrigin && !this.dataset.apiTried) {
-                this.dataset.apiTried = '1';
-                this.onerror = function() { this.onerror = null; if (mainImgWrap) mainImgWrap.style.display = 'none'; };
-                this.src = apiOrigin + src;
-              } else {
-                this.onerror = null;
-                if (mainImgWrap) mainImgWrap.style.display = 'none';
-              }
-            };
+            resolveDetailImg(mainImgEl, function() {
+              if (mainImgWrap) mainImgWrap.style.display = 'none';
+            });
           } else {
             if (mainImgWrap) mainImgWrap.style.display = "none";
           }
@@ -1164,8 +1178,21 @@
             <div class="detail-thumb ${i === 0 ? "active" : ""}"
                  onclick="switchMainImg('${img.replace(/'/g, "\\'")}', this)">
               <img src="${img}" alt="Tour photo ${i + 1}"
-                   onerror="(function(el){var s=el.getAttribute('src')||'',a=(window.API_BASE||'').replace(/\\/api$/,'');if(s.startsWith('/assets/uploads/')&&a&&!el.dataset.f){el.dataset.f='1';el.onerror=function(){this.onerror=null;this.parentElement.style.display='none';};el.src=a+s;}else{el.onerror=null;el.parentElement.style.display='none';}})(this)">
+                   onerror="tourThumbError(this)">
             </div>`).join("");
+        }
+      }
+
+      function tourThumbError(el) {
+        const src = el.getAttribute('src') || '';
+        const apiOrigin = (window.API_BASE || '').replace(/\/api$/, '');
+        if (src.startsWith('/assets/uploads/') && apiOrigin && !el.dataset.apiTried) {
+          el.dataset.apiTried = '1';
+          el.onerror = function() { this.onerror = null; this.parentElement.style.display = 'none'; };
+          el.src = apiOrigin + src;
+        } else {
+          el.onerror = null;
+          el.parentElement.style.display = 'none';
         }
       }
 
@@ -1173,8 +1200,13 @@
         const mainImg = document.getElementById("mainImg");
         if (mainImg) {
           const wrap = mainImg.closest(".detail-main-img");
+          // Always restore wrapper visibility and reset retry state before loading new src
           if (wrap) wrap.style.display = '';
           delete mainImg.dataset.apiTried;
+          // Re-attach the stable onerror so it works correctly for every new src
+          resolveDetailImg(mainImg, function() {
+            if (wrap) wrap.style.display = 'none';
+          });
           mainImg.src = src;
         }
         document.querySelectorAll(".detail-thumb").forEach(t => t.classList.remove("active"));
