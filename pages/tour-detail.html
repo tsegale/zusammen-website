@@ -1171,7 +1171,12 @@
 
       window.switchMainImg = function(src, thumbEl) {
         const mainImg = document.getElementById("mainImg");
-        if (mainImg) mainImg.src = src;
+        if (mainImg) {
+          const wrap = mainImg.closest(".detail-main-img");
+          if (wrap) wrap.style.display = '';
+          delete mainImg.dataset.apiTried;
+          mainImg.src = src;
+        }
         document.querySelectorAll(".detail-thumb").forEach(t => t.classList.remove("active"));
         thumbEl.classList.add("active");
       };
