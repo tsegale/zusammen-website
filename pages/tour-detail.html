@@ -1117,21 +1117,9 @@
     <script src="../js/api.js"></script>
     <script src="../js/main.js"></script>
     <script>
-      function resolveImg(url) {
-        if (!url) return null;
-        const base = window.API_BASE || 'http://localhost:3000/api';
-        if (window.WPAPI && window.WPAPI.resolveImagePath) {
-          return window.WPAPI.resolveImagePath(url, base);
-        }
-        if (url.startsWith('/assets/uploads/')) {
-          return base.replace(/\/api$/, '') + url;
-        }
-        return url;
-      }
-
       function getTourImages(tour) {
         const images = [];
-        if (tour.image_url || tour.img) images.push(resolveImg(tour.image_url || tour.img));
+        if (tour.image_url || tour.img) images.push(tour.image_url || tour.img);
         const gallery = tour.gallery_images || tour.galleryImages;
         if (gallery) {
           let parsed = [];
@@ -1141,7 +1129,7 @@
             try { parsed = JSON.parse(gallery); }
             catch { parsed = gallery.split(/,|\n/).map(s => s.trim()).filter(Boolean); }
           }
-          images.push(...parsed.map(resolveImg));
+          images.push(...parsed);
         }
         return images.filter(Boolean);
       }

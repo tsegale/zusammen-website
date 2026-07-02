@@ -920,8 +920,7 @@ function updateToursSlider() {
 
 function buildTourCard(t) {
   const rating = t.rating || 4;
-  const rawImg = t.img || t.image_url || null;
-  const imgSrc = window.WPAPI ? window.WPAPI.resolveImagePath(rawImg, window.API_BASE) : rawImg;
+  const imgSrc = t.img || t.image_url || null;
   const imgHtml = imgSrc
     ? `<img src="${imgSrc}" alt="${t.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'tour-img-placeholder\\'><i class=\\'fas fa-image\\'></i></div>'">`
     : `<div class="tour-img-placeholder"><i class="fas fa-image"></i></div>`;
