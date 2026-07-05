@@ -1892,7 +1892,7 @@ section {
   display: inline-flex;
   align-items: center;
   padding: 20px 0;
-  animation: partnerScroll 50s linear infinite;
+  animation: partnerScroll 80s linear infinite;
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;

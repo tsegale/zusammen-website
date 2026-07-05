@@ -207,31 +207,34 @@ router.post("/", async (req, res) => {
       .prepare("SELECT * FROM enquiries WHERE id = ?")
       .get(result.lastInsertRowid);
 
-    // Send emails — errors are logged but never fail the response
     if (process.env.SMTP_USER && process.env.SMTP_PASS &&
         process.env.SMTP_USER !== 'your-gmail@gmail.com') {
       const transporter = createTransporter();
 
-      // Email 1: business notification
-      transporter.sendMail({
-        from:    `"Zusammen Tours Website" <${process.env.SMTP_USER}>`,
-        to:      process.env.CONTACT_EMAIL,
-        replyTo: email,
-        subject: `New Safari Enquiry: ${tour_name || "General"} — Zusammen Tours`,
-        html:    buildBusinessEmail(enquiry),
-      })
-      .then(() => console.log(`[email] Business notification #${enquiry.id} sent`))
-      .catch(err => console.error("[email] Business email failed:", err.message));
-
-      // Email 2: client confirmation
-      transporter.sendMail({
-        from:    `"Zusammen Tours" <${process.env.SMTP_USER}>`,
-        to:      email,
-        subject: "Thank you for your enquiry — Zusammen Tours",
-        html:    buildClientEmail(enquiry),
-      })
-      .then(() => console.log(`[email] Client confirmation sent to ${email}`))
-      .catch(err => console.error("[email] Client email failed:", err.message));
+      try {
+        await Promise.all([
+          transporter.sendMail({
+            from:    `"Zusammen Tours Website" <${process.env.SMTP_USER}>`,
+            to:      process.env.CONTACT_EMAIL,
+            replyTo: email,
+            subject: `New Safari Enquiry: ${tour_name || "General"} — Zusammen Tours`,
+            html:    buildBusinessEmail(enquiry),
+          }),
+          transporter.sendMail({
+            from:    `"Zusammen Tours" <${process.env.SMTP_USER}>`,
+            to:      email,
+            subject: "Thank you for your enquiry — Zusammen Tours",
+            html:    buildClientEmail(enquiry),
+          }),
+        ]);
+        console.log(`[email] Both emails sent for enquiry #${enquiry.id}`);
+      } catch (emailErr) {
+        console.error("[email] Send failed:", emailErr.message);
+        return res.status(500).json({
+          success: false,
+          error: "Your request was saved but we could not send a confirmation email. Please call us on +264 81 245 5852.",
+        });
+      }
     } else {
       console.warn("[email] SMTP not configured — emails skipped");
     }

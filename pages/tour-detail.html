@@ -873,11 +873,11 @@
                   <input type="hidden" name="children" id="hdnChildren" value="0" />
                   <div class="booking-field">
                     <label>Travel From</label
-                    ><input type="date" name="travelFrom" id="bookFrom" />
+                    ><input type="date" name="travelFrom" id="bookFrom" min="2027-01-01" max="2028-12-31" />
                   </div>
                   <div class="booking-field">
                     <label>Travel To</label
-                    ><input type="date" name="travelTo" id="bookTo" />
+                    ><input type="date" name="travelTo" id="bookTo" min="2027-01-01" max="2028-12-31" />
                   </div>
 
                   <div class="booking-field">
@@ -1416,6 +1416,22 @@
         .getElementById("detailEnquiryForm")
         ?.addEventListener("submit", async function (e) {
           e.preventDefault();
+          const fromVal = document.getElementById('bookFrom').value;
+          const toVal   = document.getElementById('bookTo').value;
+          let dateErr = document.getElementById('dateRangeError');
+          if (!dateErr) {
+            dateErr = document.createElement('p');
+            dateErr.id = 'dateRangeError';
+            dateErr.style.cssText = 'color:#c0392b;font-size:13px;margin:8px 0 0;font-weight:600';
+            document.getElementById('bookFrom').closest('.booking-field').after(dateErr);
+          }
+          const fromOk = !fromVal || (fromVal >= '2027-01-01' && fromVal <= '2028-12-31');
+          const toOk   = !toVal   || (toVal   >= '2027-01-01' && toVal   <= '2028-12-31');
+          if (!fromOk || !toOk) {
+            dateErr.textContent = 'Please select travel dates within 2027 or 2028.';
+            return;
+          }
+          dateErr.textContent = '';
           // Sync counter values into hidden inputs before reading FormData
           document.getElementById("hdnAdults").value   = bookAdults;
           document.getElementById("hdnChildren").value = bookChildren;
