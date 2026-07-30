@@ -1153,6 +1153,12 @@ window.closeEnquiry = function () {
   }
 };
 
+function isValidTravelDate(dateStr) {
+  if (!dateStr) return true;
+  const year = new Date(dateStr).getFullYear();
+  return year === 2027 || year === 2028;
+}
+
 function initEnquiryForm() {
   const modal = $("#enquiryModal");
   const form = $("#enquiryForm");
@@ -1163,6 +1169,18 @@ function initEnquiryForm() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    const travelFrom = form.querySelector('[name="travelFrom"]')?.value;
+    const travelTo = form.querySelector('[name="travelTo"]')?.value;
+    if (travelFrom && !isValidTravelDate(travelFrom)) {
+      showToast("Travel dates must be in 2027 or 2028", "error");
+      return;
+    }
+    if (travelTo && !isValidTravelDate(travelTo)) {
+      showToast("Travel dates must be in 2027 or 2028", "error");
+      return;
+    }
+
     const btn = form.querySelector('[type="submit"]');
     const originalText = btn.textContent;
     btn.textContent = "Sending...";
