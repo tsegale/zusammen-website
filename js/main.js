@@ -1343,11 +1343,193 @@ function initContactForm() {
   });
 }
 
+/* ===== CUSTOM DATE PICKER (2027-2028 only) ===== */
+const DP_MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+const DP_DEFAULT_MIN = "2027-01-01";
+const DP_DEFAULT_MAX = "2028-12-31";
+
+let dpPopupEl = null;
+let dpActiveInput = null;
+let dpViewYear = 0;
+let dpViewMonth = 0;
+let dpMinYear = 0;
+let dpMinMonth = 0;
+let dpMaxYear = 0;
+let dpMaxMonth = 0;
+
+function dpPad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function dpParseISO(str) {
+  if (!str) return null;
+  const [y, m, d] = str.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return { y, m, d };
+}
+
+function dpEnsurePopup() {
+  if (dpPopupEl) return;
+  dpPopupEl = document.createElement("div");
+  dpPopupEl.className = "zt-dp-popup";
+  document.body.appendChild(dpPopupEl);
+  dpPopupEl.addEventListener("click", dpHandlePopupClick);
+  document.addEventListener("mousedown", dpHandleOutsideClick);
+  document.addEventListener("keydown", dpHandleKeydown);
+  window.addEventListener("resize", dpClosePopup);
+  window.addEventListener("scroll", dpClosePopup, true);
+}
+
+function dpClosePopup() {
+  if (dpPopupEl) dpPopupEl.classList.remove("open");
+  dpActiveInput = null;
+}
+
+function dpHandleOutsideClick(e) {
+  if (!dpPopupEl || !dpPopupEl.classList.contains("open")) return;
+  if (dpPopupEl.contains(e.target) || e.target.closest(".zt-date-trigger")) return;
+  dpClosePopup();
+}
+
+function dpHandleKeydown(e) {
+  if (e.key === "Escape") dpClosePopup();
+}
+
+function dpMonthIndex(y, m) {
+  return y * 12 + (m - 1);
+}
+
+function dpPositionPopup() {
+  if (!dpActiveInput) return;
+  const rect = dpActiveInput.getBoundingClientRect();
+  const popupWidth = dpPopupEl.offsetWidth || 264;
+  let left = rect.left;
+  if (left + popupWidth > window.innerWidth - 8) left = window.innerWidth - popupWidth - 8;
+  if (left < 8) left = 8;
+  let top = rect.bottom + 6;
+  const estHeight = dpPopupEl.offsetHeight || 300;
+  if (top + estHeight > window.innerHeight - 8) top = rect.top - estHeight - 6;
+  dpPopupEl.style.left = `${left}px`;
+  dpPopupEl.style.top = `${top}px`;
+}
+
+function dpRenderPopup() {
+  const selected = dpParseISO(dpActiveInput.value);
+  const today = new Date();
+  const todayY = today.getFullYear();
+  const todayM = today.getMonth() + 1;
+  const todayD = today.getDate();
+
+  const viewIdx = dpMonthIndex(dpViewYear, dpViewMonth);
+  const minIdx = dpMonthIndex(dpMinYear, dpMinMonth);
+  const maxIdx = dpMonthIndex(dpMaxYear, dpMaxMonth);
+  const prevDisabled = viewIdx <= minIdx;
+  const nextDisabled = viewIdx >= maxIdx;
+
+  const minStr = dpActiveInput.dataset.min || DP_DEFAULT_MIN;
+  const maxStr = dpActiveInput.dataset.max || DP_DEFAULT_MAX;
+
+  const firstWeekday = new Date(dpViewYear, dpViewMonth - 1, 1).getDay();
+  const daysInMonth = new Date(dpViewYear, dpViewMonth, 0).getDate();
+
+  let daysHtml = "";
+  for (let i = 0; i < firstWeekday; i++) {
+    daysHtml += '<span class="zt-dp-blank"></span>';
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${dpViewYear}-${dpPad(dpViewMonth)}-${dpPad(d)}`;
+    const inRange = dateStr >= minStr && dateStr <= maxStr;
+    const isToday = dpViewYear === todayY && dpViewMonth === todayM && d === todayD;
+    const isSelected = selected && selected.y === dpViewYear && selected.m === dpViewMonth && selected.d === d;
+    const cls = ["zt-dp-day"];
+    if (isToday) cls.push("is-today");
+    if (isSelected) cls.push("is-selected");
+    if (!inRange) {
+      daysHtml += `<button type="button" class="${cls.join(" ")}" disabled style="opacity:.3;cursor:not-allowed">${d}</button>`;
+    } else {
+      daysHtml += `<button type="button" class="${cls.join(" ")}" data-date="${dateStr}">${d}</button>`;
+    }
+  }
+
+  dpPopupEl.innerHTML = `
+    <div class="zt-dp-head">
+      <button type="button" class="zt-dp-nav zt-dp-prev" aria-label="Previous month" ${prevDisabled ? "disabled" : ""}>&#8249;</button>
+      <span class="zt-dp-title">${DP_MONTH_NAMES[dpViewMonth - 1]} ${dpViewYear}</span>
+      <button type="button" class="zt-dp-nav zt-dp-next" aria-label="Next month" ${nextDisabled ? "disabled" : ""}>&#8250;</button>
+    </div>
+    <div class="zt-dp-weekdays">
+      <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+    </div>
+    <div class="zt-dp-days">${daysHtml}</div>
+  `;
+}
+
+function dpHandlePopupClick(e) {
+  const dayBtn = e.target.closest(".zt-dp-day[data-date]");
+  if (dayBtn) {
+    dpActiveInput.value = dayBtn.dataset.date;
+    dpActiveInput.dispatchEvent(new Event("change", { bubbles: true }));
+    dpClosePopup();
+    return;
+  }
+  if (e.target.closest(".zt-dp-prev")) {
+    const idx = dpMonthIndex(dpViewYear, dpViewMonth) - 1;
+    dpViewYear = Math.floor(idx / 12);
+    dpViewMonth = (idx % 12) + 1;
+    dpRenderPopup();
+    return;
+  }
+  if (e.target.closest(".zt-dp-next")) {
+    const idx = dpMonthIndex(dpViewYear, dpViewMonth) + 1;
+    dpViewYear = Math.floor(idx / 12);
+    dpViewMonth = (idx % 12) + 1;
+    dpRenderPopup();
+  }
+}
+
+function dpOpenFor(inputEl) {
+  dpEnsurePopup();
+
+  if (dpActiveInput === inputEl && dpPopupEl.classList.contains("open")) {
+    dpClosePopup();
+    return;
+  }
+
+  dpActiveInput = inputEl;
+  const min = dpParseISO(inputEl.dataset.min || DP_DEFAULT_MIN);
+  const max = dpParseISO(inputEl.dataset.max || DP_DEFAULT_MAX);
+  dpMinYear = min.y;
+  dpMinMonth = min.m;
+  dpMaxYear = max.y;
+  dpMaxMonth = max.m;
+
+  const current = dpParseISO(inputEl.value);
+  dpViewYear = current ? current.y : dpMinYear;
+  dpViewMonth = current ? current.m : dpMinMonth;
+
+  dpRenderPopup();
+  dpPopupEl.classList.add("open");
+  dpPositionPopup();
+}
+
+function initDatePickers() {
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest(".zt-date-trigger");
+    if (!trigger) return;
+    const input = trigger.querySelector(".zt-date");
+    if (input) dpOpenFor(input);
+  });
+}
+
 /* ===== INIT ===== */
 document.addEventListener("DOMContentLoaded", async () => {
   initHeader();
   initSearch();
   initCategoryModal();
+  initDatePickers();
 
   if (window.WPAPI) {
     const [apiTours, apiBlogs] = await Promise.all([

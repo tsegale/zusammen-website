@@ -872,12 +872,18 @@
                   <input type="hidden" name="adults" id="hdnAdults" value="1" />
                   <input type="hidden" name="children" id="hdnChildren" value="0" />
                   <div class="booking-field">
-                    <label>Travel From</label
-                    ><input type="date" name="travelFrom" id="bookFrom" min="2027-01-01" max="2028-12-31" />
+                    <label>Travel From</label>
+                    <div class="zt-date-trigger">
+                      <input type="text" class="zt-date" name="travelFrom" id="bookFrom" readonly autocomplete="off" placeholder="Select date" data-min="2027-01-01" data-max="2028-12-31" />
+                      <i class="fas fa-calendar zt-date-ico"></i>
+                    </div>
                   </div>
                   <div class="booking-field">
-                    <label>Travel To</label
-                    ><input type="date" name="travelTo" id="bookTo" min="2027-01-01" max="2028-12-31" />
+                    <label>Travel To</label>
+                    <div class="zt-date-trigger">
+                      <input type="text" class="zt-date" name="travelTo" id="bookTo" readonly autocomplete="off" placeholder="Select date" data-min="2027-01-01" data-max="2028-12-31" />
+                      <i class="fas fa-calendar zt-date-ico"></i>
+                    </div>
                   </div>
 
                   <div class="booking-field">

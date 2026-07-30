@@ -212,13 +212,17 @@
               <!-- Check In -->
               <div class="sf">
                 <label>Check In</label>
-                <div class="field-wrap">
+                <div class="field-wrap zt-date-trigger">
                   <i class="fas fa-calendar ico"></i>
                   <input
-                    type="date"
+                    type="text"
+                    class="zt-date"
                     id="checkInDate"
-                    min="2027-01-01"
-                    max="2028-12-31"
+                    readonly
+                    autocomplete="off"
+                    placeholder="Select date"
+                    data-min="2027-01-01"
+                    data-max="2028-12-31"
                     style="color: var(--text)"
                   />
                 </div>
@@ -1128,11 +1132,17 @@
             <div class="form-row">
               <div class="form-group">
                 <label>Travel From</label>
-                <input type="date" name="travelFrom" min="2027-01-01" max="2028-12-31" />
+                <div class="zt-date-trigger">
+                  <input type="text" class="zt-date" name="travelFrom" readonly autocomplete="off" placeholder="Select date" data-min="2027-01-01" data-max="2028-12-31" />
+                  <i class="fas fa-calendar zt-date-ico"></i>
+                </div>
               </div>
               <div class="form-group">
                 <label>Travel To</label>
-                <input type="date" name="travelTo" min="2027-01-01" max="2028-12-31" />
+                <div class="zt-date-trigger">
+                  <input type="text" class="zt-date" name="travelTo" readonly autocomplete="off" placeholder="Select date" data-min="2027-01-01" data-max="2028-12-31" />
+                  <i class="fas fa-calendar zt-date-ico"></i>
+                </div>
               </div>
             </div>
             <div class="form-group">

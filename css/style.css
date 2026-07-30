@@ -2718,3 +2718,117 @@ footer {
 .footer-credit a:hover img {
   opacity: 0.62;
 }
+
+/* ===== CUSTOM DATE PICKER (2027-2028 only) ===== */
+.zt-date-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.zt-date-trigger input.zt-date {
+  cursor: pointer;
+  background: var(--white);
+}
+.form-group .zt-date-trigger input.zt-date,
+.booking-field .zt-date-trigger input.zt-date {
+  padding-right: 38px;
+}
+.zt-date-trigger .zt-date-ico {
+  position: absolute;
+  right: 14px;
+  color: var(--text-light);
+  font-size: 13px;
+  pointer-events: none;
+}
+.zt-dp-popup {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  width: 264px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 16px 40px rgba(11, 26, 44, 0.22);
+  padding: 12px;
+  font-family: var(--font-body);
+}
+.zt-dp-popup.open {
+  display: block;
+}
+.zt-dp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.zt-dp-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.zt-dp-nav {
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--dark);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  transition: var(--transition);
+}
+.zt-dp-nav:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.zt-dp-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.zt-dp-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+.zt-dp-weekdays span {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+.zt-dp-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.zt-dp-day {
+  border: none;
+  background: transparent;
+  color: var(--dark);
+  font-size: 12.5px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.zt-dp-day:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.zt-dp-day.is-today {
+  border: 1px solid var(--accent);
+}
+.zt-dp-day.is-selected {
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 700;
+}
+.zt-dp-blank {
+  height: 30px;
+}
